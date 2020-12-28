@@ -1,0 +1,52 @@
+﻿@page "/userview"
+<h3>UserView</h3>
+
+@inject NhuYShop.Model.UserModel model
+@if (users == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>NAME</th>
+                <th>SOCIAL</th>
+                <th>PHONE</th>
+                <th>UPDATEDATE</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in users)
+            {
+            <tr>
+                <td>@item.ID</td>
+                <td>@item.NAME</td>
+                <td>@item.SOCIAL</td>
+                <td>@item.PHONE</td>
+                @if (item.UPDATEDATE != null)
+                {
+                    <td>@item.UPDATEDATE</td>
+                }
+                else
+                {
+                    <td>@item.CREATEDATE</td>
+                }
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private UserDAO userDAO = new UserDAO();
+    private List<UserModel> users = new List<UserModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        users = await userDAO.GetAllUser();
+    }
+
+}

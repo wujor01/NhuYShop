@@ -5,6 +5,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.MobileBlazorBindings;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using NhuYShop.DAO;
+using NhuYShop.Model;
 
 namespace NhuYShop
 {
@@ -17,9 +19,11 @@ namespace NhuYShop
                 {
                     // Adds web-specific services such as NavigationManager
                     services.AddBlazorHybrid();
-
+                    
                     // Register app-specific services
                     services.AddSingleton<CounterState>();
+                    services.AddSingleton<UserDAO>();
+                    services.AddSingleton<UserModel>();
                 })
                 .UseWebRoot("wwwroot");
 
