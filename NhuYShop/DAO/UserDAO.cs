@@ -37,21 +37,21 @@ namespace NhuYShop.DAO
         }
         public async Task<UserModel> GetUser(string ID)
         {
-            var allPersons = await GetAllUser();
+            var allUsers = await GetAllUser();
             await firebase
               .Child("UserModel")
               .OnceAsync<UserModel>();
-            return allPersons.Where(a => a.ID == ID).FirstOrDefault();
+            return allUsers.Where(a => a.ID == ID).FirstOrDefault();
         }
         public async Task UpdateUser(UserModel user)
         {
-            var toUpdatePerson = (await firebase
+            var toUpdateUser = (await firebase
               .Child("UserModel")
               .OnceAsync<UserModel>()).Where(a => a.Object.ID == user.ID).FirstOrDefault();
 
             await firebase
               .Child("UserModel")
-              .Child(toUpdatePerson.Key)
+              .Child(toUpdateUser.Key)
               .PutAsync(user);
         }
     }
