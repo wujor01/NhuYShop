@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,59 +33,53 @@ namespace NhuYShop.DAO
             }
             return Task.FromResult(pickAddresses);
         }
-        public Task<List<Province>> GetProvince()
+        public async Task<string> GetJsonFile(string link)
         {
-            using (StreamReader r = File.OpenText("Data/json/tinh_tp.json"))
-            {
-                //Get values tinh_tp
-                string json = r.ReadToEnd();
-                var js = JObject.Parse(json);
-                IList<JToken> values = js.Properties().Select(x => x.First).ToList();
-                List<Province> provinces = new List<Province>();
-                foreach (var item in values)
-                {
-                    Province pro = new Province();
-                    pro = item.ToObject<Province>();
-                    provinces.Add(pro);
-                }
-                return Task.FromResult(provinces);
-            }
+            HttpClient client = new HttpClient();
+            HttpResponseMessage response = await client.GetAsync(link);
+            response.EnsureSuccessStatusCode();
+            string responseBody = await response.Content.ReadAsStringAsync();
+            return await Task.FromResult(responseBody);
         }
-        public Task<List<Distrist>> GetDistrist(string parent_code)
+        public async Task<List<Province>> GetProvince(string responseBody)
         {
-            using (StreamReader r = File.OpenText("Data/json/quan_huyen.json"))
+            var js = JObject.Parse(responseBody);
+            IList<JToken> values = js.Properties().Select(x => x.First).ToList();
+            List<Province> provinces = new List<Province>();
+            foreach (var item in values)
             {
-                //Get values tinh_tp
-                string json = r.ReadToEnd();
-                var js = JObject.Parse(json);
-                IList<JToken> values = js.Properties().Where(x => x.First.SelectToken("parent_code").ToString() == parent_code).Select(x => x.First).ToList();
-                List<Distrist> distrists = new List<Distrist>();
-                foreach (var item in values)
-                {
-                    Distrist pro = new Distrist();
-                    pro = item.ToObject<Distrist>();
-                    distrists.Add(pro);
-                }
-                return Task.FromResult(distrists);
+                Province pro = new Province();
+                pro = item.ToObject<Province>();
+                provinces.Add(pro);
             }
+            return await Task.FromResult(provinces);
         }
-        public Task<List<Ward>> GetWard(string parent_code)
+        public async Task<List<Distrist>> GetDistrist(string responseBody, string parent_code)
         {
-            using (StreamReader r = File.OpenText("Data/json/xa_phuong.json"))
+
+            var js = JObject.Parse(responseBody);
+            IList<JToken> values = js.Properties().Where(x => x.First.SelectToken("parent_code").ToString() == parent_code).Select(x => x.First).ToList();
+            List<Distrist> distrists = new List<Distrist>();
+            foreach (var item in values)
             {
-                //Get values tinh_tp
-                string json = r.ReadToEnd();
-                var js = JObject.Parse(json);
-                IList<JToken> values = js.Properties().Where(x => x.First.SelectToken("parent_code").ToString() == parent_code).Select(x => x.First).ToList();
-                List<Ward> wards = new List<Ward>();
-                foreach (var item in values)
-                {
-                    Ward pro = new Ward();
-                    pro = item.ToObject<Ward>();
-                    wards.Add(pro);
-                }
-                return Task.FromResult(wards);
+                Distrist pro = new Distrist();
+                pro = item.ToObject<Distrist>();
+                distrists.Add(pro);
             }
+            return await Task.FromResult(distrists);
+        }
+        public async Task<List<Ward>> GetWard(string responseBody, string parent_code)
+        {
+            var js = JObject.Parse(responseBody);
+            IList<JToken> values = js.Properties().Where(x => x.First.SelectToken("parent_code").ToString() == parent_code).Select(x => x.First).ToList();
+            List<Ward> wards = new List<Ward>();
+            foreach (var item in values)
+            {
+                Ward pro = new Ward();
+                pro = item.ToObject<Ward>();
+                wards.Add(pro);
+            }
+            return await Task.FromResult(wards);
         }
     }
 }

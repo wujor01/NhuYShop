@@ -13,9 +13,8 @@ namespace NhuYShop.DAO
     {
         FirebaseClient firebase = new FirebaseClient("https://quickstart-1604847633747-default-rtdb.firebaseio.com/");
 
-        public async Task<List<OrderModel>> GetAllUser()
+        public async Task<List<OrderModel>> GetAllOrder()
         {
-
             return (await firebase
               .Child("OrderModel")
               .OnceAsync<OrderModel>()).Select(item => new OrderModel
@@ -32,30 +31,30 @@ namespace NhuYShop.DAO
                   UPDATEDATE = item.Object.UPDATEDATE
               }).ToList();
         }
-        public async Task AddUser(OrderModel order)
+        public async Task AddOrder(OrderModel order)
         {
 
             await firebase
               .Child("OrderModel")
               .PostAsync(order);
         }
-        public async Task<OrderModel> GetUser(string ID)
+        public async Task<OrderModel> GetOrder(string ID)
         {
-            var allUsers = await GetAllUser();
+            var allOrders = await GetAllOrder();
             await firebase
               .Child("OrderModel")
               .OnceAsync<OrderModel>();
-            return allUsers.Where(a => a.ID == ID).FirstOrDefault();
+            return allOrders.Where(a => a.ID == ID).FirstOrDefault();
         }
-        public async Task UpdateUser(OrderModel order)
+        public async Task UpdateOrder(OrderModel order)
         {
-            var toUpdateUser = (await firebase
+            var toUpdateOrder = (await firebase
               .Child("OrderModel")
               .OnceAsync<OrderModel>()).Where(a => a.Object.ID == order.ID).FirstOrDefault();
 
             await firebase
               .Child("OrderModel")
-              .Child(toUpdateUser.Key)
+              .Child(toUpdateOrder.Key)
               .PutAsync(order);
         }
     }

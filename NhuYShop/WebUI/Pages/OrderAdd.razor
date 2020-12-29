@@ -1,0 +1,141 @@
+﻿@page "/addorder"
+<h3>OrderAdd</h3>
+<div class="col-lg-12 control-section">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+                <b>Thông tin khách hàng:</b>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
+                <input type="text" class="form-control" placeholder="Tên" @bind-value="order.customer_province">
+            </div>
+            <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
+                <input type="text" class="form-control" placeholder="Link FB" @bind-value="order.customer_distrist">
+            </div>
+            <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
+                <input type="text" class="form-control" placeholder="SĐT" @bind-value="order.customer_ward">
+            </div>
+            <div class="col-xs-2 col-sm-2 col-lg-2 col-md-2">
+            </div>
+            <div class="col-xs-1 col-sm-1 col-lg-1 col-md-1">
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
+                <label for="sel1">Tỉnh/Thành Phố:</label>
+                <select class="form-control" @onchange="OnChangeProvince">
+                    <option value=""> </option>
+                    @if (provinces != null)
+                    {
+                        @foreach (var item in provinces)
+                        {
+                            <option value="@item.code"> @item.name </option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
+                <label for="sel1">Quận/Huyện:</label>
+                <select class="form-control" @onchange="OnChangeDistrist">
+                    <option value=""> </option>
+                    @if (distrists != null)
+                    {
+                        @foreach (var item in distrists)
+                        {
+                            <option value="@item.code"> @item.name </option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
+                <label for="sel1">Phường/Xã:</label>
+                <select class="form-control" @onchange="OnChangeWard">
+                    <option value=""> </option>
+                    @if (wards != null)
+                    {
+                        @foreach (var item in wards)
+                        {
+                            <option value="@item.code"> @item.name </option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+        <hr />
+    </div>
+</div>
+@code {
+    private OrderDAO orderDAO = new OrderDAO();
+    private AddressDAO addressDAO = new AddressDAO();
+    private OrderModel order = new OrderModel();
+    public List<Province> provinces { get; set; }
+    public List<Distrist> distrists { get; set; }
+    public List<Ward> wards { get; set; }
+    public Province province { get; set; }
+    public Distrist distrist { get; set; }
+    public Ward ward { get; set; }
+    private PickAddress add { get; set; }
+    private List<PickAddress> pickaddress;
+
+    string valueProvince = null;
+    string valueDistrist = null;
+    string valueWard = null;
+
+    string pr = null;
+    string di = null;
+    string wa = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        pr = await addressDAO.GetJsonFile("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/tinh_tp.json");
+        di = await addressDAO.GetJsonFile("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/quan_huyen.json");
+        wa = await addressDAO.GetJsonFile("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/xa_phuong.json");
+        pickaddress = await addressDAO.GetPickAddress();
+        if (pr != null)
+        {
+            provinces = await addressDAO.GetProvince(pr);
+        }
+        province = new Province();
+        distrist = new Distrist();
+        ward = new Ward();
+
+    }
+
+    public async void OnChangeProvince(ChangeEventArgs e)
+    {
+        valueProvince = e.Value.ToString();
+        distrists = new List<Distrist>();
+        if (valueProvince != null)
+        {
+            distrists = await addressDAO.GetDistrist(di,valueProvince);
+            if (wards != null)
+            {
+                wards = new List<Ward>();
+            }
+        }
+    }
+
+    public async void OnChangeDistrist(ChangeEventArgs e)
+    {
+        Task.WaitAll();
+        valueDistrist = e.Value.ToString();
+        wards = await addressDAO.GetWard(wa,valueDistrist);
+    }
+
+    public void OnChangeWard(ChangeEventArgs e)
+    {
+        valueWard = e.Value.ToString();
+    }
+
+    public async void BtnAddOrder()
+    {
+        order.CREATEDATE = DateTime.Now;
+        order.CREATEUSER = "ADMIN";
+        await orderDAO.AddOrder(order);
+        order = new OrderModel();
+        //StateHasChanged();
+    }
+}
