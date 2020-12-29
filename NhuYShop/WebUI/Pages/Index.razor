@@ -2,6 +2,133 @@
 
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
+<button class="btn btn-primary" @onclick="OpenModal">Open Modal</button>
+<div class="container">
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>CTV</th>
+                    <th>DETAIL</th>
+                    <th>ADDRESS</th>
+                    <th>PHONE</th>
+                    <th>UPDATEDATE</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in orders)
+                {
+                    <tr>
+                        <td>@item.ID</td>
+                        <td>@item.CREATEUSER</td>
+                        <td>@item.detail</td>
+                        <td>@item.value</td>
+                        <td>@item.customer_address</td>
+                        <td>@item.customer_tel</td>
+                        <td>@item.is_freeship</td>
+                        <td>@item.is_completed</td>
+                        @if (item.UPDATEDATE > item.CREATEDATE)
+                        {
+                            <td>@item.UPDATEDATE</td>
+                        }
+                        else
+                        {
+                            <td>@item.CREATEDATE</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thêm CTV</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
+                        <input type="text" class="form-control" placeholder="ID" @bind-value="order.detail">
+                    </div>
+                    <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
+                        <input type="text" class="form-control" placeholder="Tên" @bind-value="order.customer_province">
+                    </div>
+                    <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
+                        <input type="text" class="form-control" placeholder="Link FB" @bind-value="order.customer_distrist">
+                    </div>
+                    <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
+                        <input type="text" class="form-control" placeholder="SĐT" @bind-value="order.customer_ward">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" @onclick="BtnAddUser">Add</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="CloseModal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+    private OrderDAO orderDAO = new OrderDAO();
+    private AddressDAO addressDAO = new AddressDAO();
+    private List<OrderModel> orders = new List<OrderModel>();
+    private OrderModel order { get; set; }
+    public List<Province> provinces { get; set; }
+    public List<Distrist> distrists { get; set; }
+    public List<Ward> wards { get; set; }
+    public Province province { get; set; }
+    public Distrist distrist { get; set; }
+    public Ward ward { get; set; }
+    private PickAddress add { get; set; }
+    private List<PickAddress> pickaddress;
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+    protected override async Task OnInitializedAsync()
+    {
+        orders = await orderDAO.GetAllUser();
+        provinces = await addressDAO.GetProvince();
+        pickaddress = await addressDAO.GetPickAddress();
+
+        province = new Province();
+        distrist = new Distrist();
+        ward = new Ward();
+
+    }
+
+    #region Modal
+    public Guid Guid = Guid.NewGuid();
+    public string ModalDisplay = "none;";
+    public string ModalClass = "";
+    public bool ShowBackdrop = false;
+
+    public void OpenModal()
+    {
+        ModalDisplay = "block;";
+        ModalClass = "Show";
+        ShowBackdrop = true;
+        StateHasChanged();
+    }
+
+    public void CloseModal()
+    {
+        ModalDisplay = "none";
+        ModalClass = "";
+        ShowBackdrop = false;
+        StateHasChanged();
+    }
+
+    public async void BtnAddUser()
+    {
+        order.CREATEDATE = DateTime.Now;
+        order.CREATEUSER = "ADMIN";
+        await orderDAO.AddUser(order);
+        orders = await orderDAO.GetAllUser();
+        //StateHasChanged();
+    }
+    #endregion
+}

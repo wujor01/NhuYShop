@@ -4,60 +4,66 @@
 @inject NhuYShop.Model.UserModel model
 <button class="btn btn-primary" @onclick="OpenModal">Open Modal</button>
 <div class="container">
-    @if (users == null)
-    {
-        <p><em>Empty...</em></p>
-    }
-    else
-    {
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>NAME</th>
+                    <th>SOCIAL</th>
+                    <th>PHONE</th>
+                    <th>UPDATEDATE</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in users)
+                {
                     <tr>
-                        <th>ID</th>
-                        <th>NAME</th>
-                        <th>SOCIAL</th>
-                        <th>PHONE</th>
-                        <th>UPDATEDATE</th>
+                        <td>@item.ID</td>
+                        <td>@item.NAME</td>
+                        <td>@item.SOCIAL</td>
+                        <td>@item.PHONE</td>
+                        @if (item.UPDATEDATE > item.CREATEDATE)
+                        {
+                            <td>@item.UPDATEDATE</td>
+                        }
+                        else
+                        {
+                            <td>@item.CREATEDATE</td>
+                        }
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in users)
-                    {
-                        <tr>
-                            <td>@item.ID</td>
-                            <td>@item.NAME</td>
-                            <td>@item.SOCIAL</td>
-                            <td>@item.PHONE</td>
-                            @if (item.UPDATEDATE != null)
-                            {
-                                <td>@item.UPDATEDATE</td>
-                            }
-                            else
-                            {
-                                <td>@item.CREATEDATE</td>
-                            }
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    }
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 <div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modal title</h5>
+                <h5 class="modal-title">Thêm CTV</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Modal body text goes here.</p>
+                <div class="row">
+                    <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
+                        <input type="text" class="form-control" placeholder="ID" @bind-value="user.ID">
+                    </div>
+                    <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
+                        <input type="text" class="form-control" placeholder="Tên" @bind-value="user.NAME">
+                    </div>
+                    <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
+                        <input type="text" class="form-control" placeholder="Link FB" @bind-value="user.SOCIAL">
+                    </div>
+                    <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
+                        <input type="text" class="form-control" placeholder="SĐT" @bind-value="user.PHONE">
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary" @onclick="BtnAddUser">Add</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="CloseModal">Close</button>
             </div>
         </div>
@@ -66,6 +72,7 @@
 @code {
     private UserDAO userDAO = new UserDAO();
     private List<UserModel> users = new List<UserModel>();
+    private UserModel user = new UserModel();
 
     protected override async Task OnInitializedAsync()
     {
@@ -92,6 +99,15 @@
         ModalClass = "";
         ShowBackdrop = false;
         StateHasChanged();
+    }
+
+    public async void BtnAddUser()
+    {
+        user.CREATEDATE = DateTime.Now;
+        user.CREATEUSER = "ADMIN";
+        await userDAO.AddUser(user);
+        users = await userDAO.GetAllUser();
+        //StateHasChanged();
     }
     #endregion
 }

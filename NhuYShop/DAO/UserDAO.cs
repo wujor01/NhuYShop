@@ -26,7 +26,7 @@ namespace NhuYShop.DAO
                   PHONE = item.Object.PHONE,
                   CREATEDATE = item.Object.CREATEDATE,
                   UPDATEDATE = item.Object.UPDATEDATE
-              }).ToList();
+              }).Where(x=>x.ISDELETED == false).ToList();
         }
         public async Task AddUser(UserModel user)
         {
