@@ -90,7 +90,7 @@
             </div>
             <div class="col-xs-2 col-sm-2 col-lg-2 col-md-2">
                 <label for="sel1">Số tiền:</label>
-                <input type="number" class="form-control" value="">
+                <input type="number" class="form-control" @onchange="OnChangeValue">
             </div>
             <div class="col-xs-2 col-sm-2 col-lg-2 col-md-2">
                 <label for="sel1">Khối lượng(kg):</label>
@@ -103,11 +103,11 @@
             </div>
             <div class="col-xs-2 col-sm-2 col-lg-2 col-md-2">
                 <label>Số tiền thực thu:</label>
-                <input type="number" class="form-control" placeholder="Số tiền thực thu" readonly="true" value="">
+                <input type="number" class="form-control" placeholder="Số tiền thực thu" readonly="true" @bind-value="@realvalue">
             </div>
             <div class="col-xs-1 col-sm-1 col-lg-1 col-md-1">
                 <label>Freeship?</label>
-                <input type="checkbox" class="form-control" value="false">
+                <input type="checkbox" class="form-control" @onchange="OnChangeFreeShip">
             </div>
         </div>
         <hr />
@@ -149,6 +149,7 @@
     string pr = null;
     string di = null;
     string wa = null;
+    int? realvalue = null;
 
     string fee = null;
     string weight = "0.2";
@@ -182,6 +183,34 @@
 
     }
 
+    public async void OnChangeFreeShip(ChangeEventArgs e)
+    {
+        order.is_freeship = (bool) e.Value;
+        if (order.is_freeship == true)
+        {
+            realvalue = order.value - Int32.Parse(fee);
+        }
+        else
+        {
+            realvalue = order.value;
+        }
+        wards = await addressDAO.GetWard(wa, valueDistrist);
+    }
+
+    public async void OnChangeValue(ChangeEventArgs e)
+    {
+        order.value = Int32.Parse(e.Value.ToString());
+        if (order.is_freeship == true)
+        {
+            realvalue = order.value - Int32.Parse(fee);
+        }
+        else
+        {
+            realvalue = order.value;
+        }
+        wards = await addressDAO.GetWard(wa, valueDistrist);
+    }
+
     public async void OnChangeProvince(ChangeEventArgs e)
     {
         valueProvince = e.Value.ToString();
@@ -198,7 +227,6 @@
 
     public async void OnChangeDistrist(ChangeEventArgs e)
     {
-        Task.WaitAll();
         valueDistrist = e.Value.ToString();
         wards = await addressDAO.GetWard(wa, valueDistrist);
     }
@@ -212,7 +240,6 @@
         order.customer_province = province.name;
         order.customer_distrist = distrist.name_with_type;
         order.customer_ward = ward.name_with_type;
-        order.customer_street = ward.path;
         ReloadFeeShip();
     }
 
@@ -227,12 +254,15 @@
     public void OnChangeDeliveryOption(ChangeEventArgs e)
     {
         valueDeliveryOption = e.Value.ToString();
+        ReloadFeeShip();
     }
 
     public async void BtnAddOrder()
     {
+        order.customer_address = ward.path;
         order.CREATEDATE = DateTime.Now;
         order.CREATEUSER = "ADMIN";
+        order.ID = order.CREATEDATE.ToString("yyyymmddhhmmss");
         if (await orderDAO.AddOrder(order) == "success")
         {
             toastService.ShowSuccess("Thêm đơn hàng thành công!");
@@ -262,8 +292,17 @@
         if (json.SelectToken("fee").SelectToken("fee").ToString() != fee)
         {
             toastService.ShowWarning("Phí ship mới là: " + json.SelectToken("fee").SelectToken("fee").ToString());
+            fee = json.SelectToken("fee").SelectToken("fee").ToString();
+            if (order.is_freeship == true)
+            {
+                realvalue = order.value - Int32.Parse(fee);
+            }
+            else
+            {
+                realvalue = order.value;
+            }
         }
-        fee = json.SelectToken("fee").SelectToken("fee").ToString();
+
     }
 
     public class GetFeeDelivery

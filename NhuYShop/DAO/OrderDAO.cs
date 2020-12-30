@@ -21,7 +21,7 @@ namespace NhuYShop.DAO
               {
                   ID = item.Object.ID,
                   CREATEUSER = item.Object.CREATEUSER,
-                  customer_address = item.Object.customer_street + item.Object.customer_ward + item.Object.customer_distrist + item.Object.customer_province,
+                  customer_address = item.Object.customer_address,
                   customer_tel = item.Object.customer_tel,
                   detail = item.Object.detail,
                   value = item.Object.value,
