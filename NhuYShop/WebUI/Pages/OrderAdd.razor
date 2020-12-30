@@ -170,21 +170,25 @@
     {
         fee = 0.ToString();
         order = new OrderModel();
-        if (!File.Exists("tinh_tp.json") && !File.Exists("quan_huyen.json") && !File.Exists("xa_phuong.json"))
+
+        pr = await ReadCountAsync("tinh_tp.json");
+        di = await ReadCountAsync("quan_huyen.json");
+        wa = await ReadCountAsync("xa_phuong.json");
+
+        if (pr == null && di == null && wa == null)
         {
             pr = await addressDAO.GetJsonFile("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/tinh_tp.json", "tinh_tp");
             di = await addressDAO.GetJsonFile("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/quan_huyen.json", "quan_huyen");
             wa = await addressDAO.GetJsonFile("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/xa_phuong.json", "xa_phuong");
-            File.WriteAllText("tinh_tp.json", pr);
-            File.WriteAllText("quan_huyen.json", di);
-            File.WriteAllText("xa_phuong.json", wa);
+            await SaveCountAsync(pr, "tinh_tp.json");
+            await SaveCountAsync(di, "quan_huyen.json");
+            await SaveCountAsync(wa, "xa_phuong.json");
+
+            //File.WriteAllText("tinh_tp.json", pr);
+            //File.WriteAllText("quan_huyen.json", di);
+            //File.WriteAllText("xa_phuong.json", wa);
         }
-        else
-        {
-            pr = File.ReadAllText("tinh_tp.json");
-            di = File.ReadAllText("quan_huyen.json");
-            wa = File.ReadAllText("xa_phuong.json");
-        }
+
         pickaddressList = await addressDAO.GetPickAddress();
         if (pr != null)
         {
@@ -194,6 +198,34 @@
         distrist = new Distrist();
         ward = new Ward();
 
+    }
+
+    public async Task SaveCountAsync(string fileInput, string filename)
+    {
+        var backingFile = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), filename);
+        using (var writer = File.CreateText(backingFile))
+        {
+            await writer.WriteAsync(fileInput);
+        }
+    }
+
+    public async Task<string> ReadCountAsync(string filename)
+    {
+        var backingFile = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), filename);
+
+        if (backingFile == null || !File.Exists(backingFile))
+        {
+            return null;
+        }
+
+        string outputFile;
+
+        using (var reader = new StreamReader(backingFile, true))
+        {
+            outputFile = await reader.ReadToEndAsync();
+        }
+
+        return outputFile;
     }
 
     public async void OnChangeFreeShip(ChangeEventArgs e)
