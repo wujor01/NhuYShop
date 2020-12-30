@@ -90,9 +90,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-        pr = await addressDAO.GetJsonFile("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/tinh_tp.json");
-        di = await addressDAO.GetJsonFile("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/quan_huyen.json");
-        wa = await addressDAO.GetJsonFile("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/xa_phuong.json");
+
+        pr = await addressDAO.GetJsonFile("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/tinh_tp.json", "tinh_tp");
+        di = await addressDAO.GetJsonFile("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/quan_huyen.json", "quan_huyen");
+        wa = await addressDAO.GetJsonFile("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/xa_phuong.json", "xa_phuong");
         pickaddress = await addressDAO.GetPickAddress();
         if (pr != null)
         {
@@ -128,6 +129,7 @@
     public void OnChangeWard(ChangeEventArgs e)
     {
         valueWard = e.Value.ToString();
+        ward = wards.Where(x => x.code == valueWard).FirstOrDefault();
     }
 
     public async void BtnAddOrder()

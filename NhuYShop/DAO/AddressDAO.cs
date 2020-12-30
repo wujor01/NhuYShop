@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,12 +34,22 @@ namespace NhuYShop.DAO
             }
             return Task.FromResult(pickAddresses);
         }
-        public async Task<string> GetJsonFile(string link)
+        public async Task<string> GetJsonFile(string link, string path)
         {
-            HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync(link);
-            response.EnsureSuccessStatusCode();
-            string responseBody = await response.Content.ReadAsStringAsync();
+            var currentDirectory = Directory.GetCurrentDirectory();
+            var downloadPath = Path.Combine(currentDirectory, path);
+
+            if (!Directory.Exists(downloadPath))
+            {
+                using (var client = new WebClient())
+                {
+                    client.DownloadFile(link, path +".json");
+                    Directory.CreateDirectory(downloadPath);
+                }
+            }
+
+            StreamReader r = new StreamReader(path + ".json");
+            string responseBody = r.ReadToEnd();
             return await Task.FromResult(responseBody);
         }
         public async Task<List<Province>> GetProvince(string responseBody)
