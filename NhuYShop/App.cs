@@ -7,6 +7,7 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using NhuYShop.DAO;
 using NhuYShop.Model;
+using Blazored.Toast;
 
 namespace NhuYShop
 {
@@ -19,7 +20,7 @@ namespace NhuYShop
                 {
                     // Adds web-specific services such as NavigationManager
                     services.AddBlazorHybrid();
-                    
+                    services.AddBlazoredToast();
                     // Register app-specific services
                     services.AddSingleton<CounterState>();
                     services.AddSingleton<UserDAO>();

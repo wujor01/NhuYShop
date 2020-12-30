@@ -29,14 +29,19 @@ namespace NhuYShop.DAO
                   is_completed = item.Object.is_completed,
                   CREATEDATE = item.Object.CREATEDATE,
                   UPDATEDATE = item.Object.UPDATEDATE
-              }).ToList();
+              }).OrderByDescending(x=>x.CREATEDATE).ToList();
         }
-        public async Task AddOrder(OrderModel order)
+        public async Task<string> AddOrder(OrderModel order)
         {
-
-            await firebase
-              .Child("OrderModel")
-              .PostAsync(order);
+            try
+            {
+                await firebase.Child("OrderModel").PostAsync(order);
+                return "success";
+            }
+            catch (Exception)
+            {
+                return "fail";
+            }
         }
         public async Task<OrderModel> GetOrder(string ID)
         {

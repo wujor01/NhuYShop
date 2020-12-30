@@ -1,5 +1,8 @@
 ﻿@page "/addorder"
-<h3>OrderAdd</h3>
+
+@inject IToastService toastService
+@inject NavigationManager navigationManager
+<h3>Thêm đơn hàng</h3>
 <div class="col-lg-12 control-section">
     <div class="content-wrapper">
         <div class="row">
@@ -9,17 +12,13 @@
         </div>
         <div class="row">
             <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
-                <input type="text" class="form-control" placeholder="Tên" @bind-value="order.customer_province">
+                <input type="text" class="form-control" placeholder="Tên khách hàng" @bind-value="order.customer_name">
             </div>
             <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
-                <input type="text" class="form-control" placeholder="Link FB" @bind-value="order.customer_distrist">
+                <input type="tel" class="form-control" placeholder="Số điện thoại" @bind-value="order.customer_tel">
             </div>
             <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
-                <input type="text" class="form-control" placeholder="SĐT" @bind-value="order.customer_ward">
-            </div>
-            <div class="col-xs-2 col-sm-2 col-lg-2 col-md-2">
-            </div>
-            <div class="col-xs-1 col-sm-1 col-lg-1 col-md-1">
+                <input type="text" class="form-control" placeholder="Địa chỉ" @bind-value="order.customer_street">
             </div>
         </div>
         <hr />
@@ -45,7 +44,7 @@
                     {
                         @foreach (var item in distrists)
                         {
-                            <option value="@item.code"> @item.name </option>
+                            <option value="@item.code"> @item.name_with_type </option>
                         }
                     }
                 </select>
@@ -58,15 +57,76 @@
                     {
                         @foreach (var item in wards)
                         {
-                            <option value="@item.code"> @item.name </option>
+                            <option value="@item.code"> @item.name_with_type </option>
                         }
                     }
                 </select>
             </div>
+            <div class="col-xs-2 col-sm-2 col-lg-2 col-md-2">
+                <label for="sel1">Phí vận chuyển:</label>
+                <input type="text" class="form-control" placeholder="Phí vận chuyển" @bind-value="@fee" readonly="true">
+            </div>
         </div>
         <hr />
+        <div class="row">
+            <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+                <label for="sel1"><b>Kho lấy hàng:</b></label>
+                <select class="form-control" @onchange="OnChangePickAddress">
+                    @if (pickaddressList != null)
+                    {
+                        @foreach (var item in pickaddressList)
+                        {
+                            <option value="@item.pick_address_id"> @item.address </option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-xs-2 col-sm-2 col-lg-2 col-md-2">
+                <label for="sel1">Loại vận chuyển:</label>
+                <select class="form-control" @onchange="OnChangeDeliveryOption">
+                    <option value="road"> Ship thường </option>
+                    <option value="fly"> Ship bay </option>
+                </select>
+            </div>
+            <div class="col-xs-2 col-sm-2 col-lg-2 col-md-2">
+                <label for="sel1">Số tiền:</label>
+                <input type="number" class="form-control" value="">
+            </div>
+            <div class="col-xs-2 col-sm-2 col-lg-2 col-md-2">
+                <label for="sel1">Khối lượng(kg):</label>
+                <input type="number" class="form-control" step="0.2" @bind-value="@weight">
+            </div>
+        </div>
+        <div class="row" style="margin-top:5px;">
+            <div class="col-xs-8 col-sm-8 col-lg-8 col-md-8">
+                <textarea class="form-control" placeholder="Chi tiết đơn hàng" rows="3"></textarea>
+            </div>
+            <div class="col-xs-2 col-sm-2 col-lg-2 col-md-2">
+                <label>Số tiền thực thu:</label>
+                <input type="number" class="form-control" placeholder="Số tiền thực thu" readonly="true" value="">
+            </div>
+            <div class="col-xs-1 col-sm-1 col-lg-1 col-md-1">
+                <label>Freeship?</label>
+                <input type="checkbox" class="form-control" value="false">
+            </div>
+        </div>
+        <hr />
+        <div class="row float-right">
+            <div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">
+                <NavLink href="">
+                    <button class="btn btn-dark">Trở về</button>
+                </NavLink>
+                <button class="btn btn-success" @onclick="BtnAddOrder">Lưu đơn</button>
+            </div>
+        </div>
     </div>
 </div>
+<BlazoredToasts Position="ToastPosition.TopRight"
+                Timeout="5"
+                IconType="IconType.FontAwesome"
+                SuccessClass="success-toast-override"
+                SuccessIcon="fa fa-thumbs-up"
+                ErrorIcon="fa fa-bug" />
 @code {
     private OrderDAO orderDAO = new OrderDAO();
     private AddressDAO addressDAO = new AddressDAO();
@@ -77,24 +137,41 @@
     public Province province { get; set; }
     public Distrist distrist { get; set; }
     public Ward ward { get; set; }
-    private PickAddress add { get; set; }
-    private List<PickAddress> pickaddress;
+    private List<PickAddress> pickaddressList;
 
+    private PickAddress pickaddress = new PickAddress();
     string valueProvince = null;
     string valueDistrist = null;
     string valueWard = null;
+    string valuePickAdress = "4403235";
+    string valueDeliveryOption = "road";
 
     string pr = null;
     string di = null;
     string wa = null;
 
+    string fee = null;
+    string weight = "0.2";
+    #region toast
+    private Toast toast = new Toast();
+    private class Toast
+    {
+        public string header { get; set; }
+        public string body { get; set; }
+        public string type { get; set; }
+    }
+
+    #endregion
+
+
     protected override async Task OnInitializedAsync()
     {
-
+        fee = 0.ToString();
+        order = new OrderModel();
         pr = await addressDAO.GetJsonFile("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/tinh_tp.json", "tinh_tp");
         di = await addressDAO.GetJsonFile("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/quan_huyen.json", "quan_huyen");
         wa = await addressDAO.GetJsonFile("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/xa_phuong.json", "xa_phuong");
-        pickaddress = await addressDAO.GetPickAddress();
+        pickaddressList = await addressDAO.GetPickAddress();
         if (pr != null)
         {
             provinces = await addressDAO.GetProvince(pr);
@@ -111,7 +188,7 @@
         distrists = new List<Distrist>();
         if (valueProvince != null)
         {
-            distrists = await addressDAO.GetDistrist(di,valueProvince);
+            distrists = await addressDAO.GetDistrist(di, valueProvince);
             if (wards != null)
             {
                 wards = new List<Ward>();
@@ -123,21 +200,80 @@
     {
         Task.WaitAll();
         valueDistrist = e.Value.ToString();
-        wards = await addressDAO.GetWard(wa,valueDistrist);
+        wards = await addressDAO.GetWard(wa, valueDistrist);
     }
 
     public void OnChangeWard(ChangeEventArgs e)
     {
         valueWard = e.Value.ToString();
         ward = wards.Where(x => x.code == valueWard).FirstOrDefault();
+        distrist = distrists.Where(x=>x.code == valueDistrist).FirstOrDefault();
+        province = provinces.Where(x => x.code == valueProvince).FirstOrDefault();
+        order.customer_province = province.name;
+        order.customer_distrist = distrist.name_with_type;
+        order.customer_ward = ward.name_with_type;
+        order.customer_street = ward.path;
+        ReloadFeeShip();
+    }
+
+    public void OnChangePickAddress(ChangeEventArgs e)
+    {
+        int pickAddressId = 0;
+        valuePickAdress = e.Value.ToString();
+        Int32.TryParse(valuePickAdress, out pickAddressId);
+        pickaddress = pickaddressList.Where(x => x.pick_address_id == pickAddressId).FirstOrDefault();
+    }
+
+    public void OnChangeDeliveryOption(ChangeEventArgs e)
+    {
+        valueDeliveryOption = e.Value.ToString();
     }
 
     public async void BtnAddOrder()
     {
         order.CREATEDATE = DateTime.Now;
         order.CREATEUSER = "ADMIN";
-        await orderDAO.AddOrder(order);
-        order = new OrderModel();
+        if (await orderDAO.AddOrder(order) == "success")
+        {
+            toastService.ShowSuccess("Thêm đơn hàng thành công!");
+            order = new OrderModel();
+            await Task.Delay(3000);
+            navigationManager.NavigateTo("/");
+        }
+        else
+        {
+            toastService.ShowError("Có lỗi xảy ra xin thử lại");
+        }
         //StateHasChanged();
+    }
+
+    public void ReloadFeeShip()
+    {
+        GetFeeDelivery getfee = new GetFeeDelivery();
+        getfee.pick_address_id = valuePickAdress;
+        getfee.province = province.name_with_type;
+        getfee.district = distrist.name_with_type;
+        getfee.ward = ward.name_with_type;
+        getfee.street = order.customer_street;
+        getfee.weight = Decimal.ToInt32(decimal.Parse(weight.Replace(".", ",")) * 1000);
+        getfee.transport = valueDeliveryOption;
+        var a = JsonConvert.SerializeObject(getfee);
+        var json = UploadOrderService.PostUpOrderRestAPI("https://services.giaohangtietkiem.vn/services/shipment/fee?", getfee);
+        if (json.SelectToken("fee").SelectToken("fee").ToString() != fee)
+        {
+            toastService.ShowWarning("Phí ship mới là: " + json.SelectToken("fee").SelectToken("fee").ToString());
+        }
+        fee = json.SelectToken("fee").SelectToken("fee").ToString();
+    }
+
+    public class GetFeeDelivery
+    {
+        public string pick_address_id { get; set; }
+        public string province { get; set; }
+        public string district { get; set; }
+        public string ward { get; set; }
+        public string street { get; set; }
+        public int weight { get; set; }
+        public string transport { get; set; }
     }
 }

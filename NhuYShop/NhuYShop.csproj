@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <PackageReference Include="Blazored.Modal" Version="5.1.0" />
+    <PackageReference Include="Blazored.Toast" Version="3.1.2" />
     <PackageReference Include="FirebaseDatabase.net" Version="4.0.4" />
     <PackageReference Include="Google.Apis.Firestore.v1beta1" Version="1.49.0.2124" />
     <PackageReference Include="Microsoft.MobileBlazorBindings" Version="0.5.50-preview" />
