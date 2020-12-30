@@ -99,7 +99,7 @@
         </div>
         <div class="row" style="margin-top:5px;">
             <div class="col-xs-8 col-sm-8 col-lg-8 col-md-8">
-                <textarea class="form-control" placeholder="Chi tiết đơn hàng" rows="3"></textarea>
+                <textarea class="form-control" placeholder="Chi tiết đơn hàng" rows="3" @onchange="OnChangeDetail"></textarea>
             </div>
             <div class="col-xs-2 col-sm-2 col-lg-2 col-md-2">
                 <label>Số tiền thực thu:</label>
@@ -195,6 +195,11 @@
             realvalue = order.value;
         }
         wards = await addressDAO.GetWard(wa, valueDistrist);
+    }
+
+    public void OnChangeDetail(ChangeEventArgs e)
+    {
+        order.detail = e.Value.ToString();
     }
 
     public async void OnChangeValue(ChangeEventArgs e)

@@ -38,7 +38,7 @@ namespace NhuYShop
             }
             var host = hostBuilder.Build();
 
-            MainPage = new ContentPage { Title = "My Application" };
+            MainPage = new ContentPage { Title = "Shop Mầm Non Như Ý" };
             host.AddComponent<Main>(parent: MainPage);
         }
 

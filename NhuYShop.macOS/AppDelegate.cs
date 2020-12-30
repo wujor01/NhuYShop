@@ -12,7 +12,7 @@ namespace NhuYShop.macOS
             var rect = new CoreGraphics.CGRect(200, 1000, 1024, 768);
             MainWindow = new NSWindow(rect, style, NSBackingStore.Buffered, false)
             {
-                Title = "My Application",
+                Title = "Shop Mầm non Như Ý",
                 TitleVisibility = NSWindowTitleVisibility.Visible,
             };
         }
