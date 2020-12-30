@@ -1,5 +1,6 @@
 ﻿@page "/addorder"
 
+@using System.IO
 @inject IToastService toastService
 @inject NavigationManager navigationManager
 <h3>Thêm đơn hàng</h3>
@@ -169,9 +170,21 @@
     {
         fee = 0.ToString();
         order = new OrderModel();
-        pr = await addressDAO.GetJsonFile("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/tinh_tp.json", "tinh_tp");
-        di = await addressDAO.GetJsonFile("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/quan_huyen.json", "quan_huyen");
-        wa = await addressDAO.GetJsonFile("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/xa_phuong.json", "xa_phuong");
+        if (!File.Exists("tinh_tp.json") && !File.Exists("quan_huyen.json") && !File.Exists("xa_phuong.json"))
+        {
+            pr = await addressDAO.GetJsonFile("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/tinh_tp.json", "tinh_tp");
+            di = await addressDAO.GetJsonFile("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/quan_huyen.json", "quan_huyen");
+            wa = await addressDAO.GetJsonFile("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/xa_phuong.json", "xa_phuong");
+            File.WriteAllText("tinh_tp.json", pr);
+            File.WriteAllText("quan_huyen.json", di);
+            File.WriteAllText("xa_phuong.json", wa);
+        }
+        else
+        {
+            pr = File.ReadAllText("tinh_tp.json");
+            di = File.ReadAllText("quan_huyen.json");
+            wa = File.ReadAllText("xa_phuong.json");
+        }
         pickaddressList = await addressDAO.GetPickAddress();
         if (pr != null)
         {

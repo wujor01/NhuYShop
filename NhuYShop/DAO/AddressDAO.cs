@@ -36,21 +36,27 @@ namespace NhuYShop.DAO
         }
         public async Task<string> GetJsonFile(string link, string path)
         {
-            var currentDirectory = Directory.GetCurrentDirectory();
-            var downloadPath = Path.Combine(currentDirectory, path);
-
-            if (!Directory.Exists(downloadPath))
-            {
-                using (var client = new WebClient())
-                {
-                    client.DownloadFile(link, path +".json");
-                    Directory.CreateDirectory(downloadPath);
-                }
-            }
-
-            StreamReader r = new StreamReader(path + ".json");
-            string responseBody = r.ReadToEnd();
+            HttpClient client = new HttpClient();
+            HttpResponseMessage response = await client.GetAsync(link);
+            response.EnsureSuccessStatusCode();
+            string responseBody = await response.Content.ReadAsStringAsync();
             return await Task.FromResult(responseBody);
+
+            //var currentDirectory = Directory.GetCurrentDirectory();
+            //var downloadPath = Path.Combine(currentDirectory, path);
+
+            //if (!Directory.Exists(downloadPath))
+            //{
+            //    using (var client = new WebClient())
+            //    {
+            //        client.DownloadFile(link, path + ".json");
+            //        Directory.CreateDirectory(downloadPath);
+            //    }
+            //}
+
+            //StreamReader r = new StreamReader(path + ".json");
+            //string responseBody = r.ReadToEnd();
+            //return await Task.FromResult(responseBody);
         }
         public async Task<List<Province>> GetProvince(string responseBody)
         {
