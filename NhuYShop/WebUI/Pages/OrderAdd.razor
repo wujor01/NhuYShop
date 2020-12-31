@@ -7,23 +7,6 @@
 <div class="col-lg-12 control-section">
     <div class="content-wrapper">
         <div class="row">
-            <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
-                <b>Thông tin khách hàng:</b>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
-                <label>Tên khách hàng</label>
-                <input type="text" class="form-control" @bind-value="order.customer_name">
-            </div>
-            <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
-                <label>Số điện thoại</label>
-                <input type="tel" class="form-control" @bind-value="order.customer_tel">
-            </div>
-            <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
-                <label>Địa chỉ</label>
-                <input type="text" class="form-control" @bind-value="order.customer_street">
-            </div>
             <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
                 <label>Mã CTV:</label>
                 <select class="form-control" @bind="valueCTV">
@@ -36,6 +19,18 @@
                         }
                     }
                 </select>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
+                <label>Tên khách hàng</label>
+                <input type="text" class="form-control" @bind-value="order.customer_name">
+            </div>
+            <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
+                <label>Số điện thoại</label>
+                <input type="tel" class="form-control" @bind-value="order.customer_tel">
+            </div>
+            <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
+                <label>Địa chỉ</label>
+                <input type="text" class="form-control" @bind-value="order.customer_street">
             </div>
         </div>
         <hr />
@@ -107,7 +102,7 @@
             </div>
             <div class="col-xs-2 col-sm-2 col-lg-2 col-md-2">
                 <label for="sel1">Số tiền:</label>
-                <input type="number" class="form-control" @onchange="OnChangeValue">
+                <input type="number" class="form-control" @onchange="OnChangeValue" value="@order.value">
             </div>
             <div class="col-xs-2 col-sm-2 col-lg-2 col-md-2">
                 <label for="sel1">Khối lượng(kg):</label>
@@ -116,7 +111,8 @@
         </div>
         <div class="row" style="margin-top:5px;">
             <div class="col-xs-8 col-sm-8 col-lg-8 col-md-8">
-                <textarea class="form-control" placeholder="Chi tiết đơn hàng" rows="3" @onchange="OnChangeDetail"></textarea>
+                <label>Chi tiết đơn hàng:</label>
+                <textarea class="form-control" rows="3" @onchange="OnChangeDetail" value="@order.detail"></textarea>
             </div>
             <div class="col-xs-2 col-sm-2 col-lg-2 col-md-2">
                 <label>Số tiền thực thu:</label>
@@ -124,7 +120,7 @@
             </div>
             <div class="col-xs-1 col-sm-1 col-lg-1 col-md-1">
                 <label>Freeship?</label>
-                <input type="checkbox" class="form-control" @onchange="OnChangeFreeShip">
+                <input type="checkbox" class="form-control" @onchange="OnChangeFreeShip" checked="@order.is_freeship">
             </div>
         </div>
         <hr />
@@ -339,6 +335,11 @@
 
     public async void BtnAddOrder()
     {
+        if (valueCTV == null || valueCTV == "")
+        {
+            toastService.ShowError("Chưa chọn Mã CTV!");
+            return;
+        }
         await SaveFileAsync(valueCTV, "userID.txt");
         order.feeship = Int32.Parse(fee);
         order.customer_address = order.customer_street + ", " + ward.path;
@@ -355,14 +356,18 @@
         {
             toastService.ShowSuccess("Thêm đơn hàng thành công!");
             order = new OrderModel();
+            wards = new List<Ward>();
+            distrists = new List<Distrist>();
+            provinces = new List<Province>();
+            realvalue = 0;
             await Task.Delay(2000);
             navigationManager.NavigateTo("/");
+            //StateHasChanged();
         }
         else
         {
             toastService.ShowError("Có lỗi xảy ra xin thử lại");
         }
-        //StateHasChanged();
     }
 
     public void ReloadFeeShip()
