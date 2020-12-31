@@ -121,13 +121,13 @@
                 <NavLink href="">
                     <button class="btn btn-dark">Trở về</button>
                 </NavLink>
-                <button class="btn btn-success" @onclick="BtnAddOrder">Lưu đơn</button>
+                <button class="btn btn-success" @onclick="BtnSaveOrder">Lưu đơn</button>
             </div>
         </div>
     </div>
 </div>
 <BlazoredToasts Position="ToastPosition.TopRight"
-                Timeout="5"
+                Timeout="2"
                 IconType="IconType.FontAwesome"
                 SuccessClass="success-toast-override"
                 SuccessIcon="fa fa-thumbs-up"
@@ -155,7 +155,7 @@
     string di = null;
     string wa = null;
     int? realvalue = null;
-
+    string valueCTV = null;
     string fee = null;
     string weight = "0.2";
     #region toast
@@ -169,7 +169,6 @@
 
     #endregion
 
-
     protected override async Task OnInitializedAsync()
     {
         fee = 0.ToString();
@@ -177,7 +176,7 @@
         pr = await ReadFileAsync("tinh_tp.json");
         di = await ReadFileAsync("quan_huyen.json");
         wa = await ReadFileAsync("xa_phuong.json");
-
+        valueCTV = await ReadFileAsync("userID.txt");
         if (pr == null && di == null && wa == null)
         {
             pr = await addressDAO.GetJsonFile("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/tinh_tp.json");
@@ -209,6 +208,7 @@
         distrist = new Distrist();
         ward = new Ward();
 
+        toastService.ShowInfo("Lấy dữ liệu đơn hàng thành công!");
     }
 
     #region Save-ReadFileAsync
@@ -314,7 +314,7 @@
         int pickAddressId = 0;
         valuePickAdress = e.Value.ToString();
         Int32.TryParse(valuePickAdress, out pickAddressId);
-        pickaddress = pickaddressList.Where(x => x.pick_address_id == pickAddressId).FirstOrDefault();
+        pickaddress = pickaddressList.Where(x => x.pick_address_id == valuePickAdress).FirstOrDefault();
     }
 
     public void OnChangeDeliveryOption(ChangeEventArgs e)
@@ -323,17 +323,23 @@
         ReloadFeeShip();
     }
 
-    public async void BtnAddOrder()
+    public async void BtnSaveOrder()
     {
+        order.feeship = Int32.Parse(fee);
         order.customer_address = order.customer_street + ", " + ward.path;
-        order.CREATEDATE = DateTime.Now;
-        order.CREATEUSER = "ADMIN";
-        order.ID = order.CREATEDATE.ToString("yyyymmddhhmmss");
-        if (await orderDAO.AddOrder(order) == "success")
+        order.weight = Decimal.ToInt32(decimal.Parse(weight.Replace(".", ",")) * 1000);
+        order.pickaddress_id = valuePickAdress;
+        pickaddress = pickaddressList.Where(x => x.pick_address_id == valuePickAdress).FirstOrDefault();
+        order.pickaddress_name = pickaddress.address;
+        order.delivery_option_id = valueDeliveryOption;
+
+        order.UPDATEDATE = DateTime.Now;
+        order.UPDATEUSER = valueCTV;
+        if (await orderDAO.UpdateOrder(order) == "success")
         {
-            toastService.ShowSuccess("Thêm đơn hàng thành công!");
+            toastService.ShowSuccess("Sửa đơn hàng thành công!");
             order = new OrderModel();
-            await Task.Delay(3000);
+            await Task.Delay(2000);
             navigationManager.NavigateTo("/");
         }
         else

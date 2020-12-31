@@ -140,7 +140,7 @@
     </div>
 </div>
 <BlazoredToasts Position="ToastPosition.TopRight"
-                Timeout="5"
+                Timeout="2"
                 IconType="IconType.FontAwesome"
                 SuccessClass="success-toast-override"
                 SuccessIcon="fa fa-thumbs-up"
@@ -220,6 +220,7 @@
         distrist = new Distrist();
         ward = new Ward();
 
+        toastService.ShowInfo("Lấy dữ liệu tỉnh thành thành công!");
     }
 
     #region Save-ReadFileAsync
@@ -328,7 +329,7 @@
         int pickAddressId = 0;
         valuePickAdress = e.Value.ToString();
         Int32.TryParse(valuePickAdress, out pickAddressId);
-        pickaddress = pickaddressList.Where(x => x.pick_address_id == pickAddressId).FirstOrDefault();
+        pickaddress = pickaddressList.Where(x => x.pick_address_id == valuePickAdress).FirstOrDefault();
     }
 
     public void OnChangeDeliveryOption(ChangeEventArgs e)
@@ -340,7 +341,14 @@
     public async void BtnAddOrder()
     {
         await SaveFileAsync(valueCTV, "userID.txt");
+        order.feeship = Int32.Parse(fee);
         order.customer_address = order.customer_street + ", " + ward.path;
+        order.weight = Decimal.ToInt32(decimal.Parse(weight.Replace(".", ",")) * 1000);
+        order.pickaddress_id = valuePickAdress;
+        pickaddress = pickaddressList.Where(x => x.pick_address_id == valuePickAdress).FirstOrDefault();
+        order.pickaddress_name = pickaddress.address;
+        order.delivery_option_id = valueDeliveryOption;
+
         order.CREATEDATE = DateTime.Now;
         order.CREATEUSER = valueCTV;
         order.ID = order.CREATEDATE.ToString("yyMMddhhmmss");

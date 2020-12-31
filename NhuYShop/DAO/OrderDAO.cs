@@ -38,7 +38,12 @@ namespace NhuYShop.DAO
                   UPDATEDATE = item.Object.UPDATEDATE,
                   customer_distrist_code = item.Object.customer_distrist_code,
                   customer_province_code = item.Object.customer_province_code,
-                  customer_ward_code = item.Object.customer_ward_code
+                  customer_ward_code = item.Object.customer_ward_code,
+                  delivery_option_id = item.Object.delivery_option_id,
+                  feeship = item.Object.feeship,
+                  pickaddress_id = item.Object.pickaddress_id,
+                  pickaddress_name = item.Object.pickaddress_name,
+                  weight = item.Object.weight
               }).OrderByDescending(x=>x.CREATEDATE).ToList();
         }
         public async Task<string> AddOrder(OrderModel order)
@@ -61,16 +66,25 @@ namespace NhuYShop.DAO
               .OnceAsync<OrderModel>();
             return allOrders.Where(a => a.ID == ID).FirstOrDefault();
         }
-        public async Task UpdateOrder(OrderModel order)
+        public async Task<string> UpdateOrder(OrderModel order)
         {
-            var toUpdateOrder = (await firebase
-              .Child("OrderModel")
-              .OnceAsync<OrderModel>()).Where(a => a.Object.ID == order.ID).FirstOrDefault();
+            try
+            {
+                var toUpdateOrder = (await firebase
+                .Child("OrderModel")
+                .OnceAsync<OrderModel>()).Where(a => a.Object.ID == order.ID).FirstOrDefault();
 
-            await firebase
-              .Child("OrderModel")
-              .Child(toUpdateOrder.Key)
-              .PutAsync(order);
+                await firebase
+                  .Child("OrderModel")
+                  .Child(toUpdateOrder.Key)
+                  .PutAsync(order);
+                return "success";
+            }
+            catch (Exception)
+            {
+                return "failed";
+                throw;
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿@page "/"
 
+@inject IToastService toastService
 <h1>Danh sách đơn hàng</h1>
 <div class="col-lg-12 control-section">
     <div class="row">
@@ -13,16 +14,16 @@
         <div class="table-responsive">
             @if (orders.Count == 0)
             {
-            <div class="text-center">
-                <p><em>Empty...</em></p>
-            </div>
+                <div class="text-center">
+                    <p><em>Empty...</em></p>
+                </div>
             }
             else
             {
                 <table class="table">
                     <thead>
                         <tr>
-                            <th class="text-center">Tình trạng</th>
+                            <th class="text-center">Đăng đơn</th>
                             <th class="text-center">ID</th>
                             <th class="text-center">CTV</th>
                             <th class="text-center">Tên KH</th>
@@ -38,55 +39,186 @@
                     <tbody>
                         @foreach (var item in orders)
                         {
-                        <tr>
-                            @if (item.is_completed)
-                            {
+                            <tr>
+                                @if (item.is_completed)
+                                {
+                                    <td class="text-center">
+                                        <button class="btn btn-dark" disabled>Đã đăng</button>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="text-center">
+                                        <button class="btn btn-warning" @onclick="@(() => OpenModal(item.ID))">Đăng</button>
+                                    </td>
+                                }
+                                <td class="text-center">@item.ID</td>
+                                <td class="text-center">@item.CREATEUSER</td>
+                                <td>@item.customer_name</td>
+                                <td class="text-center">@item.customer_tel</td>
+                                <td>@item.customer_address</td>
+                                <td>@item.detail</td>
+                                <td class="text-center">@item.value</td>
                                 <td class="text-center">
-                                    <button class="btn btn-dark" disabled>Đã đăng</button>
+                                    @(item.is_freeship ? "Có" : "Không")
                                 </td>
-                            }
-                            else
-                            {
+                                <td>@item.CREATEDATE</td>
                                 <td class="text-center">
                                     <NavLink href="@item.ID">
-                                        <button class="btn btn-warning">Đăng</button>
+                                        <button class="btn btn-warning">Sửa</button>
                                     </NavLink>
                                 </td>
-                            }
-                            <td class="text-center">@item.ID</td>
-                            <td class="text-center">@item.CREATEUSER</td>
-                            <td>@item.customer_name</td>
-                            <td class="text-center">@item.customer_tel</td>
-                            <td>@item.customer_address</td>
-                            <td>@item.detail</td>
-                            <td class="text-center">@item.value</td>
-                            <td class="text-center">
-                                <input type="checkbox" disabled="disabled" value="@item.is_freeship">
-                            </td>
-                            <td>@item.CREATEDATE</td>
-                            <td class="text-center">
-                                <NavLink href="@item.ID">
-                                    <button class="btn btn-warning">Sửa</button>
-                                </NavLink>
-                            </td>
-                        </tr>
+                            </tr>
                         }
                     </tbody>
                 </table>
 
             }
         </div>
-
     </div>
 </div>
+<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+    @if (order != null)
+    {
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Đăng đơn #@order.ID</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="CloseModal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+                            <p><b>Tên khách hàng: </b>@order.customer_name</p>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+                            <p><b>Số điện thoại: </b>@order.customer_tel</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">
+                            <p><b>Địa chỉ: </b>@order.customer_address</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">
+                            <p><b>Kho lấy hàng: </b>@order.pickaddress_name</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">
+                            <p><b>Chi tiết: </b>@order.detail</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+                            <p><b>Loại vận chuyển: </b>@(order.delivery_option_id == "road" ? "Thường" : "Bay")</p>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+                            <p><b>Freeship: </b>@(order.is_freeship ? "Có" : "Không")</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+                            <p><b>Số tiền: </b>@order.value</p>
+                            <p><b>Phí vận chuyển: </b>@order.feeship</p>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+                            <p>
+                                <b>Khối lượng: </b><input type="number" class="form-control" step="0.2" @onchange="@OnChangeWeight" value="@weight">
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <p style="margin-right:100px;"><b>Thực thu: </b>@(order.is_freeship ? order.value - order.feeship : order.value)</p>
+                    <button type="button" class="btn btn-primary">Đăng đơn</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="CloseModal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<BlazoredToasts Position="ToastPosition.TopRight"
+                Timeout="2"
+                IconType="IconType.FontAwesome"
+                SuccessClass="success-toast-override"
+                SuccessIcon="fa fa-thumbs-up"
+                ErrorIcon="fa fa-bug" />
+
 @code {
     private OrderDAO orderDAO = new OrderDAO();
     private List<OrderModel> orders = new List<OrderModel>();
-
-
+    private OrderModel order { get; set; }
+    string orderID { get; set; }
+    double weight { get; set; }
     protected override async Task OnInitializedAsync()
     {
         orders = await orderDAO.GetAllOrder();
     }
 
+    #region Modal
+    public Guid Guid = Guid.NewGuid();
+    public string ModalDisplay = "none;";
+    public string ModalClass = "";
+    public bool ShowBackdrop = false;
+
+    public async void OpenModal(string ID)
+    {
+        order = new OrderModel();
+        order = await orderDAO.GetOrder(ID);
+        weight = Convert.ToDouble(order.weight) / 1000;
+        ModalDisplay = "block;";
+        ModalClass = "Show";
+        ShowBackdrop = true;
+        StateHasChanged();
+    }
+
+    public void CloseModal()
+    {
+        ModalDisplay = "none";
+        ModalClass = "";
+        ShowBackdrop = false;
+        StateHasChanged();
+    }
+    #endregion
+
+    public void OnChangeWeight(ChangeEventArgs e)
+    {
+        order.weight = Decimal.ToInt32(Decimal.Parse(e.Value.ToString().Replace(".", ",")) * 1000);
+        ReloadFeeShip();
+    }
+
+    public void ReloadFeeShip()
+    {
+        GetFeeDelivery getfee = new GetFeeDelivery();
+        getfee.pick_address_id = order.pickaddress_id;
+        getfee.province = order.customer_province;
+        getfee.district = order.customer_distrist;
+        getfee.ward = order.customer_ward;
+        getfee.street = order.customer_street;
+        getfee.weight = order.weight;
+        getfee.transport = order.delivery_option_id;
+        var a = JsonConvert.SerializeObject(getfee);
+        var json = UploadOrderService.PostUpOrderRestAPI("https://services.giaohangtietkiem.vn/services/shipment/fee?", getfee);
+        if (json.SelectToken("fee").SelectToken("fee").ToString() != order.feeship.ToString())
+        {
+            toastService.ShowWarning("Phí ship mới là: " + json.SelectToken("fee").SelectToken("fee").ToString());
+            order.feeship = Int32.Parse(json.SelectToken("fee").SelectToken("fee").ToString());
+        }
+
+    }
+
+    public class GetFeeDelivery
+    {
+        public string pick_address_id { get; set; }
+        public string province { get; set; }
+        public string district { get; set; }
+        public string ward { get; set; }
+        public string street { get; set; }
+        public int weight { get; set; }
+        public string transport { get; set; }
+    }
 }

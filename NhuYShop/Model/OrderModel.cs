@@ -21,10 +21,15 @@ namespace NhuYShop.Model
         public int value { get; set; }
         public bool is_freeship { get; set; }
         public bool is_completed { get; set; }
+        public int feeship { get; set; }
         public int commission { get; set; }
         public DateTime CREATEDATE { get; set; }
         public string CREATEUSER { get; set; }
         public DateTime UPDATEDATE { get; set; }
         public string UPDATEUSER { get; set; }
+        public string pickaddress_id { get; set; }
+        public string pickaddress_name { get; set; }
+        public string delivery_option_id { get; set; }
+        public int weight { get; set; }
     }
 }
