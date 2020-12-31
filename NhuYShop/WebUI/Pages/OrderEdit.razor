@@ -98,7 +98,7 @@
             </div>
             <div class="col-xs-2 col-sm-2 col-lg-2 col-md-2">
                 <label for="sel1">Số tiền:</label>
-                <input type="number" class="form-control" @onchange="OnChangeValue">
+                <input type="number" class="form-control" @onchange="OnChangeValue" value="@order.value">
             </div>
             <div class="col-xs-2 col-sm-2 col-lg-2 col-md-2">
                 <label for="sel1">Khối lượng(kg):</label>
@@ -107,7 +107,7 @@
         </div>
         <div class="row" style="margin-top:5px;">
             <div class="col-xs-8 col-sm-8 col-lg-8 col-md-8">
-                <textarea class="form-control" placeholder="Chi tiết đơn hàng" rows="3" @onchange="OnChangeDetail"></textarea>
+                <textarea class="form-control" placeholder="Chi tiết đơn hàng" rows="3" @onchange="OnChangeDetail" value="@order.detail"></textarea>
             </div>
             <div class="col-xs-2 col-sm-2 col-lg-2 col-md-2">
                 <label>Số tiền thực thu:</label>
@@ -115,7 +115,7 @@
             </div>
             <div class="col-xs-1 col-sm-1 col-lg-1 col-md-1">
                 <label>Freeship?</label>
-                <input type="checkbox" class="form-control" @onchange="OnChangeFreeShip">
+                <input type="checkbox" class="form-control" @onchange="OnChangeFreeShip" checked="@order.is_freeship">
             </div>
         </div>
         <hr />
@@ -303,12 +303,6 @@
     public void OnChangeWard(ChangeEventArgs e)
     {
         valueWard = e.Value.ToString();
-        ward = wards.Where(x => x.code == valueWard).FirstOrDefault();
-        distrist = distrists.Where(x => x.code == valueDistrist).FirstOrDefault();
-        province = provinces.Where(x => x.code == valueProvince).FirstOrDefault();
-        order.customer_province = province.name;
-        order.customer_distrist = distrist.name_with_type;
-        order.customer_ward = ward.name_with_type;
         ReloadFeeShip();
     }
 
@@ -328,7 +322,19 @@
 
     public async void BtnSaveOrder()
     {
-        order.feeship = Int32.Parse(fee);
+        if (Int32.Parse(fee) != 0)
+        {
+            order.feeship = Int32.Parse(fee);
+        }
+        ward = wards.Where(x => x.code == valueWard).FirstOrDefault();
+        distrist = distrists.Where(x => x.code == valueDistrist).FirstOrDefault();
+        province = provinces.Where(x => x.code == valueProvince).FirstOrDefault();
+        order.customer_province = province.name;
+        order.customer_distrist = distrist.name_with_type;
+        order.customer_ward = ward.name_with_type;
+        order.customer_distrist_code = valueDistrist;
+        order.customer_province_code = valueProvince;
+        order.customer_ward_code = valueWard;
         order.customer_address = order.customer_street + ", " + ward.path;
         order.weight = Decimal.ToInt32(decimal.Parse(weight.Replace(".", ",")) * 1000);
         order.pickaddress_id = valuePickAdress;

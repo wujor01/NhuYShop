@@ -350,7 +350,7 @@
 
         order.CREATEDATE = DateTime.Now;
         order.CREATEUSER = valueCTV;
-        order.ID = order.CREATEDATE.ToString("yyMMddhhmmss");
+        order.ID = order.CREATEDATE.ToString("yyMMddHHmmss");
         if (await orderDAO.AddOrder(order) == "success")
         {
             toastService.ShowSuccess("Thêm đơn hàng thành công!");

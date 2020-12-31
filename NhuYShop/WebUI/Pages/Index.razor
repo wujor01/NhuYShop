@@ -179,9 +179,9 @@
         orders = await orderDAO.GetAllOrder();
     }
 
-    public async void OrderNotComfirm()
+    public void OrderNotComfirm()
     {
-        orders = await orderDAO.GetAllOrder(false);
+        orders = orders.OrderBy(x=>x.is_completed).ToList();
         StateHasChanged();
     }
 
