@@ -282,10 +282,7 @@
     public async void OnChangeDistrist(ChangeEventArgs e)
     {
         valueDistrist = e.Value.ToString();
-        if (wards != null)
-        {
-            wards = new List<Ward>();
-        }
+        valueWard = null;
         wards = await addressDAO.GetWard(wa, valueDistrist);
     }
 
