@@ -12,6 +12,9 @@ namespace NhuYShop.Model
         public string customer_province { get; set; }
         public string customer_distrist { get; set; }
         public string customer_ward { get; set; }
+        public string customer_province_code { get; set; }
+        public string customer_distrist_code { get; set; }
+        public string customer_ward_code { get; set; }
         public string customer_street { get; set; }
         public string customer_tel { get; set; }
         public string detail { get; set; }

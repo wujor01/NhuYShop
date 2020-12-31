@@ -34,7 +34,7 @@ namespace NhuYShop.DAO
             }
             return Task.FromResult(pickAddresses);
         }
-        public async Task<string> GetJsonFile(string link, string path)
+        public async Task<string> GetJsonFile(string link)
         {
             HttpClient client = new HttpClient();
             HttpResponseMessage response = await client.GetAsync(link);

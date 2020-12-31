@@ -22,13 +22,23 @@ namespace NhuYShop.DAO
                   ID = item.Object.ID,
                   CREATEUSER = item.Object.CREATEUSER,
                   customer_address = item.Object.customer_address,
+                  customer_ward = item.Object.customer_ward,
+                  customer_distrist = item.Object.customer_distrist,
+                  customer_province = item.Object.customer_province,
                   customer_tel = item.Object.customer_tel,
+                  customer_street = item.Object.customer_street,
+                  customer_name = item.Object.customer_name,
+                  commission = item.Object.commission,
+                  UPDATEUSER = item.Object.UPDATEUSER,
                   detail = item.Object.detail,
                   value = item.Object.value,
                   is_freeship = item.Object.is_freeship,
                   is_completed = item.Object.is_completed,
                   CREATEDATE = item.Object.CREATEDATE,
-                  UPDATEDATE = item.Object.UPDATEDATE
+                  UPDATEDATE = item.Object.UPDATEDATE,
+                  customer_distrist_code = item.Object.customer_distrist_code,
+                  customer_province_code = item.Object.customer_province_code,
+                  customer_ward_code = item.Object.customer_ward_code
               }).OrderByDescending(x=>x.CREATEDATE).ToList();
         }
         public async Task<string> AddOrder(OrderModel order)

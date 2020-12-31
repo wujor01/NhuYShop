@@ -1,19 +1,18 @@
-﻿@page "/addorder"
+﻿@page "/{ID}"
 
 @using System.IO
 @inject IToastService toastService
 @inject NavigationManager navigationManager
-<h3>Thêm đơn hàng</h3>
+@functions {
+    [Parameter]
+    public string ID { get; set; }
+}
+<h3>Đăng đơn hàng ID:<u style="color:red;">#@ID</u></h3>
 <div class="col-lg-12 control-section">
     <div class="content-wrapper">
         <div class="row">
             <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
                 <b>Thông tin khách hàng:</b>
-            </div>
-            <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
-            </div>
-            <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
-                <label for="sel1"><b>CTV:</b></label>
             </div>
         </div>
         <div class="row">
@@ -25,18 +24,6 @@
             </div>
             <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
                 <input type="text" class="form-control" placeholder="Địa chỉ" @bind-value="order.customer_street">
-            </div>
-            <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
-                <select class="form-control" @bind="valueCTV">
-                    <option value=""> </option>
-                    @if (users != null)
-                    {
-                        @foreach (var item in users)
-                        {
-                            <option value="@item.ID" selected=@(valueCTV == item.ID)> @item.ID </option>
-                        }
-                    }
-                </select>
             </div>
         </div>
         <hr />
@@ -148,9 +135,7 @@
 @code {
     private OrderDAO orderDAO = new OrderDAO();
     private AddressDAO addressDAO = new AddressDAO();
-    private UserDAO userDAO = new UserDAO();
     private OrderModel order = new OrderModel();
-    private UserModel user = new UserModel();
     public List<Province> provinces { get; set; }
     public List<Distrist> distrists { get; set; }
     public List<Ward> wards { get; set; }
@@ -158,15 +143,13 @@
     public Distrist distrist { get; set; }
     public Ward ward { get; set; }
     private List<PickAddress> pickaddressList;
-    private List<UserModel> users;
 
     private PickAddress pickaddress = new PickAddress();
-    string valueProvince = null;
-    string valueDistrist = null;
-    string valueWard = null;
+    string valueProvince { get; set; }
+    string valueDistrist { get; set; }
+    string valueWard { get; set; }
     string valuePickAdress = "4403235";
     string valueDeliveryOption = "road";
-    string valueCTV = null;
 
     string pr = null;
     string di = null;
@@ -190,13 +173,10 @@
     protected override async Task OnInitializedAsync()
     {
         fee = 0.ToString();
-        order = new OrderModel();
-        user = new UserModel();
 
         pr = await ReadFileAsync("tinh_tp.json");
         di = await ReadFileAsync("quan_huyen.json");
         wa = await ReadFileAsync("xa_phuong.json");
-        valueCTV = await ReadFileAsync("userID.txt");
 
         if (pr == null && di == null && wa == null)
         {
@@ -206,10 +186,19 @@
             await SaveFileAsync(pr, "tinh_tp.json");
             await SaveFileAsync(di, "quan_huyen.json");
             await SaveFileAsync(wa, "xa_phuong.json");
+
         }
 
-        users = await userDAO.GetAllUser();
-        user = await userDAO.GetUser(valueCTV);
+        order = await orderDAO.GetOrder(ID);
+        valueProvince = order.customer_province_code;
+        distrists = await addressDAO.GetDistrist(di, valueProvince);
+        valueDistrist = order.customer_distrist_code;
+        wards = await addressDAO.GetWard(wa, valueDistrist);
+        valueWard = order.customer_ward_code;
+
+        //province = provinces.Where(x => x.code == valueProvince).FirstOrDefault();
+        //distrist = distrists.Where(x => x.code == valueDistrist).FirstOrDefault();
+        //ward = wards.Where(x => x.code == valueWard).FirstOrDefault();
 
         pickaddressList = await addressDAO.GetPickAddress();
         if (pr != null)
@@ -314,10 +303,7 @@
         ward = wards.Where(x => x.code == valueWard).FirstOrDefault();
         distrist = distrists.Where(x => x.code == valueDistrist).FirstOrDefault();
         province = provinces.Where(x => x.code == valueProvince).FirstOrDefault();
-        order.customer_province_code = province.code;
-        order.customer_distrist_code = distrist.code;
-        order.customer_ward_code = ward.code;
-        order.customer_province = province.name_with_type;
+        order.customer_province = province.name;
         order.customer_distrist = distrist.name_with_type;
         order.customer_ward = ward.name_with_type;
         ReloadFeeShip();
@@ -339,16 +325,15 @@
 
     public async void BtnAddOrder()
     {
-        await SaveFileAsync(valueCTV, "userID.txt");
         order.customer_address = order.customer_street + ", " + ward.path;
         order.CREATEDATE = DateTime.Now;
-        order.CREATEUSER = valueCTV;
-        order.ID = order.CREATEDATE.ToString("yyMMddhhmmss");
+        order.CREATEUSER = "ADMIN";
+        order.ID = order.CREATEDATE.ToString("yyyymmddhhmmss");
         if (await orderDAO.AddOrder(order) == "success")
         {
             toastService.ShowSuccess("Thêm đơn hàng thành công!");
             order = new OrderModel();
-            await Task.Delay(2000);
+            await Task.Delay(3000);
             navigationManager.NavigateTo("/");
         }
         else
