@@ -1,6 +1,7 @@
 ﻿@page "/{ID}"
 
 @using System.IO
+@using Newtonsoft.Json.Linq
 @inject IToastService toastService
 @inject NavigationManager navigationManager
 @functions {
@@ -130,7 +131,7 @@
     </div>
 </div>
 <BlazoredToasts Position="ToastPosition.TopRight"
-                Timeout="2"
+                Timeout="4"
                 IconType="IconType.FontAwesome"
                 SuccessClass="success-toast-override"
                 SuccessIcon="fa fa-thumbs-up"
@@ -303,6 +304,9 @@
     public void OnChangeWard(ChangeEventArgs e)
     {
         valueWard = e.Value.ToString();
+        distrist = distrists.Where(x => x.code == valueDistrist).FirstOrDefault();
+        province = provinces.Where(x => x.code == valueProvince).FirstOrDefault();
+        ward = wards.Where(x => x.code == valueWard).FirstOrDefault();
         ReloadFeeShip();
     }
 
@@ -369,21 +373,28 @@
         getfee.weight = Decimal.ToInt32(decimal.Parse(weight.Replace(".", ",")) * 1000);
         getfee.transport = valueDeliveryOption;
         var a = JsonConvert.SerializeObject(getfee);
-        var json = UploadOrderService.PostUpOrderRestAPI("https://services.giaohangtietkiem.vn/services/shipment/fee?", getfee);
-        if (json.SelectToken("fee").SelectToken("fee").ToString() != fee)
+        JObject json = UploadOrderService.PostUpOrderRestAPI("https://services.giaohangtietkiem.vn/services/shipment/fee?", getfee);
+        if (json.SelectToken("success").Value<bool>())
         {
-            toastService.ShowWarning("Phí ship mới là: " + json.SelectToken("fee").SelectToken("fee").ToString());
-            fee = json.SelectToken("fee").SelectToken("fee").ToString();
-            if (order.is_freeship == true)
+            if (json.SelectToken("fee").SelectToken("fee").Value<string>() != fee)
             {
-                realvalue = order.value - Int32.Parse(fee);
+                toastService.ShowWarning("Phí ship mới là: " + json.SelectToken("fee").SelectToken("fee").Value<string>());
+                fee = json.SelectToken("fee").SelectToken("fee").Value<string>();
+                if (order.is_freeship == true)
+                {
+                    realvalue = order.value - Int32.Parse(fee);
+                }
+                else
+                {
+                    realvalue = order.value;
+                }
             }
-            else
-            {
-                realvalue = order.value;
-            }
-        }
 
+        }
+        else
+        {
+            toastService.ShowError(json.SelectToken("message").Value<string>());
+        }
     }
 
     public class GetFeeDelivery
