@@ -8,6 +8,7 @@
     <WwwRootResourcePath>wwwroot</WwwRootResourcePath>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
     <UserSecretsId>3e982d01-9685-4cf6-bb75-0c55090a7247</UserSecretsId>
+    <AssemblyName>NhuYShop</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
