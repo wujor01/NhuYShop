@@ -26,33 +26,33 @@
         <div class="row">
             <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
                 <label for="sel1">Tỉnh/Thành Phố:</label>
-                <select class="form-control" @onchange="OnChangeProvince">
+                <select class="form-control" @onchange="OnChangeProvince" value="@valueProvince">
                     <option value=""> </option>
                     @if (provinces != null)
                     {
                         @foreach (var item in provinces)
                         {
-                            <option value="@item.code"> @item.name </option>
+                            <option value="@item.code" selected=@(valueProvince == item.code)> @item.name </option>
                         }
                     }
                 </select>
             </div>
             <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
                 <label for="sel1">Quận/Huyện:</label>
-                <select class="form-control" @onchange="OnChangeDistrist">
+                <select class="form-control" @onchange="OnChangeDistrist" value="@valueDistrist">
                     <option value=""> </option>
                     @if (distrists != null)
                     {
                         @foreach (var item in distrists)
                         {
-                            <option value="@item.code"> @item.name_with_type </option>
+                            <option value="@item.code" selected=@(valueDistrist == item.code)> @item.name_with_type </option>
                         }
                     }
                 </select>
             </div>
             <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
                 <label for="sel1">Phường/Xã:</label>
-                <select class="form-control" @onchange="OnChangeWard">
+                <select class="form-control" @onchange="OnChangeWard" value="@valueWard">
                     <option value=""> </option>
                     @if (wards != null)
                     {
@@ -171,18 +171,18 @@
         fee = 0.ToString();
         order = new OrderModel();
 
-        pr = await ReadCountAsync("tinh_tp.json");
-        di = await ReadCountAsync("quan_huyen.json");
-        wa = await ReadCountAsync("xa_phuong.json");
+        pr = await ReadFileAsync("tinh_tp.json");
+        di = await ReadFileAsync("quan_huyen.json");
+        wa = await ReadFileAsync("xa_phuong.json");
 
         if (pr == null && di == null && wa == null)
         {
             pr = await addressDAO.GetJsonFile("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/tinh_tp.json", "tinh_tp");
             di = await addressDAO.GetJsonFile("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/quan_huyen.json", "quan_huyen");
             wa = await addressDAO.GetJsonFile("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/xa_phuong.json", "xa_phuong");
-            await SaveCountAsync(pr, "tinh_tp.json");
-            await SaveCountAsync(di, "quan_huyen.json");
-            await SaveCountAsync(wa, "xa_phuong.json");
+            await SaveFileAsync(pr, "tinh_tp.json");
+            await SaveFileAsync(di, "quan_huyen.json");
+            await SaveFileAsync(wa, "xa_phuong.json");
 
             //File.WriteAllText("tinh_tp.json", pr);
             //File.WriteAllText("quan_huyen.json", di);
@@ -200,7 +200,8 @@
 
     }
 
-    public async Task SaveCountAsync(string fileInput, string filename)
+    #region Save-ReadFileAsync
+    public async Task SaveFileAsync(string fileInput, string filename)
     {
         var backingFile = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), filename);
         using (var writer = File.CreateText(backingFile))
@@ -209,7 +210,7 @@
         }
     }
 
-    public async Task<string> ReadCountAsync(string filename)
+    public async Task<string> ReadFileAsync(string filename)
     {
         var backingFile = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), filename);
 
@@ -227,6 +228,8 @@
 
         return outputFile;
     }
+
+    #endregion
 
     public async void OnChangeFreeShip(ChangeEventArgs e)
     {
@@ -247,7 +250,7 @@
         order.detail = e.Value.ToString();
     }
 
-    public async void OnChangeValue(ChangeEventArgs e)
+    public void OnChangeValue(ChangeEventArgs e)
     {
         order.value = Int32.Parse(e.Value.ToString());
         if (order.is_freeship == true)
@@ -258,7 +261,6 @@
         {
             realvalue = order.value;
         }
-        wards = await addressDAO.GetWard(wa, valueDistrist);
     }
 
     public async void OnChangeProvince(ChangeEventArgs e)
@@ -267,17 +269,23 @@
         distrists = new List<Distrist>();
         if (valueProvince != null)
         {
-            distrists = await addressDAO.GetDistrist(di, valueProvince);
             if (wards != null)
             {
                 wards = new List<Ward>();
             }
+            valueDistrist = null;
+            valueWard = null;
+            distrists = await addressDAO.GetDistrist(di, valueProvince);
         }
     }
 
     public async void OnChangeDistrist(ChangeEventArgs e)
     {
         valueDistrist = e.Value.ToString();
+        if (wards != null)
+        {
+            wards = new List<Ward>();
+        }
         wards = await addressDAO.GetWard(wa, valueDistrist);
     }
 
