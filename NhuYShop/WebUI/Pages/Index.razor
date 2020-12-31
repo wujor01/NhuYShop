@@ -16,7 +16,7 @@
             @if (orders.Count == 0)
             {
                 <div class="text-center">
-                    <p><em>Empty...</em></p>
+                    <p><em>Loading...</em></p>
                 </div>
             }
             else
@@ -76,6 +76,25 @@
 
             }
         </div>
+    </div>
+    <div class="row">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" @onclick="PrevPage" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link">@pageCurrent</a></li>
+                <li class="page-item">
+                    <a class="page-link" @onclick="NextPage" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </div>
 <div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
@@ -174,9 +193,44 @@
     string orderID { get; set; }
     double weight { get; set; }
 
+    int pageSize { get; set; } = 3;
+    int page { get; set; } = 1;
+    int totalRow { get; set; } = 0;
+    string pageCurrent { get; set; } = "1";
+    public void NextPage()
+    {
+        try
+        {
+            page += 1;
+            SkipPage();
+        }
+        catch (Exception)
+        {
+        }
+    }
+
+    public void PrevPage()
+    {
+        try
+        {
+            page -= 1;
+            SkipPage();
+        }
+        catch (Exception)
+        {
+        }
+    }
+
+    public void SkipPage()
+    {
+        orders = orders.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+        StateHasChanged();
+    }
+
     protected override async Task OnInitializedAsync()
     {
         orders = await orderDAO.GetAllOrder();
+        totalRow = orders.Count;
     }
 
     public void OrderNotComfirm()
