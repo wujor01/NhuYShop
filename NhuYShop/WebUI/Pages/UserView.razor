@@ -18,7 +18,7 @@
         </div>
         <div class="row">
             <div class="table-responsive">
-                <table class="table">
+                <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th class="text-center">Mã CTV</th>
@@ -34,20 +34,29 @@
                     <tbody>
                         @foreach (var item in users)
                         {
-                        <tr>
-                            <td class="text-center">@item.ID</td>
-                            <td class="text-center">@item.NAME</td>
-                            <td class="text-center">@item.PHONE</td>
-                            <td class="text-center">@item.COUNTORDER</td>
-                            <td class="text-right">@item.VALUEORDER.ToString("#,###")</td>
-                            <td class="text-right">@item.COMISSION.ToString("#,###")</td>
-                            <td class="text-center">@item.CREATEDATE</td>
-                            <td class="text-center">
-                                <button class="btn btn-warning" @onclick="@(() => BtnDelUser(item.ID))">Xóa</button>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td class="text-center">@item.ID</td>
+                                <td class="text-center">@item.NAME</td>
+                                <td class="text-center">@item.PHONE</td>
+                                <td class="text-center">@item.COUNTORDER</td>
+                                <td class="text-right">@item.VALUEORDER.ToString("#,###")</td>
+                                <td class="text-right">@item.COMISSION.ToString("#,###")</td>
+                                <td class="text-center">@item.CREATEDATE</td>
+                                <td class="text-center">
+                                    <button class="btn btn-warning" @onclick="@(() => BtnDelUser(item.ID))">Xóa</button>
+                                </td>
+                            </tr>
                         }
                     </tbody>
+                    <thead>
+                        <tr class="table-success">
+                            <th class="text-center" colspan="3">Tổng cộng:</th>
+                            <th class="text-center">@totalOrders</th>
+                            <th class="text-right">@valueOrders.ToString("#,###")</th>
+                            <th class="text-right">@comissionOrders.ToString("#,###")</th>
+                            <th class="text-center" colspan="2"></th>
+                        </tr>
+                    </thead>
                 </table>
             </div>
 
@@ -82,8 +91,14 @@
                 }
             }
         }
+        totalOrders = users.Sum(x => x.COUNTORDER);
+        valueOrders = users.Sum(x => x.VALUEORDER);
+        comissionOrders = users.Sum(x => x.COMISSION);
     }
 
+    int totalOrders = 0;
+    int valueOrders = 0;
+    int comissionOrders = 0;
     public async void BtnAllOrder()
     {
         orders = await orderDAO.GetAllOrder();
@@ -102,6 +117,9 @@
                 }
             }
         }
+        totalOrders = users.Sum(x => x.COUNTORDER);
+        valueOrders = users.Sum(x => x.VALUEORDER);
+        comissionOrders = users.Sum(x => x.COMISSION);
         StateHasChanged();
         toastService.ShowSuccess("Lấy tất cả đơn hàng thành công!");
     }
@@ -126,6 +144,9 @@
                 }
             }
         }
+        totalOrders = users.Sum(x => x.COUNTORDER);
+        valueOrders = users.Sum(x => x.VALUEORDER);
+        comissionOrders = users.Sum(x => x.COMISSION);
         StateHasChanged();
         toastService.ShowSuccess("Lấy các đơn hàng tháng "+datepick.ToString("MM/yyyy")+" thành công!");
     }

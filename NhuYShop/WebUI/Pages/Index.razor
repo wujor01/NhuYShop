@@ -13,7 +13,7 @@
     </div>
     <div class="content-wrapper">
         <div class="table-responsive">
-            @if (orders.Count == 0)
+            @if (ordersCurrent.Count == 0)
             {
                 <div class="text-center">
                     <p><em>Empty...</em></p>
@@ -21,78 +21,78 @@
             }
             else
             {
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th class="text-center">Đăng đơn</th>
-                            <th class="text-center">ID</th>
-                            <th class="text-center">CTV</th>
-                            <th class="text-center">Tên KH</th>
-                            <th class="text-center">Số ĐT</th>
-                            <th class="text-center">Địa chỉ</th>
-                            <th class="text-center">Chi tiết</th>
-                            <th class="text-center">Tổng tiền</th>
-                            <th class="text-center">Hoa hồng</th>
-                            <th class="text-center">Freeship?</th>
-                            <th class="text-center">Ngày tạo</th>
-                            <th class="text-center">Chỉnh sửa</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in orders)
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center">Đăng đơn</th>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">CTV</th>
+                    <th class="text-center">Tên KH</th>
+                    <th class="text-center">Số ĐT</th>
+                    <th class="text-center">Địa chỉ</th>
+                    <th class="text-center">Chi tiết</th>
+                    <th class="text-center">Tổng tiền</th>
+                    <th class="text-center">Hoa hồng</th>
+                    <th class="text-center">Freeship?</th>
+                    <th class="text-center">Ngày tạo</th>
+                    <th class="text-center">Chỉnh sửa</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ordersCurrent)
+                {
+                    <tr>
+                        @if (item.is_completed && item.orther_type.Contains("Thu hộ"))
                         {
-                        <tr>
-                            @if (item.is_completed && item.orther_type.Contains("Thu hộ"))
-                            {
-                                <td class="text-center">
-                                    <button class="btn btn-secondary" disabled>Thu hộ</button>
-                                </td>
-                            }
-                            else if (item.is_completed && item.orther_type.Contains("Chuyển"))
-                            {
-                                <td class="text-center">
-                                    <button class="btn btn-danger" disabled>Chuyển</button>
-                                </td>
-                            }
-                            else if (item.is_completed && item.orther_type.Contains("Tiền mặt"))
-                            {
-                                <td class="text-center">
-                                    <button class="btn btn-success" disabled>Tiền mặt</button>
-                                </td>
-                            }
-                            else if (item.is_completed)
-                            {
-                                <td class="text-center">
-                                    <button class="btn btn-dark" disabled>Đã đăng</button>
-                                </td>
-                            }
-                            else if(!item.is_completed)
-                            {
-                                <td class="text-center">
-                                    <button class="btn btn-warning" @onclick="@(() => OpenModal(item.ID))">Đăng</button>
-                                </td>
-                            }
-                            <td class="text-center">@item.ID</td>
-                            <td class="text-center">@item.CREATEUSER</td>
-                            <td>@item.customer_name</td>
-                            <td class="text-center">@item.customer_tel</td>
-                            <td>@item.customer_address</td>
-                            <td>@item.detail</td>
-                            <td class="text-center">@item.value.ToString("#,###")</td>
-                            <td class="text-center">@item.commission.ToString("#,###")</td>
                             <td class="text-center">
-                                @(item.is_freeship ? "Có" : "Không")
+                                <button class="btn btn-info" disabled>Thu hộ</button>
                             </td>
-                            <td>@item.CREATEDATE</td>
-                            <td class="text-center">
-                                <NavLink href="@item.ID">
-                                    <button class="btn btn-info">Sửa</button>
-                                </NavLink>
-                            </td>
-                        </tr>
                         }
-                    </tbody>
-                </table>
+                        else if (item.is_completed && item.orther_type.Contains("Chuyển"))
+                        {
+                            <td class="text-center">
+                                <button class="btn btn-danger" disabled>Chuyển</button>
+                            </td>
+                        }
+                        else if (item.is_completed && item.orther_type.Contains("Tiền mặt"))
+                        {
+                            <td class="text-center">
+                                <button class="btn btn-success" disabled>Tiền mặt</button>
+                            </td>
+                        }
+                        else if (item.is_completed)
+                        {
+                            <td class="text-center">
+                                <button class="btn btn-dark" disabled>Đã đăng</button>
+                            </td>
+                        }
+                        else if (!item.is_completed)
+                        {
+                            <td class="text-center">
+                                <button class="btn btn-warning" @onclick="@(() => OpenModal(item.ID))">Đăng</button>
+                            </td>
+                        }
+                        <td class="text-center">@item.ID</td>
+                        <td class="text-center">@item.CREATEUSER</td>
+                        <td>@item.customer_name</td>
+                        <td class="text-center">@item.customer_tel</td>
+                        <td>@item.customer_address</td>
+                        <td>@item.detail</td>
+                        <td class="text-center">@item.value.ToString("#,###")</td>
+                        <td class="text-center">@item.commission.ToString("#,###")</td>
+                        <td class="text-center">
+                            @(item.is_freeship ? "Có" : "Không")
+                        </td>
+                        <td>@item.CREATEDATE</td>
+                        <td class="text-center">
+                            <NavLink href="@item.ID">
+                                <button class="btn btn-info">Sửa</button>
+                            </NavLink>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
 
             }
         </div>
@@ -154,7 +154,7 @@
                             <b>KL(kg): </b>
                         </div>
                         <div class="col-8 col-md-4">
-                            <input type="number" class="form-control" step="0.2" @onchange="@OnChangeWeight" value="@weight">
+                            <input type="number" class="form-control" step="0.2" @onchange="@OnChangeWeight" value="0.1">
                         </div>
                     </div>
                 </div>
@@ -194,19 +194,22 @@
 
 @code {
     private OrderDAO orderDAO = new OrderDAO();
-    private List<OrderModel> orders = new List<OrderModel>();
+    private List<OrderModel> ordersSource = new List<OrderModel>();
+    private List<OrderModel> ordersCurrent = new List<OrderModel>();
     private OrderModel order { get; set; }
     string orderID { get; set; }
-    double weight { get; set; }
+    string weight { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        orders = await orderDAO.GetAllOrder();
+        ordersSource = await orderDAO.GetAllOrder();
+        ordersCurrent = ordersSource;
+
     }
 
     public void OrderNotComfirm()
     {
-        orders = orders.OrderBy(x=>x.is_completed).ToList();
+        ordersCurrent = ordersSource.OrderBy(x=>x.is_completed).ToList();
         StateHasChanged();
     }
 
@@ -220,7 +223,7 @@
     {
         order = new OrderModel();
         order = await orderDAO.GetOrder(ID);
-        weight = Convert.ToDouble(order.weight) / 1000;
+        weight = (Convert.ToDouble(order.weight) / 1000).ToString();
         ModalDisplay = "block;";
         ModalClass = "Show";
         ShowBackdrop = true;
@@ -314,7 +317,7 @@
                 ModalBody = json.SelectToken("message").Value<string>();
                 order.is_completed = true;
                 await orderDAO.UpdateOrder(order);
-                orders = await orderDAO.GetAllOrder();
+                ordersSource = await orderDAO.GetAllOrder();
                 OpenModal2();
 
             }
