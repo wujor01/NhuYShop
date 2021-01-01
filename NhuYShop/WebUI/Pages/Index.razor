@@ -224,9 +224,9 @@
     string orderID { get; set; }
     string weight { get; set; }
 
-    int totalPages = 1;
+    decimal totalPages = 1;
     int pageCurrent = 1;
-    int pageSize = 5;
+    int pageSize = 3;
 
     public void PrevPage()
     {
@@ -251,7 +251,8 @@
     protected override async Task OnInitializedAsync()
     {
         ordersSource = await orderDAO.GetAllOrder();
-        totalPages = ordersSource.Count / pageSize;
+        decimal total = (decimal) ordersSource.Count / pageSize;
+        totalPages = Math.Ceiling(total);
         ordersCurrent = ordersSource.Skip((pageCurrent - 1) * pageSize).Take(pageSize).ToList();
     }
 
