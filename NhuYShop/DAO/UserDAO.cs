@@ -15,6 +15,7 @@ namespace NhuYShop.DAO
 
         public async Task<List<UserModel>> GetAllUser()
         {
+            OrderDAO orderDAO = new OrderDAO();
 
             return (await firebase
               .Child("UserModel")
@@ -28,12 +29,20 @@ namespace NhuYShop.DAO
                   UPDATEDATE = item.Object.UPDATEDATE
               }).Where(x=>x.ISDELETED == false).ToList();
         }
-        public async Task AddUser(UserModel user)
+        public async Task<string> AddUser(UserModel user)
         {
+            try
+            {
+                await firebase
+                .Child("UserModel")
+                .PostAsync(user);
+                return "success";
 
-            await firebase
-              .Child("UserModel")
-              .PostAsync(user);
+            }
+            catch (Exception)
+            {
+                return "failed!";
+            }
         }
         public async Task<UserModel> GetUser(string ID)
         {
@@ -53,6 +62,22 @@ namespace NhuYShop.DAO
               .Child("UserModel")
               .Child(toUpdateUser.Key)
               .PutAsync(user);
+        }
+        public async Task<string> DeleteUser(string ID)
+        {
+            try
+            {
+                var toDeleteUser = (await firebase
+                .Child("UserModel")
+                .OnceAsync<UserModel>()).Where(a => a.Object.ID == ID).FirstOrDefault();
+                await firebase.Child("UserModel").Child(toDeleteUser.Key).DeleteAsync();
+                return "success";
+            }
+            catch (Exception)
+            {
+                return "failed";
+            }
+
         }
     }
 }

@@ -43,8 +43,31 @@ namespace NhuYShop.DAO
                   feeship = item.Object.feeship,
                   pickaddress_id = item.Object.pickaddress_id,
                   pickaddress_name = item.Object.pickaddress_name,
-                  weight = item.Object.weight
+                  weight = item.Object.weight,
+                  orther_type = (item.Object.orther_type == null ? "" : item.Object.orther_type)
               }).OrderByDescending(x=>x.CREATEDATE).ToList();
+        }
+        public async Task<int> GetCountOrderCTV(string ID)
+        {
+            return (await firebase
+              .Child("OrderModel")
+              .OnceAsync<OrderModel>()).Select(item => new OrderModel
+              {
+                  ID = item.Object.ID,
+              }).Where(x=>x.ID == ID).Count();
+        }
+
+        public async Task<int> GetValueOrderCTV(string ID)
+        {
+
+            var a = (await firebase
+              .Child("OrderModel")
+              .OnceAsync<OrderModel>()).Select(item => new OrderModel
+              {
+                  value = item.Object.value,
+              }).Where(x => x.ID == ID).ToList();
+            
+            return a.Select(x=>x.value).Sum();
         }
 
         public async Task<List<OrderModel>> GetAllOrder(bool is_completed)

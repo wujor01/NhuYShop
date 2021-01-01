@@ -1,6 +1,7 @@
 ﻿@page "/userview"
-<h3>UserView</h3>
-
+<h3>Danh sách CTV</h3>
+@using System.Globalization
+@inject IToastService toastService
 @inject NhuYShop.Model.UserModel model
 <div class="col-lg-12 control-section">
     <div class="content-wrapper">
@@ -16,30 +17,31 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>NAME</th>
-                            <th>SOCIAL</th>
-                            <th>PHONE</th>
-                            <th>UPDATEDATE</th>
+                            <th class="text-center">Mã CTV</th>
+                            <th class="text-center">Tên</th>
+                            <th class="text-center">SĐT</th>
+                            <th class="text-center">Tổng số đơn</th>
+                            <th class="text-right">Giá trị đơn</th>
+                            <th class="text-right">Hoa hồng</th>
+                            <th class="text-center">Ngày tạo</th>
+                            <th class="text-center">Chỉnh sửa</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in users)
                         {
-                            <tr>
-                                <td>@item.ID</td>
-                                <td>@item.NAME</td>
-                                <td>@item.SOCIAL</td>
-                                <td>@item.PHONE</td>
-                                @if (item.UPDATEDATE > item.CREATEDATE)
-                                {
-                                    <td>@item.UPDATEDATE</td>
-                                }
-                                else
-                                {
-                                    <td>@item.CREATEDATE</td>
-                                }
-                            </tr>
+                        <tr>
+                            <td class="text-center">@item.ID</td>
+                            <td class="text-center">@item.NAME</td>
+                            <td class="text-center">@item.PHONE</td>
+                            <td class="text-center">@item.COUNTORDER</td>
+                            <td class="text-right">@item.VALUEORDER.ToString("#,###")</td>
+                            <td class="text-right">@item.COMISSION.ToString("#,###")</td>
+                            <td class="text-center">@item.CREATEDATE</td>
+                            <td class="text-center">
+                                <button class="btn btn-warning" @onclick="@(() => BtnDelUser(item.ID))">Xóa</button>
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>
@@ -48,12 +50,44 @@
         </div>
     </div>
 </div>
-    @code {
-        private UserDAO userDAO = new UserDAO();
-        private List<UserModel> users = new List<UserModel>();
+<BlazoredToasts Position="ToastPosition.TopRight"
+                Timeout="2"
+                IconType="IconType.FontAwesome"
+                SuccessClass="success-toast-override"
+                SuccessIcon="fa fa-thumbs-up"
+                ErrorIcon="fa fa-bug" />
+@code {
+    private UserDAO userDAO = new UserDAO();
+    private OrderDAO orderDAO = new OrderDAO();
+    private List<OrderModel> orders = new List<OrderModel>();
+    private List<UserModel> users = new List<UserModel>();
 
-        protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
+    {
+        users = await userDAO.GetAllUser();
+        orders = await orderDAO.GetAllOrder();
+        foreach (var master in users)
         {
-            users = await userDAO.GetAllUser();
+            foreach (var item in orders)
+            {
+                if (master.ID == item.CREATEUSER)
+                {
+                    master.VALUEORDER += item.value;
+                    master.COUNTORDER += 1;
+                    master.COMISSION += item.commission;
+                }
+            }
         }
     }
+
+    public async void BtnDelUser(string ID)
+    {
+        if (await userDAO.DeleteUser(ID) == "success")
+        {
+            toastService.ShowSuccess("Xóa CTV: " + ID + ". thành công!");
+            users = await userDAO.GetAllUser();
+            StateHasChanged();
+        }
+    }
+
+}

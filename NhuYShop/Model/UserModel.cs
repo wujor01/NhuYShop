@@ -17,5 +17,8 @@ namespace NhuYShop.Model
         public string PASSWORD { get; set; }
         public bool ISHASH { get; set; }
         public bool ISDELETED { get; set; }
+        public int COUNTORDER { get; set; }
+        public int VALUEORDER { get; set; }
+        public int COMISSION { get; set; }
     }
 }

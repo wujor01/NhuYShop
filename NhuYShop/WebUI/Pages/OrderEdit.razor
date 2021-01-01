@@ -19,15 +19,30 @@
         <div class="row">
             <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
                 <label>Tên khách hàng</label>
-                <input type="text" class="form-control" @bind-value="order.customer_name">
+                <input type="text" class="form-control" @bind-value="@order.customer_name">
             </div>
             <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
                 <label>Số điện thoại</label>
-                <input type="tel" class="form-control" @bind-value="order.customer_tel">
+                <input type="tel" class="form-control" @bind-value="@order.customer_tel">
             </div>
             <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
                 <label>Địa chỉ</label>
-                <input type="text" class="form-control" @bind-value="order.customer_street">
+                <input type="text" class="form-control" @bind-value="@order.customer_street">
+            </div>
+            <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
+                <label>Hoa hồng:</label>
+                <input type="text" class="form-control" @bind-value="@order.commission">
+            </div>
+            <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
+                <label>Loại khác:</label>
+                <select class="form-control" @bind="order.orther_type">
+                    <option value=""></option>
+                    <option value="Thu hộ Phương">Thu hộ Phương</option>
+                    <option value="Thu hộ chị Long">Thu hộ chị Long</option>
+                    <option value="Chuyển chị Liên">Chuyển chị Liên</option>
+                    <option value="Chuyển chị Dung">Chuyển chị Dung</option>
+                    <option value="Tiền mặt">Tiền mặt</option>
+                </select>
             </div>
         </div>
         <hr />
@@ -108,7 +123,8 @@
         </div>
         <div class="row" style="margin-top:5px;">
             <div class="col-xs-8 col-sm-8 col-lg-8 col-md-8">
-                <textarea class="form-control" placeholder="Chi tiết đơn hàng" rows="3" @onchange="OnChangeDetail" value="@order.detail"></textarea>
+                <label>Chi tiết đơn hàng:</label>
+                <textarea class="form-control" rows="3" @onchange="OnChangeDetail" value="@order.detail"></textarea>
             </div>
             <div class="col-xs-2 col-sm-2 col-lg-2 col-md-2">
                 <label>Số tiền thực thu:</label>
@@ -161,7 +177,7 @@
     int? realvalue = null;
     string valueCTV = null;
     string fee = null;
-    string weight = "0.2";
+    string weight = "0.1";
     #region toast
     private Toast toast = new Toast();
     private class Toast
@@ -333,18 +349,37 @@
         ward = wards.Where(x => x.code == valueWard).FirstOrDefault();
         distrist = distrists.Where(x => x.code == valueDistrist).FirstOrDefault();
         province = provinces.Where(x => x.code == valueProvince).FirstOrDefault();
-        order.customer_province = province.name;
-        order.customer_distrist = distrist.name_with_type;
-        order.customer_ward = ward.name_with_type;
+        if (order.customer_ward != null && order.customer_distrist != null && order.customer_ward != null)
+        {
+            order.customer_province = province.name;
+            order.customer_distrist = distrist.name_with_type;
+            order.customer_ward = ward.name_with_type;
+        }
         order.customer_distrist_code = valueDistrist;
         order.customer_province_code = valueProvince;
         order.customer_ward_code = valueWard;
-        order.customer_address = order.customer_street + ", " + ward.path;
+        if (ward != null)
+        {
+            order.customer_address = order.customer_street + ", " + ward.path;
+        }
+        else
+        {
+            order.customer_address = null;
+        }
         order.weight = Decimal.ToInt32(decimal.Parse(weight.Replace(".", ",")) * 1000);
         order.pickaddress_id = valuePickAdress;
         pickaddress = pickaddressList.Where(x => x.pick_address_id == valuePickAdress).FirstOrDefault();
         order.pickaddress_name = pickaddress.address;
         order.delivery_option_id = valueDeliveryOption;
+
+        if (order.orther_type == null || order.orther_type == "")
+        {
+            order.is_completed = false;
+        }
+        else
+        {
+            order.is_completed = true;
+        }
 
         order.UPDATEDATE = DateTime.Now;
         order.UPDATEUSER = valueCTV;

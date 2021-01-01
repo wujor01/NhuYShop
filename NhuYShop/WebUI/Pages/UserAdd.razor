@@ -1,19 +1,22 @@
 ﻿@page "/adduser"
-<h3>UserAdd</h3>
+
+@inject IToastService toastService
+@inject NavigationManager navigationManager
+<h3>Thêm CTV</h3>
 <div class="col-lg-12 control-section">
     <div class="content-wrapper">
         <div class="row">
             <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
-                <input type="text" class="form-control" placeholder="ID" @bind-value="user.ID">
+                <label>Mã CTV:</label>
+                <input type="text" class="form-control" @bind-value="user.ID">
             </div>
             <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
-                <input type="text" class="form-control" placeholder="Tên" @bind-value="user.NAME">
+                <label>Tên:</label>
+                <input type="text" class="form-control" @bind-value="user.NAME">
             </div>
             <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
-                <input type="text" class="form-control" placeholder="Link FB" @bind-value="user.SOCIAL">
-            </div>
-            <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
-                <input type="text" class="form-control" placeholder="SĐT" @bind-value="user.PHONE">
+                <label>Số điện thoại</label>
+                <input type="tel" class="form-control" @bind-value="user.PHONE">
             </div>
         </div>
     </div>
@@ -21,6 +24,13 @@
         <button type="button" class="btn btn-primary" @onclick="BtnAddUser">Add</button>
     </div>
 </div>
+<BlazoredToasts Position="ToastPosition.TopRight"
+                Timeout="2"
+                IconType="IconType.FontAwesome"
+                SuccessClass="success-toast-override"
+                SuccessIcon="fa fa-thumbs-up"
+                ErrorIcon="fa fa-bug" />
+
 
 @code {
     private UserDAO userDAO = new UserDAO();
@@ -30,8 +40,17 @@
     {
         user.CREATEDATE = DateTime.Now;
         user.CREATEUSER = "ADMIN";
-        await userDAO.AddUser(user);
-        //StateHasChanged();
+        if (await userDAO.AddUser(user) == "success")
+        {
+            toastService.ShowSuccess("Thêm CTV thành công!");
+            await Task.Delay(2000);
+            navigationManager.NavigateTo("userview");
+            //StateHasChanged();
+        }
+        else
+        {
+            toastService.ShowError("Có lỗi xảy ra xin thử lại");
+        }
     }
 
 }
