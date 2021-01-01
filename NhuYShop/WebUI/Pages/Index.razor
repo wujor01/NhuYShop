@@ -21,80 +21,104 @@
             }
             else
             {
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th class="text-center">Đăng đơn</th>
-                    <th class="text-center">ID</th>
-                    <th class="text-center">CTV</th>
-                    <th class="text-center">Tên KH</th>
-                    <th class="text-center">Số ĐT</th>
-                    <th class="text-center">Địa chỉ</th>
-                    <th class="text-center">Chi tiết</th>
-                    <th class="text-center">Tổng tiền</th>
-                    <th class="text-center">Hoa hồng</th>
-                    <th class="text-center">Freeship?</th>
-                    <th class="text-center">Ngày tạo</th>
-                    <th class="text-center">Chỉnh sửa</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in ordersCurrent)
-                {
-                    <tr>
-                        @if (item.is_completed && item.orther_type.Contains("Thu hộ"))
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Đăng đơn</th>
+                            <th class="text-center">ID</th>
+                            <th class="text-center">CTV</th>
+                            <th class="text-center">Tên KH</th>
+                            <th class="text-center">Số ĐT</th>
+                            <th class="text-center">Địa chỉ</th>
+                            <th class="text-center">Chi tiết</th>
+                            <th class="text-center">Tổng tiền</th>
+                            <th class="text-center">Hoa hồng</th>
+                            <th class="text-center">Freeship?</th>
+                            <th class="text-center">Ngày tạo</th>
+                            <th class="text-center">Chỉnh sửa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ordersCurrent)
                         {
-                            <td class="text-center">
-                                <button class="btn btn-info" disabled>Thu hộ</button>
-                            </td>
+                            <tr>
+                                @if (item.is_completed && item.orther_type.Contains("Thu hộ"))
+                                {
+                                    <td class="text-center">
+                                        <button class="btn btn-info" disabled>Thu hộ</button>
+                                    </td>
+                                }
+                                else if (item.is_completed && item.orther_type.Contains("Chuyển"))
+                                {
+                                    <td class="text-center">
+                                        <button class="btn btn-danger" disabled>Chuyển</button>
+                                    </td>
+                                }
+                                else if (item.is_completed && item.orther_type.Contains("Tiền mặt"))
+                                {
+                                    <td class="text-center">
+                                        <button class="btn btn-success" disabled>Tiền mặt</button>
+                                    </td>
+                                }
+                                else if (item.is_completed)
+                                {
+                                    <td class="text-center">
+                                        <button class="btn btn-dark" disabled>Đã đăng</button>
+                                    </td>
+                                }
+                                else if (!item.is_completed)
+                                {
+                                    <td class="text-center">
+                                        <button class="btn btn-warning" @onclick="@(() => OpenModal(item.ID))">Đăng</button>
+                                    </td>
+                                }
+                                <td class="text-center">@item.ID</td>
+                                <td class="text-center">@item.CREATEUSER</td>
+                                <td>@item.customer_name</td>
+                                <td class="text-center">@item.customer_tel</td>
+                                <td>@item.customer_address</td>
+                                <td>@item.detail</td>
+                                <td class="text-center">@item.value.ToString("#,###")</td>
+                                <td class="text-center">@item.commission.ToString("#,###")</td>
+                                <td class="text-center">
+                                    @(item.is_freeship ? "Có" : "Không")
+                                </td>
+                                <td>@item.CREATEDATE</td>
+                                <td class="text-center">
+                                    <NavLink href="@item.ID">
+                                        <button class="btn btn-info">Sửa</button>
+                                    </NavLink>
+                                </td>
+                            </tr>
                         }
-                        else if (item.is_completed && item.orther_type.Contains("Chuyển"))
-                        {
-                            <td class="text-center">
-                                <button class="btn btn-danger" disabled>Chuyển</button>
-                            </td>
-                        }
-                        else if (item.is_completed && item.orther_type.Contains("Tiền mặt"))
-                        {
-                            <td class="text-center">
-                                <button class="btn btn-success" disabled>Tiền mặt</button>
-                            </td>
-                        }
-                        else if (item.is_completed)
-                        {
-                            <td class="text-center">
-                                <button class="btn btn-dark" disabled>Đã đăng</button>
-                            </td>
-                        }
-                        else if (!item.is_completed)
-                        {
-                            <td class="text-center">
-                                <button class="btn btn-warning" @onclick="@(() => OpenModal(item.ID))">Đăng</button>
-                            </td>
-                        }
-                        <td class="text-center">@item.ID</td>
-                        <td class="text-center">@item.CREATEUSER</td>
-                        <td>@item.customer_name</td>
-                        <td class="text-center">@item.customer_tel</td>
-                        <td>@item.customer_address</td>
-                        <td>@item.detail</td>
-                        <td class="text-center">@item.value.ToString("#,###")</td>
-                        <td class="text-center">@item.commission.ToString("#,###")</td>
-                        <td class="text-center">
-                            @(item.is_freeship ? "Có" : "Không")
-                        </td>
-                        <td>@item.CREATEDATE</td>
-                        <td class="text-center">
-                            <NavLink href="@item.ID">
-                                <button class="btn btn-info">Sửa</button>
-                            </NavLink>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                    </tbody>
+                </table>
 
             }
+        </div>
+    </div>
+    <div class="row float-right">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" @onclick="PrevPage" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link">@pageCurrent/@totalPages</a></li>
+                <li class="page-item">
+                    <a class="page-link" @onclick="NextPage" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <p class="page-link"><b>@ordersSource.Count</b> đơn</p>
+                </li>
+            </ul>
+        </nav>
+        <div>
         </div>
     </div>
 </div>
@@ -172,7 +196,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">@ModalTitle</h5>
-                <button type="button" class="close" data-dismiss="modal" @onclick="CloseModal2" aria-label="Close" >
+                <button type="button" class="close" data-dismiss="modal" @onclick="CloseModal2" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -200,16 +224,41 @@
     string orderID { get; set; }
     string weight { get; set; }
 
+    int totalPages = 1;
+    int pageCurrent = 1;
+    int pageSize = 5;
+
+    public void PrevPage()
+    {
+        if (pageCurrent > 1 && pageCurrent <= totalPages)
+        {
+            pageCurrent -= 1;
+            ordersCurrent = ordersSource.Skip((pageCurrent - 1) * pageSize).Take(pageSize).ToList();
+            StateHasChanged();
+        }
+    }
+
+    public void NextPage()
+    {
+        if (pageCurrent > 0 && pageCurrent < totalPages)
+        {
+            pageCurrent += 1;
+            ordersCurrent = ordersSource.Skip((pageCurrent - 1) * pageSize).Take(pageSize).ToList();
+            StateHasChanged();
+        }
+    }
+
     protected override async Task OnInitializedAsync()
     {
         ordersSource = await orderDAO.GetAllOrder();
-        ordersCurrent = ordersSource;
-
+        totalPages = ordersSource.Count / pageSize;
+        ordersCurrent = ordersSource.Skip((pageCurrent - 1) * pageSize).Take(pageSize).ToList();
     }
 
     public void OrderNotComfirm()
     {
-        ordersCurrent = ordersSource.OrderBy(x=>x.is_completed).ToList();
+        ordersSource = ordersSource.OrderBy(x => x.is_completed).ToList();
+        ordersCurrent = ordersSource.Skip((pageCurrent - 1) * pageSize).Take(pageSize).ToList();
         StateHasChanged();
     }
 
