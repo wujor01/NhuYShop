@@ -6,10 +6,14 @@
 <div class="col-lg-12 control-section">
     <div class="content-wrapper">
         <div class="row">
-            <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
+            <div class="col-8 col-md-9">
                 <NavLink href="adduser">
                     <button class="btn btn-primary">Thêm CTV</button>
                 </NavLink>
+                <button class="btn btn-success" @onclick="BtnAllOrder">Tất cả</button>
+            </div>
+            <div class="col-4 col-md-3">
+                <input type="month" class="form-control" min="2021-01" @oninput="OneChangeDate" value="@datepick.ToString("yyyy-MM")">
             </div>
         </div>
         <div class="row">
@@ -61,11 +65,11 @@
     private OrderDAO orderDAO = new OrderDAO();
     private List<OrderModel> orders = new List<OrderModel>();
     private List<UserModel> users = new List<UserModel>();
-
+    DateTime datepick = DateTime.Now;
     protected override async Task OnInitializedAsync()
     {
         users = await userDAO.GetAllUser();
-        orders = await orderDAO.GetAllOrder();
+        orders = await orderDAO.GetAllOrder(datepick);
         foreach (var master in users)
         {
             foreach (var item in orders)
@@ -78,6 +82,52 @@
                 }
             }
         }
+    }
+
+    public async void BtnAllOrder()
+    {
+        orders = await orderDAO.GetAllOrder();
+        foreach (var master in users)
+        {
+            master.VALUEORDER = 0;
+            master.COUNTORDER = 0;
+            master.COMISSION = 0;
+            foreach (var item in orders)
+            {
+                if (master.ID == item.CREATEUSER)
+                {
+                    master.VALUEORDER += item.value;
+                    master.COUNTORDER += 1;
+                    master.COMISSION += item.commission;
+                }
+            }
+        }
+        StateHasChanged();
+        toastService.ShowSuccess("Lấy tất cả đơn hàng thành công!");
+    }
+
+    public async void OneChangeDate(ChangeEventArgs e)
+    {
+        datepick = DateTime.ParseExact(e.Value.ToString(), "yyyy-MM", CultureInfo.InvariantCulture);
+        orders = await orderDAO.GetAllOrder(datepick);
+
+        foreach (var master in users)
+        {
+            master.VALUEORDER = 0;
+            master.COUNTORDER = 0;
+            master.COMISSION = 0;
+            foreach (var item in orders)
+            {
+                if (master.ID == item.CREATEUSER)
+                {
+                    master.VALUEORDER += item.value;
+                    master.COUNTORDER += 1;
+                    master.COMISSION += item.commission;
+                }
+            }
+        }
+        StateHasChanged();
+        toastService.ShowSuccess("Lấy các đơn hàng tháng "+datepick.ToString("MM/yyyy")+" thành công!");
     }
 
     public async void BtnDelUser(string ID)

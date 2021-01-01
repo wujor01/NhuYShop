@@ -125,31 +125,36 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">
-                            <p><b>Kho lấy hàng: </b>@order.pickaddress_name</p>
+                            <p style="overflow: hidden; text-overflow: ellipsis; line-height: 20px; -webkit-line-clamp: 1; display: -webkit-box; -webkit-box-orient: vertical;"><b>Kho lấy hàng: </b>@order.pickaddress_name</p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">
-                            <p><b>Chi tiết: </b>@order.detail</p>
+                            <p style="overflow: hidden; text-overflow: ellipsis; line-height: 20px; -webkit-line-clamp: 2; display: -webkit-box; -webkit-box-orient: vertical;"><b>Chi tiết: </b>@order.detail</p>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
-                            <p><b>Loại vận chuyển: </b>@(order.delivery_option_id == "road" ? "Thường" : "Bay")</p>
+                        <div class="col-6 col-md-4">
+                            <p><b>Ship: </b>@(order.delivery_option_id == "road" ? "Thường" : "Bay")</p>
                         </div>
-                        <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+                        <div class="col-6 col-md-4">
                             <p><b>Freeship: </b>@(order.is_freeship ? "Có" : "Không")</p>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+                        <div class="col-6 col-md-4">
                             <p><b>Số tiền: </b>@order.value.ToString("#,###")</p>
-                            <p><b>Phí vận chuyển: </b>@order.feeship.ToString("#,###")</p>
                         </div>
-                        <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
-                            <p>
-                                <b>Khối lượng(kg): </b><input type="number" class="form-control" step="0.2" @onchange="@OnChangeWeight" value="@weight">
-                            </p>
+                        <div class="col-6 col-md-4">
+                            <p><b>Phí: </b>@order.feeship.ToString("#,###")</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4 col-md-4">
+                            <b>KL(kg): </b>
+                        </div>
+                        <div class="col-8 col-md-4">
+                            <input type="number" class="form-control" step="0.2" @onchange="@OnChangeWeight" value="@weight">
                         </div>
                     </div>
                 </div>

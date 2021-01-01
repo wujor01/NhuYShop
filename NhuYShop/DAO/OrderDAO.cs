@@ -45,7 +45,41 @@ namespace NhuYShop.DAO
                   pickaddress_name = item.Object.pickaddress_name,
                   weight = item.Object.weight,
                   orther_type = (item.Object.orther_type == null ? "" : item.Object.orther_type)
-              }).OrderByDescending(x=>x.CREATEDATE).ToList();
+              }).OrderByDescending(x => x.CREATEDATE).ToList();
+        }
+        public async Task<List<OrderModel>> GetAllOrder(DateTime datepick)
+        {
+            return (await firebase
+              .Child("OrderModel")
+              .OnceAsync<OrderModel>()).Select(item => new OrderModel
+              {
+                  ID = item.Object.ID,
+                  CREATEUSER = item.Object.CREATEUSER,
+                  customer_address = item.Object.customer_address,
+                  customer_ward = item.Object.customer_ward,
+                  customer_distrist = item.Object.customer_distrist,
+                  customer_province = item.Object.customer_province,
+                  customer_tel = item.Object.customer_tel,
+                  customer_street = item.Object.customer_street,
+                  customer_name = item.Object.customer_name,
+                  commission = item.Object.commission,
+                  UPDATEUSER = item.Object.UPDATEUSER,
+                  detail = item.Object.detail,
+                  value = item.Object.value,
+                  is_freeship = item.Object.is_freeship,
+                  is_completed = item.Object.is_completed,
+                  CREATEDATE = item.Object.CREATEDATE,
+                  UPDATEDATE = item.Object.UPDATEDATE,
+                  customer_distrist_code = item.Object.customer_distrist_code,
+                  customer_province_code = item.Object.customer_province_code,
+                  customer_ward_code = item.Object.customer_ward_code,
+                  delivery_option_id = item.Object.delivery_option_id,
+                  feeship = item.Object.feeship,
+                  pickaddress_id = item.Object.pickaddress_id,
+                  pickaddress_name = item.Object.pickaddress_name,
+                  weight = item.Object.weight,
+                  orther_type = (item.Object.orther_type == null ? "" : item.Object.orther_type)
+              }).Where(x=>x.CREATEDATE.Month == datepick.Month && x.CREATEDATE.Year == datepick.Year).OrderByDescending(x=>x.CREATEDATE).ToList();
         }
         public async Task<int> GetCountOrderCTV(string ID)
         {
