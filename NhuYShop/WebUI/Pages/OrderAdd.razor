@@ -292,9 +292,20 @@
         }
     }
 
-    public void OnChangeProvince(ChangeEventArgs e)
+    public async void OnChangeProvince(ChangeEventArgs e)
     {
         valueProvince = e.Value.ToString();
+        distrists = new List<Distrist>();
+        if (valueProvince != null)
+        {
+            if (wards != null)
+            {
+                wards = new List<Ward>();
+            }
+            valueDistrist = null;
+            valueWard = null;
+            distrists = await addressDAO.GetDistrist(di, valueProvince);
+        }
     }
 
     public async void OnChangeDistrist(ChangeEventArgs e)
