@@ -26,7 +26,7 @@
             </div>
             <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
                 <label>Số điện thoại</label>
-                <input type="tel" class="form-control" @bind-value="order.customer_tel">
+                <input type="tel" class="form-control" @oninput="OnChangeTel">
             </div>
             <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
                 <label>Địa chỉ</label>
@@ -165,6 +165,7 @@
     public Ward ward { get; set; }
     private List<PickAddress> pickaddressList;
     private List<UserModel> users;
+    private List<OrderModel> orders;
 
     private PickAddress pickaddress = new PickAddress();
     string valueProvince = null;
@@ -216,6 +217,8 @@
 
         users = await userDAO.GetAllUser();
         user = await userDAO.GetUser(valueCTV);
+
+        orders = await orderDAO.GetAllOrder();
 
         pickaddressList = await addressDAO.GetPickAddress();
         if (pr != null)
@@ -272,6 +275,36 @@
             realvalue = order.value;
         }
         wards = await addressDAO.GetWard(wa, valueDistrist);
+    }
+
+    public async void OnChangeTel(ChangeEventArgs e)
+    {
+        order.customer_tel = e.Value.ToString();
+        try
+        {
+            var orderGetTel = orders.Where(x => x.customer_tel == e.Value.ToString()).FirstOrDefault();
+            if (orderGetTel != null)
+            {
+                valueProvince = orderGetTel.customer_province_code;
+                valueDistrist = orderGetTel.customer_distrist_code;
+                distrists = await addressDAO.GetDistrist(di, valueProvince);
+                wards = await addressDAO.GetWard(wa, valueDistrist);
+                valueWard = orderGetTel.customer_ward_code;
+                order.customer_street = orderGetTel.customer_street;
+                order.customer_name = orderGetTel.customer_name;
+                order.customer_distrist = orderGetTel.customer_distrist;
+                order.customer_province = orderGetTel.customer_province;
+                order.customer_ward = orderGetTel.customer_ward;
+                fee = orderGetTel.feeship.ToString();
+                order.feeship = orderGetTel.feeship;
+                StateHasChanged();
+                toastService.ShowInfo("Khách này từng mua hàng trước đây!");
+            }
+        }
+        catch (Exception)
+        {
+
+        }
     }
 
     public void OnChangeDetail(ChangeEventArgs e)
