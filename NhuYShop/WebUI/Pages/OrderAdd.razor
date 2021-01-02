@@ -280,25 +280,31 @@
     public async void OnChangeTel(ChangeEventArgs e)
     {
         order.customer_tel = e.Value.ToString();
+
         try
         {
-            var orderGetTel = orders.Where(x => x.customer_tel == e.Value.ToString()).FirstOrDefault();
-            if (orderGetTel != null)
+            if (!(e.Value.ToString() == null || e.Value.ToString() == "0" || e.Value.ToString() == ""))
             {
-                valueProvince = orderGetTel.customer_province_code;
-                valueDistrist = orderGetTel.customer_distrist_code;
-                distrists = await addressDAO.GetDistrist(di, valueProvince);
-                wards = await addressDAO.GetWard(wa, valueDistrist);
-                valueWard = orderGetTel.customer_ward_code;
-                order.customer_street = orderGetTel.customer_street;
-                order.customer_name = orderGetTel.customer_name;
-                order.customer_distrist = orderGetTel.customer_distrist;
-                order.customer_province = orderGetTel.customer_province;
-                order.customer_ward = orderGetTel.customer_ward;
-                fee = orderGetTel.feeship.ToString();
-                order.feeship = orderGetTel.feeship;
-                StateHasChanged();
-                toastService.ShowInfo("Khách này từng mua hàng trước đây!");
+                var orderGetTel = orders.Where(x => x.customer_tel == e.Value.ToString()).FirstOrDefault();
+                if (orderGetTel != null)
+                {
+                    valueProvince = orderGetTel.customer_province_code;
+                    valueDistrist = orderGetTel.customer_distrist_code;
+                    distrists = await addressDAO.GetDistrist(di, valueProvince);
+                    wards = await addressDAO.GetWard(wa, valueDistrist);
+                    valueWard = orderGetTel.customer_ward_code;
+                    order.customer_street = orderGetTel.customer_street;
+                    order.customer_name = orderGetTel.customer_name;
+                    order.customer_distrist = orderGetTel.customer_distrist;
+                    order.customer_province = orderGetTel.customer_province;
+                    order.customer_ward = orderGetTel.customer_ward;
+                    order.customer_ward_code = valueWard;
+                    order.customer_distrist_code = valueDistrist;
+                    order.customer_province_code = valueProvince;
+                    StateHasChanged();
+                    toastService.ShowInfo("Khách này từng mua hàng trước đây!");
+                    ReloadFeeShip();
+                }
             }
         }
         catch (Exception)
@@ -423,9 +429,19 @@
     {
         GetFeeDelivery getfee = new GetFeeDelivery();
         getfee.pick_address_id = valuePickAdress;
-        getfee.province = province.name_with_type;
-        getfee.district = distrist.name_with_type;
-        getfee.ward = ward.name_with_type;
+        if (order.customer_ward != null)
+        {
+            getfee.province = order.customer_province;
+            getfee.district = order.customer_distrist;
+            getfee.ward = order.customer_ward;
+
+        }
+        else
+        {
+            getfee.province = province.name_with_type;
+            getfee.district = distrist.name_with_type;
+            getfee.ward = ward.name_with_type;
+        }
         getfee.street = order.customer_street;
         getfee.weight = Decimal.ToInt32(decimal.Parse(weight.Replace(".", ",")) * 1000);
         getfee.transport = valueDeliveryOption;
