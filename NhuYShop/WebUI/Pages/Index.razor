@@ -367,9 +367,9 @@
                 ModalBody = json.SelectToken("message").Value<string>();
                 order.is_completed = true;
                 await orderDAO.UpdateOrder(order);
-                ordersSource = await orderDAO.GetAllOrder();
+                ordersCurrent.Where(x => x.ID == order.ID).FirstOrDefault().is_completed = true;
+                StateHasChanged();
                 OpenModal2();
-
             }
         }
         else
@@ -378,6 +378,10 @@
             {
                 ModalTitle = json.SelectToken("error").SelectToken("ghtk_label").Value<string>();
                 ModalBody = json.SelectToken("message").Value<string>();
+                order.is_completed = true;
+                await orderDAO.UpdateOrder(order);
+                ordersCurrent.Where(x => x.ID == order.ID).FirstOrDefault().is_completed = true;
+                StateHasChanged();
                 OpenModal2();
             }
             if (json.SelectToken("message") != null && json.SelectToken("error") == null)
