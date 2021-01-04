@@ -19,6 +19,7 @@ namespace NhuYShop.Model
         public bool ISDELETED { get; set; }
         public int COUNTORDER { get; set; }
         public int VALUEORDER { get; set; }
+        public int REALVALUEORDER { get; set; }
         public int COMISSION { get; set; }
     }
 }

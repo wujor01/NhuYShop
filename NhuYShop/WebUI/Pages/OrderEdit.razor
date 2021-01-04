@@ -44,6 +44,10 @@
                     <option value="Tiền mặt">Tiền mặt</option>
                 </select>
             </div>
+            <div class="col-xs-1 col-sm-1 col-lg-1 col-md-1">
+                <label>Đã đăng?</label>
+                <input type="checkbox" class="form-control" @onchange="OnChangeComfirm" checked="@order.is_completed">
+            </div>
         </div>
         <hr />
         <div class="row">
@@ -274,6 +278,11 @@
             realvalue = order.value;
         }
         wards = await addressDAO.GetWard(wa, valueDistrist);
+    }
+
+    public void OnChangeComfirm(ChangeEventArgs e)
+    {
+        order.is_completed = (bool)e.Value;
     }
 
     public void OnChangeDetail(ChangeEventArgs e)

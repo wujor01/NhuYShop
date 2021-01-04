@@ -26,6 +26,7 @@
                             <th class="text-center">SĐT</th>
                             <th class="text-center">Tổng số đơn</th>
                             <th class="text-right">Giá trị đơn</th>
+                            <th class="text-right">Giá trị sau ship</th>
                             <th class="text-right">Hoa hồng</th>
                             <th class="text-center">Ngày tạo</th>
                             <th class="text-center">Chỉnh sửa</th>
@@ -40,6 +41,7 @@
                                 <td class="text-center">@item.PHONE</td>
                                 <td class="text-center">@item.COUNTORDER</td>
                                 <td class="text-right">@item.VALUEORDER.ToString("#,###")</td>
+                                <td class="text-right">@item.REALVALUEORDER.ToString("#,###")</td>
                                 <td class="text-right">@item.COMISSION.ToString("#,###")</td>
                                 <td class="text-center">@item.CREATEDATE</td>
                                 <td class="text-center">
@@ -53,8 +55,9 @@
                             <th class="text-center" colspan="3">Tổng cộng:</th>
                             <th class="text-center">@totalOrders</th>
                             <th class="text-right">@valueOrders.ToString("#,###")</th>
+                            <th class="text-right">@realValueOrders.ToString("#,###")</th>
                             <th class="text-right">@comissionOrders.ToString("#,###")</th>
-                            <th class="text-center" colspan="2"></th>
+                            <th class="text-center" colspan="2">Tổng doanh thu: @((realValueOrders - comissionOrders).ToString("#,###"))</th>
                         </tr>
                     </thead>
                 </table>
@@ -88,17 +91,28 @@
                     master.VALUEORDER += item.value;
                     master.COUNTORDER += 1;
                     master.COMISSION += item.commission;
+
+                    if (item.is_freeship)
+                    {
+                        master.REALVALUEORDER += (item.value - item.feeship);
+                    }
+                    else if (!item.is_freeship)
+                    {
+                        master.REALVALUEORDER += item.value;
+                    }
                 }
             }
         }
         totalOrders = users.Sum(x => x.COUNTORDER);
         valueOrders = users.Sum(x => x.VALUEORDER);
         comissionOrders = users.Sum(x => x.COMISSION);
+        realValueOrders = users.Sum(x => x.REALVALUEORDER);
     }
 
     int totalOrders = 0;
     int valueOrders = 0;
     int comissionOrders = 0;
+    int realValueOrders = 0;
     public async void BtnAllOrder()
     {
         orders = await orderDAO.GetAllOrder();
@@ -107,6 +121,7 @@
             master.VALUEORDER = 0;
             master.COUNTORDER = 0;
             master.COMISSION = 0;
+            master.REALVALUEORDER = 0;
             foreach (var item in orders)
             {
                 if (master.ID == item.CREATEUSER)
@@ -114,11 +129,21 @@
                     master.VALUEORDER += item.value;
                     master.COUNTORDER += 1;
                     master.COMISSION += item.commission;
+
+                    if (item.is_freeship)
+                    {
+                        master.REALVALUEORDER += (item.value - item.feeship);
+                    }
+                    else if (!item.is_freeship)
+                    {
+                        master.REALVALUEORDER += item.value;
+                    }
                 }
             }
         }
         totalOrders = users.Sum(x => x.COUNTORDER);
         valueOrders = users.Sum(x => x.VALUEORDER);
+        realValueOrders = users.Sum(x => x.REALVALUEORDER);
         comissionOrders = users.Sum(x => x.COMISSION);
         StateHasChanged();
         toastService.ShowSuccess("Lấy tất cả đơn hàng thành công!");
@@ -134,6 +159,7 @@
             master.VALUEORDER = 0;
             master.COUNTORDER = 0;
             master.COMISSION = 0;
+            master.REALVALUEORDER = 0;
             foreach (var item in orders)
             {
                 if (master.ID == item.CREATEUSER)
@@ -141,14 +167,24 @@
                     master.VALUEORDER += item.value;
                     master.COUNTORDER += 1;
                     master.COMISSION += item.commission;
+
+                    if (item.is_freeship)
+                    {
+                        master.REALVALUEORDER += (item.value - item.feeship);
+                    }
+                    else if (!item.is_freeship)
+                    {
+                        master.REALVALUEORDER += item.value;
+                    }
                 }
             }
         }
         totalOrders = users.Sum(x => x.COUNTORDER);
         valueOrders = users.Sum(x => x.VALUEORDER);
+        realValueOrders = users.Sum(x => x.REALVALUEORDER);
         comissionOrders = users.Sum(x => x.COMISSION);
         StateHasChanged();
-        toastService.ShowSuccess("Lấy các đơn hàng tháng "+datepick.ToString("MM/yyyy")+" thành công!");
+        toastService.ShowSuccess("Lấy các đơn hàng tháng " + datepick.ToString("MM/yyyy") + " thành công!");
     }
 
     public async void BtnDelUser(string ID)
