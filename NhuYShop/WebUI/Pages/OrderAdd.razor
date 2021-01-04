@@ -403,7 +403,7 @@
         order.CREATEDATE = DateTime.Now;
         order.CREATEUSER = valueCTV;
         order.ID = order.CREATEDATE.ToString("yyMMddHHmmss");
-        if (order.orther_type != null || order.orther_type != "")
+        if (!(order.orther_type == null || order.orther_type == ""))
         {
             order.is_completed = true;
         }
