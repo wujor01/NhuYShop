@@ -178,5 +178,22 @@ namespace NhuYShop.DAO
                 throw;
             }
         }
+
+        public async Task<string> DeleteOrder(string ID)
+        {
+            try
+            {
+                var toDeleteUser = (await firebase
+                .Child("OrderModel")
+                .OnceAsync<OrderModel>()).Where(a => a.Object.ID == ID).FirstOrDefault();
+                await firebase.Child("OrderModel").Child(toDeleteUser.Key).DeleteAsync();
+                return "success";
+            }
+            catch (Exception)
+            {
+                return "failed";
+            }
+
+        }
     }
 }
