@@ -358,12 +358,10 @@
         ward = wards.Where(x => x.code == valueWard).FirstOrDefault();
         distrist = distrists.Where(x => x.code == valueDistrist).FirstOrDefault();
         province = provinces.Where(x => x.code == valueProvince).FirstOrDefault();
-        if (order.customer_ward != null && order.customer_distrist != null && order.customer_ward != null)
-        {
-            order.customer_province = province.name;
-            order.customer_distrist = distrist.name_with_type;
-            order.customer_ward = ward.name_with_type;
-        }
+            
+        order.customer_province = province.name;
+        order.customer_distrist = distrist.name_with_type;
+        order.customer_ward = ward.name_with_type;
         order.customer_distrist_code = valueDistrist;
         order.customer_province_code = valueProvince;
         order.customer_ward_code = valueWard;
