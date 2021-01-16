@@ -13,7 +13,7 @@ namespace NhuYShop.DAO
 {
     public class MWGDAO
     {
-        public void ReadExcelTCC (byte[] bin, string USERS, string filename)
+        public void ReadExcelTCC (byte[] bin, string USERS, string filename, bool isMerge)
         {
             MWGModel users = JsonConvert.DeserializeObject<MWGModel>(USERS);
             List<TCCYecCauModel> tCCYecCauList = new List<TCCYecCauModel>();
@@ -33,14 +33,14 @@ namespace NhuYShop.DAO
                         {
                             //list users
                             TCCJobModel tCCJob = new TCCJobModel();
-                            string value1 = worksheet.Cells[i, 1].Value.ToString();
-                            string value2 = worksheet.Cells[i, 2].Value.ToString();
-                            string value3 = worksheet.Cells[i, 3].Value.ToString();
-                            string value4 = worksheet.Cells[i, 4].Value.ToString();
-                            string value5 = worksheet.Cells[i, 5].Value.ToString();
-                            string value6 = worksheet.Cells[i, 6].Value.ToString();
-                            string value7 = worksheet.Cells[i, 7].Value.ToString();
-                            string value8 = worksheet.Cells[i, 8].Value.ToString();
+                            string value1 = worksheet.Cells[i, 1].Value.ToString().Trim();
+                            string value2 = worksheet.Cells[i, 2].Value.ToString().Trim();
+                            string value3 = worksheet.Cells[i, 3].Value.ToString().Trim();
+                            string value4 = worksheet.Cells[i, 4].Value.ToString().Trim();
+                            string value5 = worksheet.Cells[i, 5].Value.ToString().Trim();
+                            string value6 = worksheet.Cells[i, 6].Value.ToString().Trim();
+                            string value7 = worksheet.Cells[i, 7].Value.ToString().Trim();
+                            string value8 = worksheet.Cells[i, 8].Value.ToString().Trim();
 
                             string[] userArray = value1.Substring(value1.IndexOf("_")+1).Split(',');
                             tCCJob.USERLIST = new List<MWGUserModel>();
@@ -50,6 +50,7 @@ namespace NhuYShop.DAO
                                 user = users.USERS.Where(x => x.USERID == item.Trim()).FirstOrDefault();
                                 if (user == null)
                                             {
+                                                user = new MWGUserModel();
                                                 user.USERID = item.Trim();
                                                 user.FULLNAME = "N/A";
                                                 user.PHONGBAN = "N/A";
@@ -60,10 +61,12 @@ namespace NhuYShop.DAO
                                 tCCJob.USERLIST.Add(user);
                             }
                             tCCJob.JOBID = value1.Substring(0,value1.IndexOf("_"));
-                            tCCJob.VALUE = int.Parse(value4);
+                            int value = 0;
+                            int.TryParse(value4, out value);
+                            tCCJob.VALUE = value;
                             tCCJob.CONTENT = value7;
 
-                            if (tCCYecCauList.Where(x=>x.MAPHIEUXUAT == value5).Count() == 0)
+                            if (tCCYecCauList.Where(x=>x.MAYEUCAU == value8).Count() == 0)
                             {
                                 TCCYecCauModel tccYeuCau = new TCCYecCauModel();
                                 tccYeuCau.MAPHIEUXUAT = value5;
@@ -71,13 +74,16 @@ namespace NhuYShop.DAO
                                 tccYeuCau.JOBLIST = new List<TCCJobModel>();
                                 tccYeuCau.JOBLIST.Add(tCCJob);
                                 tccYeuCau.ERROR = value2;
-                                tccYeuCau.SUMVALUE = int.Parse(value3);
+                                int sumvalue = 0;
+                                int.TryParse(value3, out sumvalue);
+                                tccYeuCau.SUMVALUE = sumvalue;
+                                tccYeuCau.NOTE = value7;
                                 tCCYecCauList.Add(tccYeuCau);
                             }
                             else
                             {
                                 tCCYecCauList
-                                    .Where(x => x.MAPHIEUXUAT == value5)
+                                    .Where(x => x.MAYEUCAU == value8)
                                     .FirstOrDefault()
                                     .JOBLIST.Add(tCCJob);
                             }
@@ -104,7 +110,7 @@ namespace NhuYShop.DAO
             workSheet.Cells[1, 7].Value = "Số tiền đền bù";
             workSheet.Cells[1, 8].Value = "Ghi chú";
             workSheet.Cells[1, 9].Value = "Mã JOB";
-            workSheet.Cells[1, 10].Value = "Chi tiết";
+            workSheet.Cells[1, 10].Value = "Nội dung xử lý";
             workSheet.Cells[1, 11].Value = "Mã yêu cầu";
             //Body of table  
             //  
@@ -120,16 +126,33 @@ namespace NhuYShop.DAO
                         workSheet.Cells[recordIndex, 3].Value = user.PHONGBAN;
                         workSheet.Cells[recordIndex, 4].Value = user.STOREID + " - " + user.STORENAME;
                         workSheet.Cells[recordIndex, 5].Value = yc.ERROR;
-                        //worksheet.Cells[FromRow, FromColumn, ToRow, ToColumn].Merge = true;
-                        workSheet.Cells[recordIndex, 6].Value = yc.SUMVALUE;
-                        workSheet.Cells[recordIndex, 7].Value = job.VALUE;
-                        workSheet.Cells[recordIndex, 8].Value = yc.NOTE;
+                        workSheet.Cells[recordIndex, 7].Value = job.VALUE / job.USERLIST.Count;
                         workSheet.Cells[recordIndex, 9].Value = job.JOBID;
                         workSheet.Cells[recordIndex, 10].Value = job.CONTENT;
                         workSheet.Cells[recordIndex, 11].Value = yc.MAYEUCAU;
+
+                            if (job.USERLIST.IndexOf(user) == 0 && yc.JOBLIST.IndexOf(job) == 0)
+                            {
+                                int mergerow = 0;
+                                foreach (var jobrow in yc.JOBLIST)
+                                {
+                                    foreach (var item in jobrow.USERLIST)
+                                    {
+                                        mergerow++;
+                                    }
+                                }
+                                workSheet.Cells[recordIndex, 6].Value = yc.SUMVALUE;
+                                workSheet.Cells[recordIndex, 8].Value = yc.MAPHIEUXUAT;
+                            if (isMerge)
+                            {
+                                workSheet.Cells[recordIndex, 8, recordIndex + mergerow - 1, 8].Merge = true;
+                                workSheet.Cells[recordIndex, 6, recordIndex + mergerow - 1, 6].Merge = true;
+                            }
+                        }
                         recordIndex++;
                     }
                 }
+
                 
             }
             workSheet.Column(1).AutoFit();

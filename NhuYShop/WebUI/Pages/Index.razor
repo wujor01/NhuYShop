@@ -15,7 +15,8 @@
                 <label>Nhập tên file xuất:</label>
                 <input type="text" placeholder="Nhập tên file xuất" @bind-value="filename"/>
                 <button class="btn btn-primary" @onclick=ReadFile>Xuất file</button>
-
+                <label>Merge?</label>
+                <input type="checkbox" @bind-value="isMerge" checked="checked"/>
             </div>
             <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
             </div>
@@ -36,6 +37,7 @@
 @code {
     string USERS = null;
     string filename = "TCC.xlsx";
+    private bool isMerge { get; set; } = true;
     private AddressDAO addressDAO = new AddressDAO();
     private MWGDAO mwgDAO = new MWGDAO();
     #region toast
@@ -115,9 +117,9 @@
                     {
                         filename = filename + ".xlsx";
                     }
-                    mwgDAO.ReadExcelTCC(result, USERS, filename);
+                    mwgDAO.ReadExcelTCC(result, USERS, filename, isMerge);
                 }
-                toastService.ShowInfo("Xuất dữ liệu ra file thành công file thành công!\n File được lưu ngoài Desktop với tên " + filename);
+                toastService.ShowInfo("Xuất dữ liệu ra file thành công!\n File được lưu ngoài Desktop với tên " + filename);
             }
             if (!isprocessed)
             {
