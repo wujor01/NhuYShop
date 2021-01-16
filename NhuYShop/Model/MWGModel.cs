@@ -6,7 +6,7 @@ namespace NhuYShop.Model
 {
     public class MWGModel
     {
-        public List<MWGUserModel> USERS { get; set; }
+        public List<MWGUserModel> Sheet1 { get; set; }
     }
     public class MWGUserModel
     {

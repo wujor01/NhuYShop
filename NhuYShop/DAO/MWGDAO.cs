@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -47,7 +48,7 @@ namespace NhuYShop.DAO
                             foreach (var item in userArray)
                             {
                                 MWGUserModel user = new MWGUserModel();
-                                user = users.USERS.Where(x => x.USERID == item.Trim()).FirstOrDefault();
+                                user = users.Sheet1.Where(x => x.USERID == item.Trim()).FirstOrDefault();
                                 if (user == null)
                                             {
                                                 user = new MWGUserModel();
@@ -120,6 +121,12 @@ namespace NhuYShop.DAO
                 {
                     foreach (var user in job.USERLIST)
                     {
+                        if (user.FULLNAME == "N/A")
+                        {
+                            Color colFromHex = System.Drawing.ColorTranslator.FromHtml("#ff643d");
+                            workSheet.Row(recordIndex).Style.Fill.PatternType = ExcelFillStyle.Solid;
+                            workSheet.Row(recordIndex).Style.Fill.BackgroundColor.SetColor(colFromHex);
+                        }
                         workSheet.Cells[recordIndex, 1].Value = user.FULLNAME;
                         workSheet.Cells[recordIndex, 2].Value = user.USERID;
                         workSheet.Cells[recordIndex, 3].Value = user.PHONGBAN;

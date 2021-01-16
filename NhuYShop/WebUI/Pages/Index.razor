@@ -14,13 +14,14 @@
                 <input class="btn btn-secondary" type="file" @ref=inputTypeFileElement />
                 <label>Nhập tên file xuất:</label>
                 <input type="text" placeholder="Nhập tên file xuất" @bind-value="filename"/>
-                <button class="btn btn-primary" @onclick=ReadFile>Xuất file</button>
+                <button class="btn btn-success" @attributes="InputAttributes" @onclick=ReadFile>Xuất file</button>
                 <label>Merge?</label>
                 <input type="checkbox" @bind-value="isMerge" checked="checked"/>
             </div>
             <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
             </div>
             <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
+                <a href="http://beautifytools.com/excel-to-json-converter.php" target="_blank">Link chuyển đổi excel sang json</a>
             </div>
             <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
             </div>
@@ -51,6 +52,12 @@
 
     #endregion
 
+    public Dictionary<string, object> InputAttributes { get; set; } =
+        new Dictionary<string, object>()
+        {
+            { "disabled", true}
+        };
+
     protected override async Task OnInitializedAsync()
     {
 
@@ -63,6 +70,11 @@
         }
 
         toastService.ShowInfo("Lấy dữ liệu USERS thành công!");
+        InputAttributes =
+        new Dictionary<string, object>()
+        {
+            { "disabled", false}
+        };
     }
 
     #region Save-ReadFileAsync
@@ -113,13 +125,27 @@
                     // Do (async) stuff with stream...
                     result = new byte[stream.Length];
                     await stream.ReadAsync(result, 0, (int)stream.Length);
-                    if (!filename.Contains(".xlsx"))
+
+                    if (file.ReadFileInfoAsync().Result.Name.Contains(".xlsx"))
                     {
-                        filename = filename + ".xlsx";
+                        if (!filename.Contains(".xlsx"))
+                        {
+                            filename = filename + ".xlsx";
+                        }
+                        mwgDAO.ReadExcelTCC(result, USERS, filename, isMerge);
+                        toastService.ShowSuccess("Xuất dữ liệu ra file thành công!\n File được lưu ngoài Desktop với tên " + filename);
                     }
-                    mwgDAO.ReadExcelTCC(result, USERS, filename, isMerge);
+                    else if (file.ReadFileInfoAsync().Result.Name.Contains(".json") || file.ReadFileInfoAsync().Result.Name.Contains(".txt"))
+                    {
+                        USERS = System.Text.Encoding.UTF8.GetString(result);
+                        await SaveFileAsync(USERS, "USERS.json");
+                        toastService.ShowSuccess("Cập nhật danh sách nhân viên thành công!");
+                    }
+                    else
+                    {
+                        toastService.ShowError("Không đọc được định dạng file này!");
+                    }
                 }
-                toastService.ShowInfo("Xuất dữ liệu ra file thành công!\n File được lưu ngoài Desktop với tên " + filename);
             }
             if (!isprocessed)
             {
