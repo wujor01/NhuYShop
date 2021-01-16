@@ -56,7 +56,6 @@ namespace NhuYShop.DAO
                                                 user.PHONGBAN = "N/A";
                                                 user.STOREID = "N/A";
                                                 user.STORENAME = "N/A";
-                                                user.USERID = "N/A";
                                             }
                                 tCCJob.USERLIST.Add(user);
                             }
