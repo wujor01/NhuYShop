@@ -1,0 +1,133 @@
+﻿@page "/"
+
+@using System.IO
+@using Tewr.Blazor.FileReader
+@inject IToastService toastService
+@inject NavigationManager navigationManager
+@inject IFileReaderService fileReaderService
+@inject IJSRuntime js
+<h3></h3>
+<div class="col-lg-12 control-section">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
+                <input class="btn btn-secondary" type="file" @ref=inputTypeFileElement />
+                <label>Nhập tên file xuất:</label>
+                <input type="text" placeholder="Nhập tên file xuất" @bind-value="filename"/>
+                <button class="btn btn-primary" @onclick=ReadFile>Xuất file</button>
+
+            </div>
+            <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
+            </div>
+            <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
+            </div>
+            <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
+            </div>
+        </div>
+        <hr />
+    </div>
+</div>
+<BlazoredToasts Position="ToastPosition.TopRight"
+                Timeout="2"
+                IconType="IconType.FontAwesome"
+                SuccessClass="success-toast-override"
+                SuccessIcon="fa fa-thumbs-up"
+                ErrorIcon="fa fa-bug" />
+@code {
+    string USERS = null;
+    string filename = "TCC.xlsx";
+    private AddressDAO addressDAO = new AddressDAO();
+    private MWGDAO mwgDAO = new MWGDAO();
+    #region toast
+    private Toast toast = new Toast();
+    private class Toast
+    {
+        public string header { get; set; }
+        public string body { get; set; }
+        public string type { get; set; }
+    }
+
+    #endregion
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        USERS = await ReadFileAsync("USERS.json");
+
+        if (USERS == null)
+        {
+            USERS = await addressDAO.GetJsonFile("https://raw.githubusercontent.com/wujor01/JsonAnalysis/master/ConsoleAppJson/USERS.json");
+            await SaveFileAsync(USERS, "USERS.json");
+        }
+
+        toastService.ShowInfo("Lấy dữ liệu USERS thành công!");
+    }
+
+    #region Save-ReadFileAsync
+    public async Task SaveFileAsync(string fileInput, string filename)
+    {
+        var backingFile = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), filename);
+        using (var writer = File.CreateText(backingFile))
+        {
+            await writer.WriteAsync(fileInput);
+        }
+    }
+
+    public async Task<string> ReadFileAsync(string filename)
+    {
+        var backingFile = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), filename);
+
+        if (backingFile == null || !File.Exists(backingFile))
+        {
+            return null;
+        }
+
+        string outputFile;
+
+        using (var reader = new StreamReader(backingFile, true))
+        {
+            outputFile = await reader.ReadToEndAsync();
+        }
+
+        return outputFile;
+    }
+
+    #endregion
+
+    private ElementReference inputTypeFileElement;
+
+    public async Task ReadFile()
+    {
+        try
+        {
+            bool isprocessed = false;
+            foreach (var file in await fileReaderService.CreateReference(inputTypeFileElement).EnumerateFilesAsync())
+            {
+                isprocessed = true;
+                byte[] result;
+                // Read into buffer and act (uses less memory)
+                await using (Stream stream = await file.OpenReadAsync())
+                {
+                    // Do (async) stuff with stream...
+                    result = new byte[stream.Length];
+                    await stream.ReadAsync(result, 0, (int)stream.Length);
+                    if (!filename.Contains(".xlsx"))
+                    {
+                        filename = filename + ".xlsx";
+                    }
+                    mwgDAO.ReadExcelTCC(result, USERS, filename);
+                }
+                toastService.ShowInfo("Xuất dữ liệu ra file thành công file thành công!\n File được lưu ngoài Desktop với tên " + filename);
+            }
+            if (!isprocessed)
+            {
+                toastService.ShowError("Chưa upload file!");
+            }
+        }
+        catch (Exception)
+        {
+            toastService.ShowError("Đọc dữ liệu trong file thất bại!");
+            throw;
+        }
+    }
+}

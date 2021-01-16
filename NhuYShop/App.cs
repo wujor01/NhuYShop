@@ -8,6 +8,7 @@ using Xamarin.Forms;
 using NhuYShop.DAO;
 using NhuYShop.Model;
 using Blazored.Toast;
+using Tewr.Blazor.FileReader;
 
 namespace NhuYShop
 {
@@ -25,6 +26,7 @@ namespace NhuYShop
                     services.AddSingleton<CounterState>();
                     services.AddSingleton<UserDAO>();
                     services.AddSingleton<UserModel>();
+                    services.AddFileReaderService();
                 })
                 .UseWebRoot("wwwroot");
 
