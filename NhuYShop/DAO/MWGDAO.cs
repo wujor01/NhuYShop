@@ -43,7 +43,7 @@ namespace NhuYShop.DAO
                             string value7 = worksheet.Cells[i, 7].Value.ToString().Trim();
                             string value8 = worksheet.Cells[i, 8].Value.ToString().Trim();
 
-                            string[] userArray = value1.Substring(value1.IndexOf("_")+1).Split(',');
+                            string[] userArray = value1.Substring(value1.IndexOf("_")+1).Split(',','.','-');
                             tCCJob.USERLIST = new List<MWGUserModel>();
                             foreach (var item in userArray)
                             {
@@ -123,12 +123,20 @@ namespace NhuYShop.DAO
                     {
                         if (user.FULLNAME == "N/A")
                         {
-                            Color colFromHex = System.Drawing.ColorTranslator.FromHtml("#ff643d");
+                            Color colFromHex = System.Drawing.ColorTranslator.FromHtml("#B7DEE8");
                             workSheet.Row(recordIndex).Style.Fill.PatternType = ExcelFillStyle.Solid;
                             workSheet.Row(recordIndex).Style.Fill.BackgroundColor.SetColor(colFromHex);
                         }
                         workSheet.Cells[recordIndex, 1].Value = user.FULLNAME;
-                        workSheet.Cells[recordIndex, 2].Value = user.USERID;
+                        int id = 0;
+                        if (int.TryParse(user.USERID, out id))
+                        {
+                            workSheet.Cells[recordIndex, 2].Value = id;
+                        }
+                        else
+                        {
+                            workSheet.Cells[recordIndex, 2].Value = user.USERID;
+                        }
                         workSheet.Cells[recordIndex, 3].Value = user.PHONGBAN;
                         workSheet.Cells[recordIndex, 4].Value = user.STOREID + " - " + user.STORENAME;
                         workSheet.Cells[recordIndex, 5].Value = yc.ERROR;
