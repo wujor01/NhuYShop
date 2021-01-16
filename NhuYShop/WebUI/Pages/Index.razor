@@ -22,6 +22,7 @@
             </div>
             <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
                 <a href="http://beautifytools.com/excel-to-json-converter.php" target="_blank">Link chuyển đổi excel sang json</a>
+                <button class="btn btn-success" @onclick=DownloadTemplateFile>File mẫu nhân viên</button>
             </div>
             <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
             </div>
@@ -157,5 +158,15 @@
             toastService.ShowError("Đọc dữ liệu trong file thất bại!");
             throw;
         }
+    }
+
+    public void DownloadTemplateFile()
+    {
+        byte[] templatefile = System.IO.File.ReadAllBytes("wwwroot/_content/NhuYShop/template/tim_nhan_vien.xlsx");
+
+        string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+        File.WriteAllBytes(path + "/tim_nhan_vien.xlsx", templatefile);
+        toastService.ShowSuccess("Tải xuống file template thành công!\n File được lưu ngoài Desktop với tên: tim_nhan_vien.xlsx");
     }
 }
