@@ -3,15 +3,18 @@
 @inject IToastService toastService
 <h3>Danh sách đơn hàng</h3>
 <div class="col-lg-12 control-section">
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">
-            <NavLink href="addorder">
-                <button class="btn btn-primary">Thêm đơn hàng</button>
-            </NavLink>
-            <button class="btn btn-warning" @onclick="OrderNotComfirm">Các đơn chưa đăng</button>
-        </div>
-    </div>
     <div class="content-wrapper">
+        <div class="row">
+            <div class="col-6 col-md-9">
+                <NavLink href="addorder">
+                    <button class="btn btn-primary">Thêm đơn hàng</button>
+                </NavLink>
+                <button class="btn btn-warning" @onclick="OrderNotComfirm">Các đơn chưa đăng</button>
+            </div>
+            <div class="col-6 col-md-3">
+                <input type="text" placeholder="Nhập mã ID đơn hàng" @onchange="OnChangeInput" class="form-control" />
+            </div>
+        </div>
         <div class="table-responsive">
             @if (ordersCurrent.Count == 0)
             {
@@ -241,6 +244,7 @@
     private OrderDAO orderDAO = new OrderDAO();
     private List<OrderModel> ordersSource = new List<OrderModel>();
     private List<OrderModel> ordersCurrent = new List<OrderModel>();
+    private List<OrderModel> ordersAFSearch = new List<OrderModel>();
     private OrderModel order { get; set; }
     string orderID { get; set; }
     string weight { get; set; }
@@ -379,6 +383,36 @@
         order.weight = Decimal.ToInt32(Decimal.Parse(e.Value.ToString().Replace(".", ",")) * 1000);
         ReloadFeeShip();
     }
+    bool isFirstSearch = true;
+    public void OnChangeInput(ChangeEventArgs e)
+    {
+
+        string input = e.Value.ToString();
+        if (isFirstSearch)
+        {
+            isFirstSearch = false;
+            ordersAFSearch = ordersSource;
+        }
+        else
+        {
+            ordersSource = ordersAFSearch;
+        }
+        ordersSource = ordersSource.Where(x => x.ID.Contains(input)).ToList();
+        if (ordersSource.Count == 0)
+        {
+            ordersSource = ordersAFSearch;
+            toastService.ShowWarning("không có kết quả cho: " + input);
+        }
+        else
+        {
+            toastService.ShowSuccess("Có " + ordersSource.Count +" kết quả tìm kiếm về: " + input);
+        }
+        decimal total = (decimal)ordersSource.Count / pageSize;
+        totalPages = Math.Ceiling(total);
+        pageCurrent = 1;
+        ordersCurrent = ordersSource.Skip((pageCurrent - 1) * pageSize).Take(pageSize).ToList();
+        StateHasChanged();
+    }
 
     #region Phí ship
     public void ReloadFeeShip()
@@ -435,8 +469,19 @@
         {
             if (json.SelectToken("error") != null)
             {
+
                 ModalTitle = json.SelectToken("error").SelectToken("ghtk_label").Value<string>();
-                ModalBody = json.SelectToken("message").Value<string>();
+                if (json.SelectToken("error").SelectToken("code").Value<string>() == "ORDER_ID_EXIST")
+                {
+                    var statusOrder = UploadOrderService
+                        .GetRestAPI("https://services.giaohangtietkiem.vn/services/shipment/v2/" + ModalTitle);
+                    ModalBody = json.SelectToken("message").Value<string>() + "\nTình trạng đơn hàng: "
+                        +statusOrder.SelectToken("order").SelectToken("status_text");
+                }
+                else
+                {
+                    ModalBody = json.SelectToken("message").Value<string>();
+                }
                 order.is_completed = true;
                 await orderDAO.UpdateOrder(order);
                 ordersCurrent.Where(x => x.ID == order.ID).FirstOrDefault().is_completed = true;

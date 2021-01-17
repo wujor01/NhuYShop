@@ -22,7 +22,7 @@ namespace NhuYShop.Service
         {
             var client = new RestClient(link);
             var request = new RestRequest(Method.POST);
-            request.AddHeader("Token", Common.Common.TokenGoogleSheet);
+            request.AddHeader("Token", Common.Common.TokenGHTK);
             request.AddHeader("Content-Type", "application/json");
             request.AddJsonBody(obj);
             IRestResponse response = client.Execute(request);
