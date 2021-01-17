@@ -13,10 +13,13 @@
             <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
                 <input class="btn btn-secondary" type="file" @ref=inputTypeFileElement />
                 <label>Nhập tên file xuất:</label>
-                <input type="text" placeholder="Nhập tên file xuất" @bind-value="filename"/>
-                <button class="btn btn-success" @attributes="InputAttributes" @onclick=ReadFile>Xuất file</button>
+                <input type="text" placeholder="Nhập tên file xuất" @bind-value="filename" />
+                <button class="btn btn-success" @attributes="InputAttributes" @onclick=ReadFile>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" @attributes="SpinnerAttributes"></span>
+                    Xuất file
+                </button>
                 <label>Merge?</label>
-                <input type="checkbox" @bind-value="isMerge" checked="checked"/>
+                <input type="checkbox" @bind-value="isMerge" checked="checked" />
             </div>
             <div class="col-xs-3 col-sm-3 col-lg-3 col-md-3">
             </div>
@@ -58,6 +61,39 @@
         {
             { "disabled", true}
         };
+    public Dictionary<string, object> SpinnerAttributes { get; set; } =
+    new Dictionary<string, object>()
+    {
+            { "hidden", false}
+    };
+
+    public void HiddenDisabled()
+    {
+        SpinnerAttributes =
+        new Dictionary<string, object>()
+        {
+                     { "hidden", false}
+        };
+        InputAttributes =
+        new Dictionary<string, object>()
+        {
+                    { "disabled", true}
+        };
+    }
+
+    public void UnHiddenEnabled()
+    {
+        SpinnerAttributes =
+        new Dictionary<string, object>()
+        {
+                     { "hidden", true}
+        };
+        InputAttributes =
+        new Dictionary<string, object>()
+        {
+                    { "disabled", false}
+        };
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -71,11 +107,7 @@
         }
 
         toastService.ShowInfo("Lấy dữ liệu USERS thành công!");
-        InputAttributes =
-        new Dictionary<string, object>()
-        {
-            { "disabled", false}
-        };
+        UnHiddenEnabled();
     }
 
     #region Save-ReadFileAsync
@@ -113,6 +145,7 @@
 
     public async Task ReadFile()
     {
+        HiddenDisabled();
         try
         {
             bool isprocessed = false;
@@ -158,6 +191,7 @@
             toastService.ShowError("Đọc dữ liệu trong file thất bại!");
             throw;
         }
+        UnHiddenEnabled();
     }
 
     public void DownloadTemplateFile()
