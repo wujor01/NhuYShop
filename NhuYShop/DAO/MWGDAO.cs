@@ -138,7 +138,7 @@ namespace NhuYShop.DAO
                             workSheet.Cells[recordIndex, 2].Value = user.USERID;
                         }
                         workSheet.Cells[recordIndex, 3].Value = user.PHONGBAN;
-                        workSheet.Cells[recordIndex, 4].Value = user.STOREID + " - " + user.STORENAME;
+                        workSheet.Cells[recordIndex, 4].Value = user.STOREID + "-" + user.STORENAME;
                         workSheet.Cells[recordIndex, 5].Value = yc.ERROR;
                         workSheet.Cells[recordIndex, 7].Value = job.VALUE / job.USERLIST.Count;
                         workSheet.Cells[recordIndex, 9].Value = job.JOBID;
