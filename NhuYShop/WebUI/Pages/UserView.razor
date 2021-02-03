@@ -11,6 +11,8 @@
                     <button class="btn btn-primary">Thêm CTV</button>
                 </NavLink>
                 <button class="btn btn-success" @onclick="BtnAllOrder">Tất cả</button>
+                <button class="btn btn-success" @onclick="BtnExportAllOrder">Xuất Excel</button>
+
             </div>
             <div class="col-4 col-md-3">
                 <input type="month" class="form-control" min="2021-01" @oninput="OneChangeDate" value="@datepick.ToString("yyyy-MM")">
@@ -147,6 +149,19 @@
         comissionOrders = users.Sum(x => x.COMISSION);
         StateHasChanged();
         toastService.ShowSuccess("Lấy tất cả đơn hàng thành công!");
+    }
+    public void BtnExportAllOrder()
+    {
+        try
+        {
+            orderDAO.OrderExportExcelAsync(orders,datepick.ToString("yyyy - MM") + ".xlsx", datepick);
+            toastService.ShowSuccess("Xuất excel các đơn tháng: " + datepick.ToString("MM/yyyy") + " ra ngoài Desktop thành công.");
+        }
+        catch (Exception)
+        {
+            toastService.ShowError("Có lỗi xảy ra");
+            throw;
+        }
     }
 
     public async void OneChangeDate(ChangeEventArgs e)

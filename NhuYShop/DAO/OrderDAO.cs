@@ -1,8 +1,11 @@
 ﻿using Firebase.Database;
 using Firebase.Database.Query;
 using NhuYShop.Model;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -137,6 +140,40 @@ namespace NhuYShop.DAO
                   weight = item.Object.weight
               }).OrderByDescending(x => x.CREATEDATE).Where(x=>x.is_completed == is_completed).ToList();
         }
+        public async Task<List<OrderModel>> GetAllOrderDetail(DateTime month)
+        {
+            return (await firebase
+              .Child("OrderModel")
+              .OnceAsync<OrderModel>()).Select(item => new OrderModel
+              {
+                  ID = item.Object.ID,
+                  CREATEUSER = item.Object.CREATEUSER,
+                  customer_address = item.Object.customer_address,
+                  customer_ward = item.Object.customer_ward,
+                  customer_distrist = item.Object.customer_distrist,
+                  customer_province = item.Object.customer_province,
+                  customer_tel = item.Object.customer_tel,
+                  customer_street = item.Object.customer_street,
+                  customer_name = item.Object.customer_name,
+                  commission = item.Object.commission,
+                  UPDATEUSER = item.Object.UPDATEUSER,
+                  detail = item.Object.detail,
+                  value = item.Object.value,
+                  is_freeship = item.Object.is_freeship,
+                  is_completed = item.Object.is_completed,
+                  CREATEDATE = item.Object.CREATEDATE,
+                  UPDATEDATE = item.Object.UPDATEDATE,
+                  customer_distrist_code = item.Object.customer_distrist_code,
+                  customer_province_code = item.Object.customer_province_code,
+                  customer_ward_code = item.Object.customer_ward_code,
+                  delivery_option_id = item.Object.delivery_option_id,
+                  feeship = item.Object.feeship,
+                  pickaddress_id = item.Object.pickaddress_id,
+                  pickaddress_name = item.Object.pickaddress_name,
+                  weight = item.Object.weight
+              }).OrderByDescending(x => x.CREATEDATE).Where(x => x.CREATEDATE.Month == month.Month && x.CREATEDATE.Year == month.Year).ToList();
+        }
+
 
         public async Task<string> AddOrder(OrderModel order)
         {
@@ -194,6 +231,66 @@ namespace NhuYShop.DAO
                 return "failed";
             }
 
+        }
+
+        public void OrderExportExcelAsync(List<OrderModel> orders,string filename, DateTime month)
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            ExcelPackage excel = new ExcelPackage();
+            var workSheet = excel.Workbook.Worksheets.Add("Sheet1");
+            workSheet.TabColor = System.Drawing.Color.Black;
+            workSheet.DefaultRowHeight = 12;
+            //Header of table  
+            //  
+            workSheet.Row(1).Height = 20;
+            workSheet.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            workSheet.Row(1).Style.Font.Bold = true;
+            workSheet.Cells[1, 1].Value = "Ngày tạo";
+            workSheet.Cells[1, 2].Value = "CTV";
+            workSheet.Cells[1, 3].Value = "ID";
+            workSheet.Cells[1, 4].Value = "Đ/C khách hàng";
+            workSheet.Cells[1, 5].Value = "Số điện thoại";
+            workSheet.Cells[1, 6].Value = "Chi tiết đơn hàng";
+            workSheet.Cells[1, 7].Value = "Phí ship";
+            workSheet.Cells[1, 8].Value = "Đã đăng?";
+            workSheet.Cells[1, 9].Value = "Freeship?";
+            workSheet.Cells[1, 10].Value = "Giá trị đơn hàng";
+            workSheet.Cells[1, 11].Value = "Loại khác";
+            //Body of table  
+            //  
+            int recordIndex = 2;
+            foreach (var item in orders)
+            {
+                workSheet.Cells[recordIndex, 1].Value = item.CREATEDATE.ToString("dd/MM/yyyy");
+                workSheet.Cells[recordIndex, 2].Value = item.CREATEUSER;
+                workSheet.Cells[recordIndex, 3].Value = item.ID;
+                workSheet.Cells[recordIndex, 4].Value = item.customer_address;
+                workSheet.Cells[recordIndex, 5].Value = item.customer_tel;
+                workSheet.Cells[recordIndex, 6].Value = item.detail;
+                workSheet.Cells[recordIndex, 7].Value = item.feeship;
+                workSheet.Cells[recordIndex, 8].Value = item.is_completed;
+                workSheet.Cells[recordIndex, 9].Value = item.is_freeship;
+                workSheet.Cells[recordIndex, 10].Value = item.value;
+                workSheet.Cells[recordIndex, 11].Value = item.orther_type;
+                recordIndex++;
+            }
+            workSheet.Column(1).AutoFit();
+            workSheet.Column(2).AutoFit();
+            workSheet.Column(3).AutoFit();
+            workSheet.Column(4).Width = 20;
+            workSheet.Column(4).Style.WrapText = true;
+            workSheet.Column(5).AutoFit();
+            workSheet.Column(6).Width = 50;
+            workSheet.Column(6).Style.WrapText = true;
+            workSheet.Column(7).AutoFit();
+            workSheet.Column(8).AutoFit();
+            workSheet.Column(9).AutoFit();
+            workSheet.Column(10).AutoFit();
+            workSheet.Column(11).AutoFit();
+
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+            File.WriteAllBytes(path + "/" + filename, excel.GetAsByteArray());
         }
     }
 }
