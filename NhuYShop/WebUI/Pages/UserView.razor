@@ -38,7 +38,9 @@
                         @foreach (var item in users)
                         {
                             <tr>
-                                <td class="text-center">@item.ID</td>
+                                <td class="text-center">
+                                    <button class="btn btn-link" @onclick="@(() => OpenModal(item.ID))">@item.ID</button>
+                                </td>
                                 <td class="text-center">@item.NAME</td>
                                 <td class="text-center">@item.PHONE</td>
                                 <td class="text-center">@item.COUNTORDER</td>
@@ -67,7 +69,118 @@
 
         </div>
     </div>
-</div>
+    <div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+        @if (ordersCTV != null)
+        {
+            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">CTV: @ordersCTV.Select(x => x.CREATEUSER).FirstOrDefault()</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="CloseModal">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            @if (ordersCTV.Count == 0)
+                            {
+                                <div class="text-center">
+                                    <p><em>Empty...</em></p>
+                                </div>
+                            }
+                            else
+                            {
+                                <div style="overflow: scroll; height: 500px;">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">Trạng thái</th>
+                                            <th class="text-center">ID</th>
+                                            @*<th class="text-center">Tên KH</th>
+                                            <th class="text-center">Số ĐT</th>
+                                            <th class="text-center">Địa chỉ</th>*@
+                                            <th class="text-center">Chi tiết</th>
+                                            <th class="text-center">Tổng tiền</th>
+                                            <th class="text-center">Hoa hồng</th>
+                                            <th class="text-center">Freeship?</th>
+                                            @*<th class="text-center">Ngày tạo</th>*@
+                                            @*<th class="text-center">Chỉnh sửa</th>*@
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in ordersCTV)
+                                        {
+                                            <tr>
+                                                @if (item.is_completed && item.orther_type.Contains("Thu hộ"))
+                                                {
+                                                    <td class="text-center">
+                                                        <button class="btn btn-info" disabled>Thu hộ</button>
+                                                    </td>
+                                                }
+                                                else if (item.is_completed && item.orther_type.Contains("Chuyển"))
+                                                {
+                                                    <td class="text-center">
+                                                        <button class="btn btn-danger" disabled>Chuyển</button>
+                                                    </td>
+                                                }
+                                                else if (item.is_completed && item.orther_type.Contains("Tiền mặt"))
+                                                {
+                                                    <td class="text-center">
+                                                        <button class="btn btn-success" disabled>Tiền mặt</button>
+                                                    </td>
+                                                }
+                                                else if (item.is_completed)
+                                                {
+                                                    <td class="text-center">
+                                                        <button class="btn btn-dark" disabled>Đã đăng</button>
+                                                    </td>
+                                                }
+                                                else if (!item.is_completed)
+                                                {
+                                                    <td class="text-center">
+                                                        <button class="btn btn-warning" disabled>Chưa Đăng</button>
+                                                    </td>
+                                                }
+                                                <td class="text-center">@item.ID</td>
+                                                @*<td>@item.customer_name</td>
+                                                <td class="text-center">@item.customer_tel</td>
+                                                <td>@item.customer_address</td>*@
+                                                <td>@item.detail</td>
+                                                <td class="text-center">@item.value.ToString("#,###")</td>
+                                                <td class="text-center">
+                                                @*@item.commission.ToString("#,###")*@
+                                                    <input type="number" @bind-value="item.commission"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    @(item.is_freeship ? "Có" : "Không")
+                                                </td>
+                                                @*<td>@item.CREATEDATE</td>*@
+                                                @*<td class="text-center">
+                                                    <NavLink href="@item.ID">
+                                                        <button class="btn btn-info">Sửa</button>
+                                                    </NavLink>
+                                                </td>*@
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+
+                                </div>
+
+                            }
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" @onclick="ComfirmOrders">Xác nhận</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="CloseModal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+        </div>
 <BlazoredToasts Position="ToastPosition.TopRight"
                 Timeout="2"
                 IconType="IconType.FontAwesome"
@@ -75,6 +188,86 @@
                 SuccessIcon="fa fa-thumbs-up"
                 ErrorIcon="fa fa-bug" />
 @code {
+    #region Modal
+    public Guid Guid = Guid.NewGuid();
+    public string ModalDisplay = "none;";
+    public string ModalClass = "";
+    public bool ShowBackdrop = false;
+    public List<OrderModel> ordersCTV { get; set; }
+
+    public void OpenModal(string CIVID)
+    {
+        ordersCTV = new List<OrderModel>();
+        ordersCTV = orders.Where(x=>x.CREATEUSER == CIVID).ToList();
+        ModalDisplay = "block;";
+        ModalClass = "Show";
+        ShowBackdrop = true;
+        StateHasChanged();
+    }
+
+    public void CloseModal()
+    {
+        ModalDisplay = "none";
+        ModalClass = "";
+        ShowBackdrop = false;
+        StateHasChanged();
+    }
+    public async void ComfirmOrders()
+    {
+        if (ordersCTV != null)
+        {
+            int count = 0;
+            string ctv = ordersCTV.Select(x=>x.CREATEUSER).FirstOrDefault();
+            foreach (var item in ordersCTV)
+            {
+                await orderDAO.UpdateOrder(item);
+                count++;
+            }
+            foreach (var master in users)
+            {
+                master.VALUEORDER = 0;
+                master.COUNTORDER = 0;
+                master.COMISSION = 0;
+            }
+
+            foreach (var master in users)
+            {
+                foreach (var item in orders)
+                {
+                    if (master.ID == item.CREATEUSER)
+                    {
+                        master.VALUEORDER += item.value;
+                        master.COUNTORDER += 1;
+                        master.COMISSION += item.commission;
+
+                        if (item.is_freeship)
+                        {
+                            master.REALVALUEORDER += (item.value - item.feeship);
+                        }
+                        else if (!item.is_freeship)
+                        {
+                            master.REALVALUEORDER += item.value;
+                        }
+                    }
+                }
+            }
+            totalOrders = users.Sum(x => x.COUNTORDER);
+            valueOrders = users.Sum(x => x.VALUEORDER);
+            realValueOrders = users.Sum(x => x.REALVALUEORDER);
+            comissionOrders = users.Sum(x => x.COMISSION);
+            StateHasChanged();
+            CloseModal();
+            toastService.ShowSuccess("Cập nhật tiền hoa hồng cho CTV:"+ ctv + " thành công");
+        }
+        else
+        {
+            toastService.ShowError("Không có đơn hàng nào để xác nhận!");
+        }
+
+    }
+    #endregion
+
+
     private UserDAO userDAO = new UserDAO();
     private OrderDAO orderDAO = new OrderDAO();
     private List<OrderModel> orders = new List<OrderModel>();

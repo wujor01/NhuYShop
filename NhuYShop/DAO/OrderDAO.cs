@@ -256,6 +256,7 @@ namespace NhuYShop.DAO
             workSheet.Cells[1, 9].Value = "Freeship?";
             workSheet.Cells[1, 10].Value = "Giá trị đơn hàng";
             workSheet.Cells[1, 11].Value = "Loại khác";
+            workSheet.Cells[1, 12].Value = "Hoa hồng";
             //Body of table  
             //  
             int recordIndex = 2;
@@ -272,6 +273,7 @@ namespace NhuYShop.DAO
                 workSheet.Cells[recordIndex, 9].Value = item.is_freeship;
                 workSheet.Cells[recordIndex, 10].Value = item.value;
                 workSheet.Cells[recordIndex, 11].Value = item.orther_type;
+                workSheet.Cells[recordIndex, 12].Value = item.commission;
                 recordIndex++;
             }
             workSheet.Column(1).AutoFit();
@@ -287,6 +289,7 @@ namespace NhuYShop.DAO
             workSheet.Column(9).AutoFit();
             workSheet.Column(10).AutoFit();
             workSheet.Column(11).AutoFit();
+            workSheet.Column(12).AutoFit();
 
             string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
