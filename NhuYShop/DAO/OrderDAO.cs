@@ -216,6 +216,28 @@ namespace NhuYShop.DAO
             }
         }
 
+        public async Task<string> UpdateOrders(List<OrderModel> orders)
+        {
+            try
+            {
+                var toUpdateOrder = (await firebase
+                .Child("OrderModel")
+                .OnceAsync<List<OrderModel>>()).Where(a => a.Object == orders).FirstOrDefault();
+
+                await firebase
+                  .Child("OrderModel")
+                  .Child(toUpdateOrder.Key)
+                  .PutAsync(orders);
+                return "success";
+            }
+            catch (Exception)
+            {
+                return "failed";
+                throw;
+            }
+        }
+
+
         public async Task<string> DeleteOrder(string ID)
         {
             try

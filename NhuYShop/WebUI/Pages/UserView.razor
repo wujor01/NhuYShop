@@ -27,7 +27,7 @@
 
             </div>
             <div class="col-4 col-md-3">
-                <input type="month" class="form-control" min="2021-01" @oninput="OneChangeDate" value="@datepick.ToString("yyyy-MM")">
+                <input type="month" class="form-control" min="2021-01" @oninput="OnChangeDate" value="@datepick.ToString("yyyy-MM")">
             </div>
         </div>
         <div class="row">
@@ -184,7 +184,11 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" @onclick="ComfirmOrders">Xác nhận</button>
+                        @if (isDisabled)
+                        {
+                            <span class="text-left">Hoàn thành: <b style="color:red;">@count/@ordersCTV.Count</b></span>
+                        }
+                        <button type="button" class="btn btn-primary" @onclick="ComfirmOrders" disabled="@isDisabled">Xác nhận</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="CloseModal">Đóng</button>
                     </div>
                 </div>
@@ -206,6 +210,8 @@
     public string ModalClass = "";
     public bool ShowBackdrop = false;
     public List<OrderModel> ordersCTV { get; set; }
+    public bool isDisabled = false;
+    public int count { get; set; }
 
     public void OpenModal(string CIVID)
     {
@@ -228,12 +234,14 @@
     {
         if (ordersCTV != null)
         {
-            int count = 0;
+            isDisabled = true;
+            count = 0;
             string ctv = ordersCTV.Select(x => x.CREATEUSER).FirstOrDefault();
             foreach (var item in ordersCTV)
             {
                 await orderDAO.UpdateOrder(item);
                 count++;
+                StateHasChanged();
             }
             foreach (var master in users)
             {
@@ -267,6 +275,7 @@
             valueOrders = users.Sum(x => x.VALUEORDER);
             realValueOrders = users.Sum(x => x.REALVALUEORDER);
             comissionOrders = users.Sum(x => x.COMISSION);
+            isDisabled = false;
             StateHasChanged();
             CloseModal();
             toastService.ShowSuccess("Cập nhật tiền hoa hồng cho CTV:" + ctv + " thành công");
@@ -369,7 +378,7 @@
         }
     }
 
-    public async void OneChangeDate(ChangeEventArgs e)
+    public async void OnChangeDate(ChangeEventArgs e)
     {
         datepick = DateTime.ParseExact(e.Value.ToString(), "yyyy-MM", CultureInfo.InvariantCulture);
         orders = await orderDAO.GetAllOrder(datepick);
