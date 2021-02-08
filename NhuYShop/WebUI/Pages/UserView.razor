@@ -3,6 +3,18 @@
 @using System.Globalization
 @inject IToastService toastService
 @inject NhuYShop.Model.UserModel model
+<style>
+    @@media only screen and (max-width: 1024px) {
+        #exportonlydesktop {
+            cursor: not-allowed;
+            pointer-events: none;
+            /*Button disabled - CSS color class*/
+            color: #c0c0c0;
+            background-color: #ffffff;
+        }
+    }
+</style>
+
 <div class="col-lg-12 control-section">
     <div class="content-wrapper">
         <div class="row">
@@ -11,7 +23,7 @@
                     <button class="btn btn-primary">Thêm CTV</button>
                 </NavLink>
                 <button class="btn btn-success" @onclick="BtnAllOrder">Tất cả</button>
-                <button class="btn btn-success" @onclick="BtnExportAllOrder">Xuất Excel</button>
+                <button class="btn btn-success" id="exportonlydesktop" @onclick="BtnExportAllOrder">Xuất Excel</button>
 
             </div>
             <div class="col-4 col-md-3">
@@ -91,79 +103,79 @@
                             else
                             {
                                 <div style="overflow: scroll; height: 500px;">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-center">Trạng thái</th>
-                                            <th class="text-center">ID</th>
-                                            @*<th class="text-center">Tên KH</th>
-                                            <th class="text-center">Số ĐT</th>
-                                            <th class="text-center">Địa chỉ</th>*@
-                                            <th class="text-center">Chi tiết</th>
-                                            <th class="text-center">Tổng tiền</th>
-                                            <th class="text-center">Hoa hồng</th>
-                                            <th class="text-center">Freeship?</th>
-                                            @*<th class="text-center">Ngày tạo</th>*@
-                                            @*<th class="text-center">Chỉnh sửa</th>*@
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in ordersCTV)
-                                        {
+                                    <table class="table table-bordered">
+                                        <thead>
                                             <tr>
-                                                @if (item.is_completed && item.orther_type.Contains("Thu hộ"))
-                                                {
-                                                    <td class="text-center">
-                                                        <button class="btn btn-info" disabled>Thu hộ</button>
-                                                    </td>
-                                                }
-                                                else if (item.is_completed && item.orther_type.Contains("Chuyển"))
-                                                {
-                                                    <td class="text-center">
-                                                        <button class="btn btn-danger" disabled>Chuyển</button>
-                                                    </td>
-                                                }
-                                                else if (item.is_completed && item.orther_type.Contains("Tiền mặt"))
-                                                {
-                                                    <td class="text-center">
-                                                        <button class="btn btn-success" disabled>Tiền mặt</button>
-                                                    </td>
-                                                }
-                                                else if (item.is_completed)
-                                                {
-                                                    <td class="text-center">
-                                                        <button class="btn btn-dark" disabled>Đã đăng</button>
-                                                    </td>
-                                                }
-                                                else if (!item.is_completed)
-                                                {
-                                                    <td class="text-center">
-                                                        <button class="btn btn-warning" disabled>Chưa Đăng</button>
-                                                    </td>
-                                                }
-                                                <td class="text-center">@item.ID</td>
-                                                @*<td>@item.customer_name</td>
-                                                <td class="text-center">@item.customer_tel</td>
-                                                <td>@item.customer_address</td>*@
-                                                <td>@item.detail</td>
-                                                <td class="text-center">@item.value.ToString("#,###")</td>
-                                                <td class="text-center">
-                                                @*@item.commission.ToString("#,###")*@
-                                                    <input type="number" @bind-value="item.commission"/>
-                                                </td>
-                                                <td class="text-center">
-                                                    @(item.is_freeship ? "Có" : "Không")
-                                                </td>
-                                                @*<td>@item.CREATEDATE</td>*@
-                                                @*<td class="text-center">
-                                                    <NavLink href="@item.ID">
-                                                        <button class="btn btn-info">Sửa</button>
-                                                    </NavLink>
-                                                </td>*@
+                                                <th class="text-center">Trạng thái</th>
+                                                <th class="text-center">ID</th>
+                                                @*<th class="text-center">Tên KH</th>
+                                                    <th class="text-center">Số ĐT</th>
+                                                    <th class="text-center">Địa chỉ</th>*@
+                                                <th class="text-center">Chi tiết</th>
+                                                <th class="text-center">Tổng tiền</th>
+                                                <th class="text-center">Hoa hồng</th>
+                                                <th class="text-center">Freeship?</th>
+                                                @*<th class="text-center">Ngày tạo</th>*@
+                                                @*<th class="text-center">Chỉnh sửa</th>*@
                                             </tr>
-                                        }
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in ordersCTV)
+                                            {
+                                                <tr>
+                                                    @if (item.is_completed && item.orther_type.Contains("Thu hộ"))
+                                                    {
+                                                        <td class="text-center">
+                                                            <button class="btn btn-info" disabled>Thu hộ</button>
+                                                        </td>
+                                                    }
+                                                    else if (item.is_completed && item.orther_type.Contains("Chuyển"))
+                                                    {
+                                                        <td class="text-center">
+                                                            <button class="btn btn-danger" disabled>Chuyển</button>
+                                                        </td>
+                                                    }
+                                                    else if (item.is_completed && item.orther_type.Contains("Tiền mặt"))
+                                                    {
+                                                        <td class="text-center">
+                                                            <button class="btn btn-success" disabled>Tiền mặt</button>
+                                                        </td>
+                                                    }
+                                                    else if (item.is_completed)
+                                                    {
+                                                        <td class="text-center">
+                                                            <button class="btn btn-dark" disabled>Đã đăng</button>
+                                                        </td>
+                                                    }
+                                                    else if (!item.is_completed)
+                                                    {
+                                                        <td class="text-center">
+                                                            <button class="btn btn-warning" disabled>Chưa Đăng</button>
+                                                        </td>
+                                                    }
+                                                    <td class="text-center">@item.ID</td>
+                                                    @*<td>@item.customer_name</td>
+                                                        <td class="text-center">@item.customer_tel</td>
+                                                        <td>@item.customer_address</td>*@
+                                                    <td>@item.detail</td>
+                                                    <td class="text-center">@item.value.ToString("#,###")</td>
+                                                    <td class="text-center">
+                                                        @*@item.commission.ToString("#,###")*@
+                                                        <input type="number" @bind-value="item.commission" />
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @(item.is_freeship ? "Có" : "Không")
+                                                    </td>
+                                                    @*<td>@item.CREATEDATE</td>*@
+                                                    @*<td class="text-center">
+                                                            <NavLink href="@item.ID">
+                                                                <button class="btn btn-info">Sửa</button>
+                                                            </NavLink>
+                                                        </td>*@
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
 
                                 </div>
 
@@ -180,7 +192,7 @@
 
         }
     </div>
-        </div>
+</div>
 <BlazoredToasts Position="ToastPosition.TopRight"
                 Timeout="2"
                 IconType="IconType.FontAwesome"
@@ -198,7 +210,7 @@
     public void OpenModal(string CIVID)
     {
         ordersCTV = new List<OrderModel>();
-        ordersCTV = orders.Where(x=>x.CREATEUSER == CIVID).ToList();
+        ordersCTV = orders.Where(x => x.CREATEUSER == CIVID).ToList();
         ModalDisplay = "block;";
         ModalClass = "Show";
         ShowBackdrop = true;
@@ -217,7 +229,7 @@
         if (ordersCTV != null)
         {
             int count = 0;
-            string ctv = ordersCTV.Select(x=>x.CREATEUSER).FirstOrDefault();
+            string ctv = ordersCTV.Select(x => x.CREATEUSER).FirstOrDefault();
             foreach (var item in ordersCTV)
             {
                 await orderDAO.UpdateOrder(item);
@@ -257,7 +269,7 @@
             comissionOrders = users.Sum(x => x.COMISSION);
             StateHasChanged();
             CloseModal();
-            toastService.ShowSuccess("Cập nhật tiền hoa hồng cho CTV:"+ ctv + " thành công");
+            toastService.ShowSuccess("Cập nhật tiền hoa hồng cho CTV:" + ctv + " thành công");
         }
         else
         {
@@ -347,7 +359,7 @@
     {
         try
         {
-            orderDAO.OrderExportExcelAsync(orders,datepick.ToString("yyyy - MM") + ".xlsx", datepick);
+            orderDAO.OrderExportExcelAsync(orders, datepick.ToString("yyyy - MM") + ".xlsx", datepick);
             toastService.ShowSuccess("Xuất excel các đơn tháng: " + datepick.ToString("MM/yyyy") + " ra ngoài Desktop thành công.");
         }
         catch (Exception)
