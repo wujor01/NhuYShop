@@ -61,7 +61,7 @@
                                 <td class="text-right">@item.COMISSION.ToString("#,###")</td>
                                 <td class="text-center">@item.CREATEDATE</td>
                                 <td class="text-center">
-                                    <button class="btn btn-warning" @onclick="@(() => BtnDelUser(item.ID))">Xóa</button>
+                                    <button class="btn btn-warning" @onclick="@(() => OpenModalDel(item.ID))">Xóa</button>
                                 </td>
                             </tr>
                         }
@@ -170,7 +170,7 @@
                                                     <td class="text-center">
                                                         @if (item.is_completed)
                                                         {
-                                                            item.feeship.ToString("#,###")
+                                                            item.feeship.ToString("#,###");
                                                         }
                                                     </td>
                                                     @*<td>@item.CREATEDATE</td>*@
@@ -202,6 +202,25 @@
             </div>
 
         }
+    </div>
+    <div id="Notification" class="modal @ModalClassDel" tabindex="-1" role="dialog" style="display:@ModalDisplayDel">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Xóa đơn hàng</h5>
+                    <button type="button" class="close" data-dismiss="modal" @onclick="CloseModalDel" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Có chắc muốn CTV: <b>@userID</b> không?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal" @onclick="BtnDelUser">Có</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="CloseModalDel">Không</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <BlazoredToasts Position="ToastPosition.TopRight"
@@ -296,7 +315,41 @@
 
     }
     #endregion
+    #region Modal Delete
+    public Guid GuidDel = Guid.NewGuid();
+    public string ModalDisplayDel = "none;";
+    public string ModalClassDel = "";
+    public bool ShowBackdropDel = false;
+    public string ModalTitlDel = null;
+    public string ModalBodyDel = null;
+    public string userID { get; set; }
+    public void OpenModalDel(string ID)
+    {
+        userID = ID;
+        ModalDisplayDel = "block;";
+        ModalClassDel = "Show";
+        ShowBackdropDel = true;
+        StateHasChanged();
+    }
 
+    public void CloseModalDel()
+    {
+        ModalDisplayDel = "none";
+        ModalClassDel = "";
+        ShowBackdropDel = false;
+        StateHasChanged();
+    }
+    public async void BtnDelUser()
+    {
+        if (await orderDAO.DeleteOrder(userID) == "success")
+        {
+            toastService.ShowSuccess("Xóa đơn hàng: " + userID + ". thành công!");
+            userID = null;
+            CloseModalDel();
+            StateHasChanged();
+        }
+    }
+    #endregion
 
     private UserDAO userDAO = new UserDAO();
     private OrderDAO orderDAO = new OrderDAO();
@@ -423,16 +476,6 @@
         comissionOrders = users.Sum(x => x.COMISSION);
         StateHasChanged();
         toastService.ShowSuccess("Lấy các đơn hàng tháng " + datepick.ToString("MM/yyyy") + " thành công!");
-    }
-
-    public async void BtnDelUser(string ID)
-    {
-        if (await userDAO.DeleteUser(ID) == "success")
-        {
-            toastService.ShowSuccess("Xóa CTV: " + ID + ". thành công!");
-            users = await userDAO.GetAllUser();
-            StateHasChanged();
-        }
     }
 
 }
