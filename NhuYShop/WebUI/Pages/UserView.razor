@@ -115,6 +115,7 @@
                                                 <th class="text-center">Tổng tiền</th>
                                                 <th class="text-center">Hoa hồng</th>
                                                 <th class="text-center">Freeship?</th>
+                                                <th class="text-center">Phí ship</th>
                                                 @*<th class="text-center">Ngày tạo</th>*@
                                                 @*<th class="text-center">Chỉnh sửa</th>*@
                                             </tr>
@@ -165,6 +166,12 @@
                                                     </td>
                                                     <td class="text-center">
                                                         @(item.is_freeship ? "Có" : "Không")
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @if (item.is_completed)
+                                                        {
+                                                            item.feeship.ToString("#,###")
+                                                        }
                                                     </td>
                                                     @*<td>@item.CREATEDATE</td>*@
                                                     @*<td class="text-center">
@@ -239,9 +246,11 @@
             string ctv = ordersCTV.Select(x => x.CREATEUSER).FirstOrDefault();
             foreach (var item in ordersCTV)
             {
-                await orderDAO.UpdateOrder(item);
-                count++;
-                StateHasChanged();
+                if (await orderDAO.UpdateOrder(item) == "success")
+                {
+                    count++;
+                    StateHasChanged();
+                }
             }
             foreach (var master in users)
             {
