@@ -6,11 +6,19 @@
 <style>
     @@media only screen and (max-width: 1024px) {
         #exportonlydesktop {
-            cursor: not-allowed;
-            pointer-events: none;
+            /*disable*/
+            /*cursor: not-allowed;
+            pointer-events: none;*/
             /*Button disabled - CSS color class*/
-            color: #c0c0c0;
-            background-color: #ffffff;
+            /*color: #c0c0c0;
+            background-color: #ffffff;*/
+            /*hide*/
+            display: none;
+        }
+    }
+    @@media only screen and (min-width: 1024px) {
+        #exportonlymobile {
+            display: none;
         }
     }
 </style>
@@ -23,8 +31,8 @@
                     <button class="btn btn-primary">Thêm CTV</button>
                 </NavLink>
                 <button class="btn btn-success" @onclick="BtnAllOrder">Tất cả</button>
-                <button class="btn btn-success" id="exportonlydesktop" @onclick="BtnExportAllOrder">Xuất Excel</button>
-
+                <button class="btn btn-success" id="exportonlydesktop" @onclick="BtnExportAllOrderPC">Xuất Excel</button>
+                <button class="btn btn-success" id="exportonlymobile" @onclick="BtnExportAllOrderMobile">Xuất Excel</button>
             </div>
             <div class="col-4 col-md-3">
                 <input type="month" class="form-control" min="2021-01" @oninput="OnChangeDate" value="@datepick.ToString("yyyy-MM")">
@@ -426,12 +434,25 @@
         StateHasChanged();
         toastService.ShowSuccess("Lấy tất cả đơn hàng thành công!");
     }
-    public void BtnExportAllOrder()
+    public void BtnExportAllOrderPC()
     {
         try
         {
-            orderDAO.OrderExportExcelAsync(orders, datepick.ToString("yyyy - MM") + ".xlsx", datepick);
+            orderDAO.OrderExportExcelAsync(orders, datepick.ToString("yyyy - MM") + ".xlsx", datepick,false);
             toastService.ShowSuccess("Xuất excel các đơn tháng: " + datepick.ToString("MM/yyyy") + " ra ngoài Desktop thành công.");
+        }
+        catch (Exception)
+        {
+            toastService.ShowError("Có lỗi xảy ra");
+            throw;
+        }
+    }
+    public void BtnExportAllOrderMobile()
+    {
+        try
+        {
+            orderDAO.OrderExportExcelAsync(orders, datepick.ToString("yyyy - MM") + ".xlsx", datepick, true);
+            toastService.ShowSuccess("Xuất excel các đơn tháng: " + datepick.ToString("MM/yyyy") + " vào thư mục Download thành công.");
         }
         catch (Exception)
         {

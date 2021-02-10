@@ -255,7 +255,7 @@ namespace NhuYShop.DAO
 
         }
 
-        public void OrderExportExcelAsync(List<OrderModel> orders,string filename, DateTime month)
+        public void OrderExportExcelAsync(List<OrderModel> orders,string filename, DateTime month, bool isMobie)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ExcelPackage excel = new ExcelPackage();
@@ -298,24 +298,39 @@ namespace NhuYShop.DAO
                 workSheet.Cells[recordIndex, 12].Value = item.commission;
                 recordIndex++;
             }
-            workSheet.Column(1).AutoFit();
-            workSheet.Column(2).AutoFit();
-            workSheet.Column(3).AutoFit();
-            workSheet.Column(4).Width = 20;
-            workSheet.Column(4).Style.WrapText = true;
-            workSheet.Column(5).AutoFit();
-            workSheet.Column(6).Width = 50;
-            workSheet.Column(6).Style.WrapText = true;
-            workSheet.Column(7).AutoFit();
-            workSheet.Column(8).AutoFit();
-            workSheet.Column(9).AutoFit();
-            workSheet.Column(10).AutoFit();
-            workSheet.Column(11).AutoFit();
-            workSheet.Column(12).AutoFit();
+            if (!isMobie)
+            {
+                workSheet.Column(1).AutoFit();
+                workSheet.Column(2).AutoFit();
+                workSheet.Column(3).AutoFit();
+                workSheet.Column(4).Width = 20;
+                workSheet.Column(4).Style.WrapText = true;
+                workSheet.Column(5).AutoFit();
+                workSheet.Column(6).Width = 50;
+                workSheet.Column(6).Style.WrapText = true;
+                workSheet.Column(7).AutoFit();
+                workSheet.Column(8).AutoFit();
+                workSheet.Column(9).AutoFit();
+                workSheet.Column(10).AutoFit();
+                workSheet.Column(11).AutoFit();
+                workSheet.Column(12).AutoFit();
 
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-
-            File.WriteAllBytes(path + "/" + filename, excel.GetAsByteArray());
+                //pc
+                string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                File.WriteAllBytes(path + "/" + filename, excel.GetAsByteArray());
+            }
+            else
+            {
+                string documentsPath = "/storage/emulated/0/Download";
+                // If directory does not exist, create it. 
+                if (!Directory.Exists(documentsPath))
+                {
+                    Directory.CreateDirectory(documentsPath);
+                }
+                //mobile
+                string localPath = Path.Combine(documentsPath, filename);
+                File.WriteAllBytes(localPath, excel.GetAsByteArray());
+            }
         }
     }
 }
