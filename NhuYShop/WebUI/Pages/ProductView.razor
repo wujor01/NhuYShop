@@ -74,7 +74,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        string text = System.IO.File.ReadAllText(@"C:\pr.json");
         products = await productDAO.GetAllProduct();
     }
 }
