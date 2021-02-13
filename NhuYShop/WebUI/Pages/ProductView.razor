@@ -1,0 +1,80 @@
+﻿@page "/productview"
+<h3>Danh sách Sản phẩm</h3>
+@using System.Globalization
+@inject IToastService toastService
+@inject NhuYShop.Model.UserModel model
+<style>
+    @@media only screen and (max-width: 1024px) {
+        #exportonlydesktop {
+            /*disable*/
+            /*cursor: not-allowed;
+            pointer-events: none;*/
+            /*Button disabled - CSS color class*/
+            /*color: #c0c0c0;
+            background-color: #ffffff;*/
+            /*hide*/
+            display: none;
+        }
+    }
+
+    @@media only screen and (min-width: 1024px) {
+        #exportonlymobile {
+            display: none;
+        }
+    }
+</style>
+
+<div class="col-lg-12 control-section">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-8 col-md-9">
+                <NavLink href="addproduct">
+                    <button class="btn btn-primary">Thêm Sản phẩm</button>
+                </NavLink>
+            </div>
+        </div>
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Tên SP</th>
+                            <th class="text-center">Giá Sỉ</th>
+                            <th class="text-center">Giá CTV</th>
+                            <th class="text-center">Giá Lẻ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in products)
+                        {
+                            <tr>
+                                <td class="text-left">@item.PRODUCTNAME</td>
+                                <td class="text-right">@item.VALUE1.ToString("#,###")</td>
+                                <td class="text-right">@item.VALUE2.ToString("#,###")</td>
+                                <td class="text-right">@item.VALUE3.ToString("#,###")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+<BlazoredToasts Position="ToastPosition.TopRight"
+                Timeout="2"
+                IconType="IconType.FontAwesome"
+                SuccessClass="success-toast-override"
+                SuccessIcon="fa fa-thumbs-up"
+                ErrorIcon="fa fa-bug" />
+@code {
+    private ProductDAO productDAO = new ProductDAO();
+    private List<ProductModel> products = new List<ProductModel>();
+    int count = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        string text = System.IO.File.ReadAllText(@"C:\pr.json");
+        products = await productDAO.GetAllProduct();
+    }
+}

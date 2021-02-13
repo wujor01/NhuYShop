@@ -1,0 +1,1892 @@
+﻿{
+  "ProductModel": [
+    {
+      "PRODUCTID": "1",
+      "PRODUCTNAME": "2 bé bóng cao",
+      "VALUE1": "80",
+      "VALUE2": "100",
+      "VALUE3": "120"
+    },
+    {
+      "PRODUCTID": "2",
+      "PRODUCTNAME": "2 bé vẫy tay",
+      "VALUE1": "30",
+      "VALUE2": "34",
+      "VALUE3": "40"
+    },
+    {
+      "PRODUCTID": "3",
+      "PRODUCTNAME": "acrylic",
+      "VALUE1": "70",
+      "VALUE2": "75",
+      "VALUE3": "80"
+    },
+    {
+      "PRODUCTID": "4",
+      "PRODUCTNAME": "ao sen",
+      "VALUE1": "40",
+      "VALUE2": "45",
+      "VALUE3": "50"
+    },
+    {
+      "PRODUCTID": "5",
+      "PRODUCTNAME": "áo tốt nghiệp",
+      "VALUE1": "78",
+      "VALUE2": "80",
+      "VALUE3": "90"
+    },
+    {
+      "PRODUCTID": "6",
+      "PRODUCTNAME": "b mây lớn (6)",
+      "VALUE1": "25",
+      "VALUE2": "30",
+      "VALUE3": "35"
+    },
+    {
+      "PRODUCTID": "7",
+      "PRODUCTNAME": "bàn ghế",
+      "VALUE1": "25",
+      "VALUE2": "30",
+      "VALUE3": "40"
+    },
+    {
+      "PRODUCTID": "8",
+      "PRODUCTNAME": "bảng bé ngoan cầu vồng",
+      "VALUE1": "120",
+      "VALUE2": "130",
+      "VALUE3": "150"
+    },
+    {
+      "PRODUCTID": "9",
+      "PRODUCTNAME": "bảng thời tiết chữ",
+      "VALUE1": "120",
+      "VALUE2": "150",
+      "VALUE3": "180"
+    },
+    {
+      "PRODUCTID": "10",
+      "PRODUCTNAME": "bảng thời tiết không chữ",
+      "VALUE1": "100",
+      "VALUE2": "120",
+      "VALUE3": "150"
+    },
+    {
+      "PRODUCTID": "11",
+      "PRODUCTNAME": "bánh trưng, bánh tét 10cm",
+      "VALUE1": "8",
+      "VALUE2": "9",
+      "VALUE3": "10"
+    },
+    {
+      "PRODUCTID": "12",
+      "PRODUCTNAME": "bé nhỏ cao 25cm",
+      "VALUE1": "60",
+      "VALUE2": "70",
+      "VALUE3": "80"
+    },
+    {
+      "PRODUCTID": "13",
+      "PRODUCTNAME": "bé ngoan",
+      "VALUE1": "120",
+      "VALUE2": "135",
+      "VALUE3": "150"
+    },
+    {
+      "PRODUCTID": "14",
+      "PRODUCTNAME": "bếp ga",
+      "VALUE1": "22",
+      "VALUE2": "27",
+      "VALUE3": "35"
+    },
+    {
+      "PRODUCTID": "15",
+      "PRODUCTNAME": "bịch 3 bé trai, gái",
+      "VALUE1": "40",
+      "VALUE2": "50",
+      "VALUE3": "60"
+    },
+    {
+      "PRODUCTID": "16",
+      "PRODUCTNAME": "bịch bó hoa tulip đỏ (3)",
+      "VALUE1": "40",
+      "VALUE2": "50",
+      "VALUE3": "60"
+    },
+    {
+      "PRODUCTID": "17",
+      "PRODUCTNAME": "bịch các con vật nhỏ 4 con",
+      "VALUE1": "10",
+      "VALUE2": "13",
+      "VALUE3": "15"
+    },
+    {
+      "PRODUCTID": "18",
+      "PRODUCTNAME": "bịch cúc màu 400 cái",
+      "VALUE1": "100",
+      "VALUE2": "120",
+      "VALUE3": "150"
+    },
+    {
+      "PRODUCTID": "19",
+      "PRODUCTNAME": "bịch cuộn ken 12 màu",
+      "VALUE1": "50",
+      "VALUE2": "80",
+      "VALUE3": "100"
+    },
+    {
+      "PRODUCTID": "20",
+      "PRODUCTNAME": "bịch khung nhạc (2)",
+      "VALUE1": "25",
+      "VALUE2": "30",
+      "VALUE3": "40"
+    },
+    {
+      "PRODUCTID": "21",
+      "PRODUCTNAME": "bịch lúa mì (6 cái)",
+      "VALUE1": "30",
+      "VALUE2": "35",
+      "VALUE3": "50"
+    },
+    {
+      "PRODUCTID": "22",
+      "PRODUCTNAME": "bịch nốt nhạc nhiều",
+      "VALUE1": "15",
+      "VALUE2": "20",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "23",
+      "PRODUCTNAME": "bò (2)",
+      "VALUE1": "13",
+      "VALUE2": "17",
+      "VALUE3": "20"
+    },
+    {
+      "PRODUCTID": "24",
+      "PRODUCTNAME": "bó hoa cúc (3 bó)",
+      "VALUE1": "30",
+      "VALUE2": "36",
+      "VALUE3": "45"
+    },
+    {
+      "PRODUCTID": "25",
+      "PRODUCTNAME": "bó hoa cúc vàng (3)",
+      "VALUE1": "30",
+      "VALUE2": "40",
+      "VALUE3": "50"
+    },
+    {
+      "PRODUCTID": "26",
+      "PRODUCTNAME": "bó hoa cúc vàng (3)",
+      "VALUE1": "30",
+      "VALUE2": "35",
+      "VALUE3": "50"
+    },
+    {
+      "PRODUCTID": "27",
+      "PRODUCTNAME": "bó kẽm lông 100 cọng",
+      "VALUE1": "14",
+      "VALUE2": "18",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "28",
+      "PRODUCTNAME": "bộ 4 bé",
+      "VALUE1": "40",
+      "VALUE2": "50",
+      "VALUE3": "60"
+    },
+    {
+      "PRODUCTID": "29",
+      "PRODUCTNAME": "Bộ chữ cái bông hoa to 10cm",
+      "VALUE1": "100",
+      "VALUE2": "130",
+      "VALUE3": "160"
+    },
+    {
+      "PRODUCTID": "30",
+      "PRODUCTNAME": "bộ chữ cái cắt sẵn 29 chữ , 10 số 5cm",
+      "VALUE1": "15",
+      "VALUE2": "20",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "31",
+      "PRODUCTNAME": "bộ dây pháo 1 dây",
+      "VALUE1": "25",
+      "VALUE2": "30",
+      "VALUE3": "35"
+    },
+    {
+      "PRODUCTID": "32",
+      "PRODUCTNAME": "bộ hiện tượng tự nhiên",
+      "VALUE1": "100",
+      "VALUE2": "130",
+      "VALUE3": "150"
+    },
+    {
+      "PRODUCTID": "33",
+      "PRODUCTNAME": "bộ rèm cá chép, lồng đèn",
+      "VALUE1": "120",
+      "VALUE2": "130",
+      "VALUE3": "150"
+    },
+    {
+      "PRODUCTID": "34",
+      "PRODUCTNAME": "bộ số cắt sẵn 100 số",
+      "VALUE1": "15",
+      "VALUE2": "20",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "35",
+      "PRODUCTNAME": "Bộ toán con bọ 1-10",
+      "VALUE1": "100",
+      "VALUE2": "130",
+      "VALUE3": "150"
+    },
+    {
+      "PRODUCTID": "36",
+      "PRODUCTNAME": "Bộ toán dài 50cm",
+      "VALUE1": "100",
+      "VALUE2": "120",
+      "VALUE3": "150"
+    },
+    {
+      "PRODUCTID": "37",
+      "PRODUCTNAME": "Bộ toán dài 75cm",
+      "VALUE1": "130",
+      "VALUE2": "150",
+      "VALUE3": "180"
+    },
+    {
+      "PRODUCTID": "38",
+      "PRODUCTNAME": "bụi hoa",
+      "VALUE1": "10",
+      "VALUE2": "13",
+      "VALUE3": "15"
+    },
+    {
+      "PRODUCTID": "39",
+      "PRODUCTNAME": "bút viết khăn 1 màu",
+      "VALUE1": "42",
+      "VALUE2": "46",
+      "VALUE3": "50"
+    },
+    {
+      "PRODUCTID": "40",
+      "PRODUCTNAME": "bút viết khăn 8 màu",
+      "VALUE1": "45",
+      "VALUE2": "55",
+      "VALUE3": "70"
+    },
+    {
+      "PRODUCTID": "41",
+      "PRODUCTNAME": "bướm 1 b 30 con",
+      "VALUE1": "10",
+      "VALUE2": "12",
+      "VALUE3": "15"
+    },
+    {
+      "PRODUCTID": "42",
+      "PRODUCTNAME": "bướm 2 li 7cm 100 con",
+      "VALUE1": "20",
+      "VALUE2": "28",
+      "VALUE3": "35"
+    },
+    {
+      "PRODUCTID": "43",
+      "PRODUCTNAME": "bướm 3d 100 con 2li",
+      "VALUE1": "20",
+      "VALUE2": "28",
+      "VALUE3": "35"
+    },
+    {
+      "PRODUCTID": "44",
+      "PRODUCTNAME": "bướm 4 con",
+      "VALUE1": "10",
+      "VALUE2": "12",
+      "VALUE3": "15"
+    },
+    {
+      "PRODUCTID": "45",
+      "PRODUCTNAME": "cá biển (14con)",
+      "VALUE1": "13",
+      "VALUE2": "18",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "46",
+      "PRODUCTNAME": "cà kheo",
+      "VALUE1": "20",
+      "VALUE2": "22",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "47",
+      "PRODUCTNAME": "cặp",
+      "VALUE1": "18",
+      "VALUE2": "20",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "48",
+      "PRODUCTNAME": "cầu nỉ 10cm",
+      "VALUE1": "10",
+      "VALUE2": "13",
+      "VALUE3": "15"
+    },
+    {
+      "PRODUCTID": "49",
+      "PRODUCTNAME": "cầu nỉ 17cm",
+      "VALUE1": "15",
+      "VALUE2": "20",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "50",
+      "PRODUCTNAME": "cầu nỉ 22cm",
+      "VALUE1": "20",
+      "VALUE2": "25",
+      "VALUE3": "30"
+    },
+    {
+      "PRODUCTID": "51",
+      "PRODUCTNAME": "cầu vồng 1 cái",
+      "VALUE1": "18",
+      "VALUE2": "26",
+      "VALUE3": "35"
+    },
+    {
+      "PRODUCTID": "52",
+      "PRODUCTNAME": "cầu xốp",
+      "VALUE1": "22",
+      "VALUE2": "26",
+      "VALUE3": "30"
+    },
+    {
+      "PRODUCTID": "53",
+      "PRODUCTNAME": "cây ăn quả",
+      "VALUE1": "25",
+      "VALUE2": "28",
+      "VALUE3": "30"
+    },
+    {
+      "PRODUCTID": "54",
+      "PRODUCTNAME": "cây hoa to cao 60cm",
+      "VALUE1": "30",
+      "VALUE2": "40",
+      "VALUE3": "50"
+    },
+    {
+      "PRODUCTID": "55",
+      "PRODUCTNAME": "cây táo cao 1m3",
+      "VALUE1": "70",
+      "VALUE2": "85",
+      "VALUE3": "100"
+    },
+    {
+      "PRODUCTID": "56",
+      "PRODUCTNAME": "củ quả gọt",
+      "VALUE1": "4.5",
+      "VALUE2": "6",
+      "VALUE3": "7"
+    },
+    {
+      "PRODUCTID": "57",
+      "PRODUCTNAME": "củ quả nỉ",
+      "VALUE1": "35",
+      "VALUE2": "40",
+      "VALUE3": "50"
+    },
+    {
+      "PRODUCTID": "58",
+      "PRODUCTNAME": "cúc ( 1cm 100.1,5cm 75.2 cm 50. 2,5cm 20)",
+      "VALUE1": "15",
+      "VALUE2": "20",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "59",
+      "PRODUCTNAME": "cúc 2cm 50 cái",
+      "VALUE1": "15",
+      "VALUE2": "20",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "60",
+      "PRODUCTNAME": "cuộn chỉ dù",
+      "VALUE1": "30",
+      "VALUE2": "40",
+      "VALUE3": "50"
+    },
+    {
+      "PRODUCTID": "61",
+      "PRODUCTNAME": "cuộn chỉ dù",
+      "VALUE1": "30",
+      "VALUE2": "38",
+      "VALUE3": "50"
+    },
+    {
+      "PRODUCTID": "62",
+      "PRODUCTNAME": "cuộn len 12 cuộn",
+      "VALUE1": "60",
+      "VALUE2": "85",
+      "VALUE3": "100"
+    },
+    {
+      "PRODUCTID": "63",
+      "PRODUCTNAME": "cuộn ruy băng",
+      "VALUE1": "7",
+      "VALUE2": "8",
+      "VALUE3": "10"
+    },
+    {
+      "PRODUCTID": "64",
+      "PRODUCTNAME": "cừu nhỏ (10)",
+      "VALUE1": "13",
+      "VALUE2": "18",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "65",
+      "PRODUCTNAME": "chậu hoa tú cầu kết sẵn",
+      "VALUE1": "34",
+      "VALUE2": "17",
+      "VALUE3": "20"
+    },
+    {
+      "PRODUCTID": "66",
+      "PRODUCTNAME": "chim én (4 con)",
+      "VALUE1": "13",
+      "VALUE2": "21",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "67",
+      "PRODUCTNAME": "chim hồng xanh (4)",
+      "VALUE1": "12",
+      "VALUE2": "17",
+      "VALUE3": "20"
+    },
+    {
+      "PRODUCTID": "68",
+      "PRODUCTNAME": "chim xanh cam (4)",
+      "VALUE1": "10",
+      "VALUE2": "13",
+      "VALUE3": "15"
+    },
+    {
+      "PRODUCTID": "69",
+      "PRODUCTNAME": "chim, ong, bướm, ốc sên (4con)",
+      "VALUE1": "10",
+      "VALUE2": "13",
+      "VALUE3": "15"
+    },
+    {
+      "PRODUCTID": "70",
+      "PRODUCTNAME": "chó (2)",
+      "VALUE1": "18",
+      "VALUE2": "21",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "71",
+      "PRODUCTNAME": "chong chóng 100 cái",
+      "VALUE1": "130",
+      "VALUE2": "165",
+      "VALUE3": "200"
+    },
+    {
+      "PRODUCTID": "72",
+      "PRODUCTNAME": "chong chóng cây",
+      "VALUE1": "1.5",
+      "VALUE2": "1.8",
+      "VALUE3": "2.5"
+    },
+    {
+      "PRODUCTID": "73",
+      "PRODUCTNAME": "chùa 1 cột",
+      "VALUE1": "130",
+      "VALUE2": "150",
+      "VALUE3": "180"
+    },
+    {
+      "PRODUCTID": "74",
+      "PRODUCTNAME": "chuồn chuồn (4)",
+      "VALUE1": "10",
+      "VALUE2": "13",
+      "VALUE3": "15"
+    },
+    {
+      "PRODUCTID": "75",
+      "PRODUCTNAME": "chuông bấm, chuông lắc",
+      "VALUE1": "23",
+      "VALUE2": "28",
+      "VALUE3": "35"
+    },
+    {
+      "PRODUCTID": "76",
+      "PRODUCTNAME": "chuông gió nỉ",
+      "VALUE1": "10",
+      "VALUE2": "12",
+      "VALUE3": "15"
+    },
+    {
+      "PRODUCTID": "77",
+      "PRODUCTNAME": "dàn cây",
+      "VALUE1": "35",
+      "VALUE2": "40",
+      "VALUE3": "45"
+    },
+    {
+      "PRODUCTID": "78",
+      "PRODUCTNAME": "dao cắt xốp",
+      "VALUE1": "18",
+      "VALUE2": "25",
+      "VALUE3": "35"
+    },
+    {
+      "PRODUCTID": "79",
+      "PRODUCTNAME": "Dập 2,5cm",
+      "VALUE1": "50",
+      "VALUE2": "60",
+      "VALUE3": "70"
+    },
+    {
+      "PRODUCTID": "80",
+      "PRODUCTNAME": "Dập 3.8",
+      "VALUE1": "90",
+      "VALUE2": "100",
+      "VALUE3": "115"
+    },
+    {
+      "PRODUCTID": "81",
+      "PRODUCTNAME": "Dập 5cm",
+      "VALUE1": "110",
+      "VALUE2": "125",
+      "VALUE3": "145"
+    },
+    {
+      "PRODUCTID": "82",
+      "PRODUCTNAME": "Dập 7.6",
+      "VALUE1": "220",
+      "VALUE2": "230",
+      "VALUE3": "270"
+    },
+    {
+      "PRODUCTID": "83",
+      "PRODUCTNAME": "dập bướm 3d 5cm",
+      "VALUE1": "145",
+      "VALUE2": "155",
+      "VALUE3": "170"
+    },
+    {
+      "PRODUCTID": "84",
+      "PRODUCTNAME": "dập kẹo 2,5cm",
+      "VALUE1": "50",
+      "VALUE2": "55",
+      "VALUE3": "70"
+    },
+    {
+      "PRODUCTID": "85",
+      "PRODUCTNAME": "dập lá phong 5cm",
+      "VALUE1": "110",
+      "VALUE2": "125",
+      "VALUE3": "145"
+    },
+    {
+      "PRODUCTID": "86",
+      "PRODUCTNAME": "dập nơ 2,5cm",
+      "VALUE1": "50",
+      "VALUE2": "60",
+      "VALUE3": "70"
+    },
+    {
+      "PRODUCTID": "87",
+      "PRODUCTNAME": "dập sao 2,5cm",
+      "VALUE1": "50",
+      "VALUE2": "60",
+      "VALUE3": "70"
+    },
+    {
+      "PRODUCTID": "88",
+      "PRODUCTNAME": "Dập tròn 1.8",
+      "VALUE1": "35",
+      "VALUE2": "40",
+      "VALUE3": "50"
+    },
+    {
+      "PRODUCTID": "89",
+      "PRODUCTNAME": "dây giày 10 dây",
+      "VALUE1": "15",
+      "VALUE2": "20",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "90",
+      "PRODUCTNAME": "dây lá nỉ dài 1m",
+      "VALUE1": "5",
+      "VALUE2": "7",
+      "VALUE3": "8"
+    },
+    {
+      "PRODUCTID": "91",
+      "PRODUCTNAME": "dây nông sản",
+      "VALUE1": "22",
+      "VALUE2": "26",
+      "VALUE3": "30"
+    },
+    {
+      "PRODUCTID": "92",
+      "PRODUCTNAME": "dây sâu giày",
+      "VALUE1": "1.5",
+      "VALUE2": "2",
+      "VALUE3": "2.5"
+    },
+    {
+      "PRODUCTID": "93",
+      "PRODUCTNAME": "dép xốp",
+      "VALUE1": "12",
+      "VALUE2": "16",
+      "VALUE3": "20"
+    },
+    {
+      "PRODUCTID": "94",
+      "PRODUCTNAME": "dù",
+      "VALUE1": "14",
+      "VALUE2": "17",
+      "VALUE3": "20"
+    },
+    {
+      "PRODUCTID": "95",
+      "PRODUCTNAME": "đàn dài 30cm",
+      "VALUE1": "25",
+      "VALUE2": "28",
+      "VALUE3": "30"
+    },
+    {
+      "PRODUCTID": "96",
+      "PRODUCTNAME": "đàn dài 50cm",
+      "VALUE1": "30",
+      "VALUE2": "40",
+      "VALUE3": "50"
+    },
+    {
+      "PRODUCTID": "97",
+      "PRODUCTNAME": "đàn gà( 1 gà trống, 1 mái, 10 con)",
+      "VALUE1": "90",
+      "VALUE2": "110",
+      "VALUE3": "130"
+    },
+    {
+      "PRODUCTID": "98",
+      "PRODUCTNAME": "đĩa giấy trang trí 1 cái",
+      "VALUE1": "6",
+      "VALUE2": "8",
+      "VALUE3": "10"
+    },
+    {
+      "PRODUCTID": "99",
+      "PRODUCTNAME": "đĩa giấy trơn",
+      "VALUE1": "12",
+      "VALUE2": "16",
+      "VALUE3": "20"
+    },
+    {
+      "PRODUCTID": "100",
+      "PRODUCTNAME": "đinh tán gim đồng hồ 20 cái",
+      "VALUE1": "8",
+      "VALUE2": "12",
+      "VALUE3": "20"
+    },
+    {
+      "PRODUCTID": "101",
+      "PRODUCTNAME": "động vật xốp",
+      "VALUE1": "15",
+      "VALUE2": "20",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "102",
+      "PRODUCTNAME": "đồng hồ xốp lắp pin",
+      "VALUE1": "26",
+      "VALUE2": "30",
+      "VALUE3": "35"
+    },
+    {
+      "PRODUCTID": "103",
+      "PRODUCTNAME": "động vật 16 con kẹp 30cm",
+      "VALUE1": "80",
+      "VALUE2": "85",
+      "VALUE3": "100"
+    },
+    {
+      "PRODUCTID": "104",
+      "PRODUCTNAME": "động vật nỉ dài 10cm",
+      "VALUE1": "15",
+      "VALUE2": "20",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "105",
+      "PRODUCTNAME": "én nhỏ (4)",
+      "VALUE1": "15",
+      "VALUE2": "20",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "106",
+      "PRODUCTNAME": "gà trống (4)",
+      "VALUE1": "18",
+      "VALUE2": "22",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "107",
+      "PRODUCTNAME": "gạch xốp kí",
+      "VALUE1": "120",
+      "VALUE2": "130",
+      "VALUE3": "140"
+    },
+    {
+      "PRODUCTID": "108",
+      "PRODUCTNAME": "gáo dừa",
+      "VALUE1": "6",
+      "VALUE2": "8",
+      "VALUE3": "10"
+    },
+    {
+      "PRODUCTID": "109",
+      "PRODUCTNAME": "gấu trúc to (2)",
+      "VALUE1": "25",
+      "VALUE2": "29",
+      "VALUE3": "40"
+    },
+    {
+      "PRODUCTID": "110",
+      "PRODUCTNAME": "ghép hình nỉ 2 miếng",
+      "VALUE1": "10",
+      "VALUE2": "12",
+      "VALUE3": "15"
+    },
+    {
+      "PRODUCTID": "111",
+      "PRODUCTNAME": "ghép hình nỉ 4 miếng",
+      "VALUE1": "15",
+      "VALUE2": "20",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "112",
+      "PRODUCTNAME": "góc bé ngoan cầu kì đầy đủ",
+      "VALUE1": "110",
+      "VALUE2": "130",
+      "VALUE3": "150"
+    },
+    {
+      "PRODUCTID": "113",
+      "PRODUCTNAME": "góc cây mặt trời",
+      "VALUE1": "120",
+      "VALUE2": "135",
+      "VALUE3": "160"
+    },
+    {
+      "PRODUCTID": "114",
+      "PRODUCTNAME": "góc chủ đề",
+      "VALUE1": "140",
+      "VALUE2": "150",
+      "VALUE3": "170"
+    },
+    {
+      "PRODUCTID": "115",
+      "PRODUCTNAME": "góc mùa thu",
+      "VALUE1": "120",
+      "VALUE2": "130",
+      "VALUE3": "160"
+    },
+    {
+      "PRODUCTID": "116",
+      "PRODUCTNAME": "giường",
+      "VALUE1": "15",
+      "VALUE2": "20",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "117",
+      "PRODUCTNAME": "hàng rào chân tường",
+      "VALUE1": "12",
+      "VALUE2": "15",
+      "VALUE3": "17"
+    },
+    {
+      "PRODUCTID": "118",
+      "PRODUCTNAME": "hàng rào lắp ráp",
+      "VALUE1": "28",
+      "VALUE2": "32",
+      "VALUE3": "35"
+    },
+    {
+      "PRODUCTID": "119",
+      "PRODUCTNAME": "hạt ngọc 100 gram",
+      "VALUE1": "25",
+      "VALUE2": "30",
+      "VALUE3": "40"
+    },
+    {
+      "PRODUCTID": "120",
+      "PRODUCTNAME": "hình góc",
+      "VALUE1": "17",
+      "VALUE2": "20",
+      "VALUE3": "22"
+    },
+    {
+      "PRODUCTID": "121",
+      "PRODUCTNAME": "hoa lá răng cưa (5)",
+      "VALUE1": "12",
+      "VALUE2": "17",
+      "VALUE3": "20"
+    },
+    {
+      "PRODUCTID": "122",
+      "PRODUCTNAME": "hoa 4.5cm",
+      "VALUE1": "15",
+      "VALUE2": "20",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "123",
+      "PRODUCTNAME": "hoa 5 cánh tim",
+      "VALUE1": "15",
+      "VALUE2": "20",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "124",
+      "PRODUCTNAME": "hoa 5 cánh tròn 4cm",
+      "VALUE1": "15",
+      "VALUE2": "20",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "125",
+      "PRODUCTNAME": "hoa 5,5cm",
+      "VALUE1": "15",
+      "VALUE2": "20",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "126",
+      "PRODUCTNAME": "hoa 6 cánh",
+      "VALUE1": "15",
+      "VALUE2": "20",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "127",
+      "PRODUCTNAME": "hoa 6 cánh 3.5cm",
+      "VALUE1": "15",
+      "VALUE2": "20",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "128",
+      "PRODUCTNAME": "hoa bụi 3 bông hoa cúc (6)",
+      "VALUE1": "30",
+      "VALUE2": "35",
+      "VALUE3": "50"
+    },
+    {
+      "PRODUCTID": "129",
+      "PRODUCTNAME": "hoa bụi 5 bông(6)",
+      "VALUE1": "30",
+      "VALUE2": "35",
+      "VALUE3": "50"
+    },
+    {
+      "PRODUCTID": "130",
+      "PRODUCTNAME": "hoa bụi có mặt cười (4)",
+      "VALUE1": "25",
+      "VALUE2": "40",
+      "VALUE3": "50"
+    },
+    {
+      "PRODUCTID": "131",
+      "PRODUCTNAME": "hoa bụi lúa (6)",
+      "VALUE1": "30",
+      "VALUE2": "35",
+      "VALUE3": "50"
+    },
+    {
+      "PRODUCTID": "132",
+      "PRODUCTNAME": "hoa cúc bó cam hoa hồng (3)",
+      "VALUE1": "30",
+      "VALUE2": "40",
+      "VALUE3": "50"
+    },
+    {
+      "PRODUCTID": "133",
+      "PRODUCTNAME": "hoa cúc trắng bình (5)",
+      "VALUE1": "30",
+      "VALUE2": "40",
+      "VALUE3": "50"
+    },
+    {
+      "PRODUCTID": "134",
+      "PRODUCTNAME": "hoa cúc vàng bình hồng (5)",
+      "VALUE1": "30",
+      "VALUE2": "35",
+      "VALUE3": "50"
+    },
+    {
+      "PRODUCTID": "135",
+      "PRODUCTNAME": "hoa cười đơn cao (1)",
+      "VALUE1": "10",
+      "VALUE2": "15",
+      "VALUE3": "20"
+    },
+    {
+      "PRODUCTID": "136",
+      "PRODUCTNAME": "hoa chân tường",
+      "VALUE1": "12",
+      "VALUE2": "15",
+      "VALUE3": "17"
+    },
+    {
+      "PRODUCTID": "137",
+      "PRODUCTNAME": "hoa hướng dương bọ dừa(6 cây)",
+      "VALUE1": "40",
+      "VALUE2": "50",
+      "VALUE3": "60"
+    },
+    {
+      "PRODUCTID": "138",
+      "PRODUCTNAME": "hoa ít",
+      "VALUE1": "12",
+      "VALUE2": "16",
+      "VALUE3": "20"
+    },
+    {
+      "PRODUCTID": "139",
+      "PRODUCTNAME": "hoa mai, hoa đào kí",
+      "VALUE1": "150",
+      "VALUE2": "170",
+      "VALUE3": "200"
+    },
+    {
+      "PRODUCTID": "140",
+      "PRODUCTNAME": "hoa múa",
+      "VALUE1": "8",
+      "VALUE2": "9",
+      "VALUE3": "10"
+    },
+    {
+      "PRODUCTID": "141",
+      "PRODUCTNAME": "hoa múa",
+      "VALUE1": "8",
+      "VALUE2": "9",
+      "VALUE3": "10"
+    },
+    {
+      "PRODUCTID": "142",
+      "PRODUCTNAME": "hoa múa nỉ, xốp to 15cm",
+      "VALUE1": "10",
+      "VALUE2": "12",
+      "VALUE3": "15"
+    },
+    {
+      "PRODUCTID": "143",
+      "PRODUCTNAME": "hoa nỉ 3,5cn",
+      "VALUE1": "18",
+      "VALUE2": "25",
+      "VALUE3": "30"
+    },
+    {
+      "PRODUCTID": "144",
+      "PRODUCTNAME": "hoa nỉ 5cm 100 hoa",
+      "VALUE1": "20",
+      "VALUE2": "25",
+      "VALUE3": "35"
+    },
+    {
+      "PRODUCTID": "145",
+      "PRODUCTNAME": "hoa nỉ 7cm",
+      "VALUE1": "25",
+      "VALUE2": "30",
+      "VALUE3": "40"
+    },
+    {
+      "PRODUCTID": "146",
+      "PRODUCTNAME": "hoa nỉ 9cm (100 bông)",
+      "VALUE1": "40",
+      "VALUE2": "45",
+      "VALUE3": "50"
+    },
+    {
+      "PRODUCTID": "147",
+      "PRODUCTNAME": "hoa nhiều trên 40 hoa",
+      "VALUE1": "18",
+      "VALUE2": "25",
+      "VALUE3": "30"
+    },
+    {
+      "PRODUCTID": "148",
+      "PRODUCTNAME": "hoa rỗng (5)",
+      "VALUE1": "10",
+      "VALUE2": "16",
+      "VALUE3": "20"
+    },
+    {
+      "PRODUCTID": "149",
+      "PRODUCTNAME": "hoa tulip (6)",
+      "VALUE1": "10",
+      "VALUE2": "16",
+      "VALUE3": "20"
+    },
+    {
+      "PRODUCTID": "150",
+      "PRODUCTNAME": "hoa tulip đỏ to(3)",
+      "VALUE1": "30",
+      "VALUE2": "40",
+      "VALUE3": "50"
+    },
+    {
+      "PRODUCTID": "151",
+      "PRODUCTNAME": "hoa tulip đỏ to(3)",
+      "VALUE1": "30",
+      "VALUE2": "35",
+      "VALUE3": "50"
+    },
+    {
+      "PRODUCTID": "152",
+      "PRODUCTNAME": "hoa thủy tiên (4)",
+      "VALUE1": "10",
+      "VALUE2": "16",
+      "VALUE3": "20"
+    },
+    {
+      "PRODUCTID": "153",
+      "PRODUCTNAME": "hoa xốp 5 cm 100 hoa 1li",
+      "VALUE1": "10",
+      "VALUE2": "17",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "154",
+      "PRODUCTNAME": "hoa xốp 5 cm 100 hoa 2li",
+      "VALUE1": "15",
+      "VALUE2": "20",
+      "VALUE3": "30"
+    },
+    {
+      "PRODUCTID": "155",
+      "PRODUCTNAME": "hoa xốp 7cm 100 hoa 1li",
+      "VALUE1": "15",
+      "VALUE2": "20",
+      "VALUE3": "30"
+    },
+    {
+      "PRODUCTID": "156",
+      "PRODUCTNAME": "hoa xốp 7cm 100 hoa 2li",
+      "VALUE1": "20",
+      "VALUE2": "30",
+      "VALUE3": "40"
+    },
+    {
+      "PRODUCTID": "157",
+      "PRODUCTNAME": "hoạt động 1 ngày có đồng hồ",
+      "VALUE1": "70",
+      "VALUE2": "75",
+      "VALUE3": "90"
+    },
+    {
+      "PRODUCTID": "158",
+      "PRODUCTNAME": "hoạt động 1 ngày ko có đồng hồ",
+      "VALUE1": "55",
+      "VALUE2": "60",
+      "VALUE3": "70"
+    },
+    {
+      "PRODUCTID": "159",
+      "PRODUCTNAME": "hồ gươm",
+      "VALUE1": "130",
+      "VALUE2": "150",
+      "VALUE3": "180"
+    },
+    {
+      "PRODUCTID": "160",
+      "PRODUCTNAME": "hướng dương bọ dừa lớn cao 45cm (1)",
+      "VALUE1": "25",
+      "VALUE2": "30",
+      "VALUE3": "35"
+    },
+    {
+      "PRODUCTID": "161",
+      "PRODUCTNAME": "hươu cao cổ nỉ",
+      "VALUE1": "95",
+      "VALUE2": "100",
+      "VALUE3": "105"
+    },
+    {
+      "PRODUCTID": "162",
+      "PRODUCTNAME": "kẽm lông",
+      "VALUE1": "14",
+      "VALUE2": "20",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "163",
+      "PRODUCTNAME": "kéo cắt nhụy",
+      "VALUE1": "50",
+      "VALUE2": "55",
+      "VALUE3": "65"
+    },
+    {
+      "PRODUCTID": "164",
+      "PRODUCTNAME": "keo gai cuộn 10m",
+      "VALUE1": "25",
+      "VALUE2": "30",
+      "VALUE3": "35"
+    },
+    {
+      "PRODUCTID": "165",
+      "PRODUCTNAME": "keo gai tròn 100 cặp",
+      "VALUE1": "17",
+      "VALUE2": "22",
+      "VALUE3": "30"
+    },
+    {
+      "PRODUCTID": "166",
+      "PRODUCTNAME": "keo nến lớn 100 cái",
+      "VALUE1": "160",
+      "VALUE2": "170",
+      "VALUE3": "200"
+    },
+    {
+      "PRODUCTID": "167",
+      "PRODUCTNAME": "keo nến nhỏ 100 cái",
+      "VALUE1": "80",
+      "VALUE2": "90",
+      "VALUE3": "100"
+    },
+    {
+      "PRODUCTID": "168",
+      "PRODUCTNAME": "kéo răng cưa",
+      "VALUE1": "65",
+      "VALUE2": "75",
+      "VALUE3": "85"
+    },
+    {
+      "PRODUCTID": "169",
+      "PRODUCTNAME": "kẹp gỗ",
+      "VALUE1": "10",
+      "VALUE2": "13",
+      "VALUE3": "15"
+    },
+    {
+      "PRODUCTID": "170",
+      "PRODUCTNAME": "kĩ năng",
+      "VALUE1": "12",
+      "VALUE2": "16",
+      "VALUE3": "20"
+    },
+    {
+      "PRODUCTID": "171",
+      "PRODUCTNAME": "kìm bấm 1 lỗ",
+      "VALUE1": "20",
+      "VALUE2": "25",
+      "VALUE3": "35"
+    },
+    {
+      "PRODUCTID": "172",
+      "PRODUCTNAME": "kit chữ cái",
+      "VALUE1": "45",
+      "VALUE2": "50",
+      "VALUE3": "60"
+    },
+    {
+      "PRODUCTID": "173",
+      "PRODUCTNAME": "kit hoa hồng 1 mẫu",
+      "VALUE1": "25",
+      "VALUE2": "35",
+      "VALUE3": "45"
+    },
+    {
+      "PRODUCTID": "174",
+      "PRODUCTNAME": "kít hoa hồng 3 mẫu",
+      "VALUE1": "45",
+      "VALUE2": "55",
+      "VALUE3": "70"
+    },
+    {
+      "PRODUCTID": "175",
+      "PRODUCTNAME": "khóa kéo",
+      "VALUE1": "1.5",
+      "VALUE2": "2",
+      "VALUE3": "3"
+    },
+    {
+      "PRODUCTID": "176",
+      "PRODUCTNAME": "khóa nhựa",
+      "VALUE1": "1.5",
+      "VALUE2": "2",
+      "VALUE3": "3"
+    },
+    {
+      "PRODUCTID": "177",
+      "PRODUCTNAME": "khoen 3,2cm",
+      "VALUE1": "2.5",
+      "VALUE2": "3",
+      "VALUE3": "3.5"
+    },
+    {
+      "PRODUCTID": "178",
+      "PRODUCTNAME": "khung a4",
+      "VALUE1": "15",
+      "VALUE2": "17",
+      "VALUE3": "20"
+    },
+    {
+      "PRODUCTID": "179",
+      "PRODUCTNAME": "khung a5",
+      "VALUE1": "10",
+      "VALUE2": "13",
+      "VALUE3": "15"
+    },
+    {
+      "PRODUCTID": "180",
+      "PRODUCTNAME": "khung hoa mận (5 cái)",
+      "VALUE1": "40",
+      "VALUE2": "50",
+      "VALUE3": "60"
+    },
+    {
+      "PRODUCTID": "181",
+      "PRODUCTNAME": "khuôn nhạc 2 khuôn",
+      "VALUE1": "25",
+      "VALUE2": "30",
+      "VALUE3": "40"
+    },
+    {
+      "PRODUCTID": "182",
+      "PRODUCTNAME": "lá hoa hồng 1li",
+      "VALUE1": "18",
+      "VALUE2": "23",
+      "VALUE3": "30"
+    },
+    {
+      "PRODUCTID": "183",
+      "PRODUCTNAME": "lá phượng, lá cúc 100 lá 1li",
+      "VALUE1": "18",
+      "VALUE2": "23",
+      "VALUE3": "30"
+    },
+    {
+      "PRODUCTID": "184",
+      "PRODUCTNAME": "lá xốp 2 li 100 lá",
+      "VALUE1": "25",
+      "VALUE2": "30",
+      "VALUE3": "40"
+    },
+    {
+      "PRODUCTID": "185",
+      "PRODUCTNAME": "lăng bác",
+      "VALUE1": "110",
+      "VALUE2": "120",
+      "VALUE3": "140"
+    },
+    {
+      "PRODUCTID": "186",
+      "PRODUCTNAME": "li giấy màu 10 cái",
+      "VALUE1": "13",
+      "VALUE2": "19",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "187",
+      "PRODUCTNAME": "lồng đèn nỉ",
+      "VALUE1": "20",
+      "VALUE2": "20",
+      "VALUE3": "30"
+    },
+    {
+      "PRODUCTID": "188",
+      "PRODUCTNAME": "máy giặt",
+      "VALUE1": "22",
+      "VALUE2": "26",
+      "VALUE3": "30"
+    },
+    {
+      "PRODUCTID": "189",
+      "PRODUCTNAME": "máy làm cong cánh hoa",
+      "VALUE1": "35",
+      "VALUE2": "45",
+      "VALUE3": "60"
+    },
+    {
+      "PRODUCTID": "190",
+      "PRODUCTNAME": "mắt thú 20gram",
+      "VALUE1": "20",
+      "VALUE2": "24",
+      "VALUE3": "30"
+    },
+    {
+      "PRODUCTID": "191",
+      "PRODUCTNAME": "mắt thú 300 gram",
+      "VALUE1": "200"
+    },
+    {
+      "PRODUCTID": "192",
+      "PRODUCTNAME": "mắt thú bịch nhỏ 6gam",
+      "VALUE1": "7",
+      "VALUE2": "8",
+      "VALUE3": "10"
+    },
+    {
+      "PRODUCTID": "193",
+      "PRODUCTNAME": "mặt trời nhỏ 6 con",
+      "VALUE1": "30",
+      "VALUE2": "40",
+      "VALUE3": "50"
+    },
+    {
+      "PRODUCTID": "194",
+      "PRODUCTNAME": "mặt trời to 4 con",
+      "VALUE1": "30",
+      "VALUE2": "40",
+      "VALUE3": "50"
+    },
+    {
+      "PRODUCTID": "195",
+      "PRODUCTNAME": "mẹt dây",
+      "VALUE1": "15",
+      "VALUE2": "20",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "196",
+      "PRODUCTNAME": "mẹt trang trí sẵn",
+      "VALUE1": "35",
+      "VALUE2": "40",
+      "VALUE3": "45"
+    },
+    {
+      "PRODUCTID": "197",
+      "PRODUCTNAME": "móc treo tường",
+      "VALUE1": "1.8",
+      "VALUE2": "2",
+      "VALUE3": "2.5"
+    },
+    {
+      "PRODUCTID": "198",
+      "PRODUCTNAME": "mũ múa",
+      "VALUE1": "8",
+      "VALUE2": "9",
+      "VALUE3": "10"
+    },
+    {
+      "PRODUCTID": "199",
+      "PRODUCTNAME": "mực in vân tay 12 màu",
+      "VALUE1": "30",
+      "VALUE2": "40",
+      "VALUE3": "50"
+    },
+    {
+      "PRODUCTID": "200",
+      "PRODUCTNAME": "nắp chai 100 cái",
+      "VALUE1": "20",
+      "VALUE2": "25",
+      "VALUE3": "30"
+    },
+    {
+      "PRODUCTID": "201",
+      "PRODUCTNAME": "nấm (5)",
+      "VALUE1": "10",
+      "VALUE2": "16",
+      "VALUE3": "20"
+    },
+    {
+      "PRODUCTID": "202",
+      "PRODUCTNAME": "nỉ cứng",
+      "VALUE1": "13",
+      "VALUE2": "15",
+      "VALUE3": "18"
+    },
+    {
+      "PRODUCTID": "203",
+      "PRODUCTNAME": "nỉ mềm",
+      "VALUE1": "13",
+      "VALUE2": "15",
+      "VALUE3": "18"
+    },
+    {
+      "PRODUCTID": "204",
+      "PRODUCTNAME": "nhà nhỏ lắp ráo cao 15cm",
+      "VALUE1": "20",
+      "VALUE2": "25",
+      "VALUE3": "30"
+    },
+    {
+      "PRODUCTID": "205",
+      "PRODUCTNAME": "những chữ cái xinh xắn",
+      "VALUE1": "150",
+      "VALUE2": "160",
+      "VALUE3": "180"
+    },
+    {
+      "PRODUCTID": "206",
+      "PRODUCTNAME": "ong (4)",
+      "VALUE1": "10",
+      "VALUE2": "13",
+      "VALUE3": "15"
+    },
+    {
+      "PRODUCTID": "207",
+      "PRODUCTNAME": "ong tìm chữ",
+      "VALUE1": "120",
+      "VALUE2": "130",
+      "VALUE3": "150"
+    },
+    {
+      "PRODUCTID": "208",
+      "PRODUCTNAME": "ổ gà",
+      "VALUE1": "40",
+      "VALUE2": "50",
+      "VALUE3": "60"
+    },
+    {
+      "PRODUCTID": "209",
+      "PRODUCTNAME": "ô tô, máy bay",
+      "VALUE1": "20",
+      "VALUE2": "25",
+      "VALUE3": "30"
+    },
+    {
+      "PRODUCTID": "210",
+      "PRODUCTNAME": "ốc sên (4)",
+      "VALUE1": "10",
+      "VALUE2": "12",
+      "VALUE3": "15"
+    },
+    {
+      "PRODUCTID": "211",
+      "PRODUCTNAME": "piano dài 30cm",
+      "VALUE1": "30",
+      "VALUE2": "40",
+      "VALUE3": "50"
+    },
+    {
+      "PRODUCTID": "212",
+      "PRODUCTNAME": "piano dài 50cm",
+      "VALUE1": "40",
+      "VALUE2": "50",
+      "VALUE3": "60"
+    },
+    {
+      "PRODUCTID": "213",
+      "PRODUCTNAME": "pom pom 1 cm 100 viên, 2cm 48 viên",
+      "VALUE1": "10",
+      "VALUE2": "15",
+      "VALUE3": "20"
+    },
+    {
+      "PRODUCTID": "214",
+      "PRODUCTNAME": "phách tre",
+      "VALUE1": "7",
+      "VALUE2": "8",
+      "VALUE3": "10"
+    },
+    {
+      "PRODUCTID": "215",
+      "PRODUCTNAME": "phích nước",
+      "VALUE1": "20",
+      "VALUE2": "25",
+      "VALUE3": "30"
+    },
+    {
+      "PRODUCTID": "216",
+      "PRODUCTNAME": "quạt",
+      "VALUE1": "22",
+      "VALUE2": "27",
+      "VALUE3": "35"
+    },
+    {
+      "PRODUCTID": "217",
+      "PRODUCTNAME": "que đè lưỡi kí",
+      "VALUE1": "55",
+      "VALUE2": "70",
+      "VALUE3": "80"
+    },
+    {
+      "PRODUCTID": "218",
+      "PRODUCTNAME": "que đè lưỡi màu, que khấc",
+      "VALUE1": "17",
+      "VALUE2": "21",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "219",
+      "PRODUCTNAME": "que kem kí",
+      "VALUE1": "45",
+      "VALUE2": "55",
+      "VALUE3": "70"
+    },
+    {
+      "PRODUCTID": "220",
+      "PRODUCTNAME": "que kem màu",
+      "VALUE1": "15",
+      "VALUE2": "18",
+      "VALUE3": "20"
+    },
+    {
+      "PRODUCTID": "221",
+      "PRODUCTNAME": "que học toán",
+      "VALUE1": "1",
+      "VALUE2": "1.1",
+      "VALUE3": "1.3"
+    },
+    {
+      "PRODUCTID": "222",
+      "PRODUCTNAME": "rèm cá, rèm lồng đèn",
+      "VALUE1": "120",
+      "VALUE2": "130",
+      "VALUE3": "150"
+    },
+    {
+      "PRODUCTID": "223",
+      "PRODUCTNAME": "rèm chúc mừng năm mới",
+      "VALUE1": "120",
+      "VALUE2": "130",
+      "VALUE3": "150"
+    },
+    {
+      "PRODUCTID": "224",
+      "PRODUCTNAME": "rèm nỉ 10 dây",
+      "VALUE1": "60",
+      "VALUE2": "75",
+      "VALUE3": "90"
+    },
+    {
+      "PRODUCTID": "225",
+      "PRODUCTNAME": "rèm xốp 10 dây",
+      "VALUE1": "45",
+      "VALUE2": "55",
+      "VALUE3": "80"
+    },
+    {
+      "PRODUCTID": "226",
+      "PRODUCTNAME": "rối bàn tay",
+      "VALUE1": "25",
+      "VALUE2": "30",
+      "VALUE3": "35"
+    },
+    {
+      "PRODUCTID": "227",
+      "PRODUCTNAME": "rối ngón tay",
+      "VALUE1": "10",
+      "VALUE2": "12",
+      "VALUE3": "15"
+    },
+    {
+      "PRODUCTID": "228",
+      "PRODUCTNAME": "rối que",
+      "VALUE1": "10",
+      "VALUE2": "12",
+      "VALUE3": "15"
+    },
+    {
+      "PRODUCTID": "229",
+      "PRODUCTNAME": "sách vải kích thước 22x22cm",
+      "VALUE1": "22",
+      "VALUE2": "26",
+      "VALUE3": "30"
+    },
+    {
+      "PRODUCTID": "230",
+      "PRODUCTNAME": "sao nỉ 15cm",
+      "VALUE1": "10",
+      "VALUE2": "13",
+      "VALUE3": "15"
+    },
+    {
+      "PRODUCTID": "231",
+      "PRODUCTNAME": "sao nỉ 20 cm",
+      "VALUE1": "15",
+      "VALUE2": "20",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "232",
+      "PRODUCTNAME": "sắp xếp theo quy tắc thỏ,cà rốt",
+      "VALUE1": "80",
+      "VALUE2": "85",
+      "VALUE3": "100"
+    },
+    {
+      "PRODUCTID": "233",
+      "PRODUCTNAME": "sâu bướm (4)",
+      "VALUE1": "10",
+      "VALUE2": "17",
+      "VALUE3": "20"
+    },
+    {
+      "PRODUCTID": "234",
+      "PRODUCTNAME": "sâu hạt",
+      "VALUE1": "80",
+      "VALUE2": "100",
+      "VALUE3": "130"
+    },
+    {
+      "PRODUCTID": "235",
+      "PRODUCTNAME": "súng bắn keo lớn",
+      "VALUE1": "55",
+      "VALUE2": "60",
+      "VALUE3": "70"
+    },
+    {
+      "PRODUCTID": "236",
+      "PRODUCTNAME": "súng bắn keo nhỏ",
+      "VALUE1": "35",
+      "VALUE2": "43",
+      "VALUE3": "50"
+    },
+    {
+      "PRODUCTID": "237",
+      "PRODUCTNAME": "tàu hỏa",
+      "VALUE1": "45",
+      "VALUE2": "50",
+      "VALUE3": "60"
+    },
+    {
+      "PRODUCTID": "238",
+      "PRODUCTNAME": "tên góc 1 chữ",
+      "VALUE1": "12",
+      "VALUE2": "13",
+      "VALUE3": "15"
+    },
+    {
+      "PRODUCTID": "239",
+      "PRODUCTNAME": "tên góc 1 chữ",
+      "VALUE1": "12",
+      "VALUE2": "13",
+      "VALUE3": "15"
+    },
+    {
+      "PRODUCTID": "240",
+      "PRODUCTNAME": "tên góc cành cây",
+      "VALUE1": "50",
+      "VALUE2": "55",
+      "VALUE3": "60"
+    },
+    {
+      "PRODUCTID": "241",
+      "PRODUCTNAME": "tên góc cành cây",
+      "VALUE1": "50",
+      "VALUE2": "55",
+      "VALUE3": "60"
+    },
+    {
+      "PRODUCTID": "242",
+      "PRODUCTNAME": "toán kẹp 1-10 khung 30cm",
+      "VALUE1": "50",
+      "VALUE2": "65",
+      "VALUE3": "80"
+    },
+    {
+      "PRODUCTID": "243",
+      "PRODUCTNAME": "túi cát",
+      "VALUE1": "7",
+      "VALUE2": "8",
+      "VALUE3": "10"
+    },
+    {
+      "PRODUCTID": "244",
+      "PRODUCTNAME": "túi xách nỉ",
+      "VALUE1": "12",
+      "VALUE2": "16",
+      "VALUE3": "20"
+    },
+    {
+      "PRODUCTID": "245",
+      "PRODUCTNAME": "thỏ lớn (2)",
+      "VALUE1": "25",
+      "VALUE2": "35",
+      "VALUE3": "40"
+    },
+    {
+      "PRODUCTID": "246",
+      "PRODUCTNAME": "thỏ nhỏ (4)",
+      "VALUE1": "18",
+      "VALUE2": "25",
+      "VALUE3": "30"
+    },
+    {
+      "PRODUCTID": "247",
+      "PRODUCTNAME": "thức ăn nỉ",
+      "VALUE1": "20",
+      "VALUE2": "30",
+      "VALUE3": "35"
+    },
+    {
+      "PRODUCTID": "248",
+      "PRODUCTNAME": "thức ăn xốp",
+      "VALUE1": "12",
+      "VALUE2": "16",
+      "VALUE3": "20"
+    },
+    {
+      "PRODUCTID": "249",
+      "PRODUCTNAME": "trái tim nỉ 15cm",
+      "VALUE1": "10",
+      "VALUE2": "13",
+      "VALUE3": "15"
+    },
+    {
+      "PRODUCTID": "250",
+      "PRODUCTNAME": "trái tim nỉ 20cm",
+      "VALUE1": "15",
+      "VALUE2": "20",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "251",
+      "PRODUCTNAME": "tranh chủ đề nỉ",
+      "VALUE1": "150",
+      "VALUE2": "160",
+      "VALUE3": "190"
+    },
+    {
+      "PRODUCTID": "252",
+      "PRODUCTNAME": "tranh góc nỉ",
+      "VALUE1": "140",
+      "VALUE2": "160",
+      "VALUE3": "180"
+    },
+    {
+      "PRODUCTID": "253",
+      "PRODUCTNAME": "Trống cơm, trống đồng, trống lắc",
+      "VALUE1": "15",
+      "VALUE2": "20",
+      "VALUE3": "25"
+    },
+    {
+      "PRODUCTID": "254",
+      "PRODUCTNAME": "trứng tô màu",
+      "VALUE1": "4",
+      "VALUE2": "5",
+      "VALUE3": "7"
+    },
+    {
+      "PRODUCTID": "255",
+      "PRODUCTNAME": "vải nỉ cứng 90x90cm",
+      "VALUE1": "13",
+      "VALUE2": "15",
+      "VALUE3": "18"
+    },
+    {
+      "PRODUCTID": "256",
+      "PRODUCTNAME": "vỉ rau củ",
+      "VALUE1": "15",
+      "VALUE2": "17",
+      "VALUE3": "20"
+    },
+    {
+      "PRODUCTID": "257",
+      "PRODUCTNAME": "vịt dưa hấu (4)",
+      "VALUE1": "18",
+      "VALUE2": "25",
+      "VALUE3": "30"
+    },
+    {
+      "PRODUCTID": "258",
+      "PRODUCTNAME": "vườn hoa chữ cái to 90x90cm",
+      "VALUE1": "120",
+      "VALUE2": "130",
+      "VALUE3": "150"
+    },
+    {
+      "PRODUCTID": "259",
+      "PRODUCTNAME": "xấp xốp kim tuyến",
+      "VALUE1": "22",
+      "VALUE2": "32",
+      "VALUE3": "40"
+    },
+    {
+      "PRODUCTID": "260",
+      "PRODUCTNAME": "xe đạp, xe máy , thuyền nhỏ",
+      "VALUE1": "12",
+      "VALUE2": "17",
+      "VALUE3": "20"
+    },
+    {
+      "PRODUCTID": "261",
+      "PRODUCTNAME": "xốp 1 li",
+      "VALUE1": "4.5",
+      "VALUE2": "6",
+      "VALUE3": "7"
+    },
+    {
+      "PRODUCTID": "262",
+      "PRODUCTNAME": "Xốp 2 li",
+      "VALUE1": "7",
+      "VALUE2": "9",
+      "VALUE3": "10"
+    },
+    {
+      "PRODUCTID": "263",
+      "PRODUCTNAME": "xốp 3 li",
+      "VALUE1": "9",
+      "VALUE2": "12",
+      "VALUE3": "15"
+    },
+    {
+      "PRODUCTID": "264",
+      "PRODUCTNAME": "Xốp 5 li",
+      "VALUE1": "15",
+      "VALUE2": "17",
+      "VALUE3": "20"
+    },
+    {
+      "PRODUCTID": "265",
+      "PRODUCTNAME": "xúc xắc",
+      "VALUE1": "15",
+      "VALUE2": "17",
+      "VALUE3": "20"
+    },
+    {
+      "PRODUCTID": "266",
+      "PRODUCTNAME": "thảm vận động",
+      "VALUE1": "60",
+      "VALUE2": "75",
+      "VALUE3": "90"
+    },
+    {
+      "PRODUCTID": "267",
+      "PRODUCTNAME": "thân sáp",
+      "VALUE1": "1.3",
+      "VALUE2": "1.7",
+      "VALUE3": "2"
+    },
+    {
+      "PRODUCTID": "268",
+      "PRODUCTNAME": "keo sáp",
+      "VALUE1": "9",
+      "VALUE2": "9",
+      "VALUE3": "10"
+    },
+    {
+      "PRODUCTID": "269",
+      "PRODUCTNAME": "bộ câu đối Mai Đào.. và Trâu",
+      "VALUE1": "110",
+      "VALUE2": "120",
+      "VALUE3": "140"
+    },
+    {
+      "PRODUCTID": "270",
+      "PRODUCTNAME": "trang que",
+      "VALUE1": "15",
+      "VALUE2": "17",
+      "VALUE3": "20"
+    }
+  ]
+}
