@@ -8,6 +8,13 @@
     [Parameter]
     public string ID { get; set; }
 }
+<style>
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
 <h3>ID:<u style="color:red;">#@ID</u></h3>
 <div class="col-lg-12 control-section">
     <div class="content-wrapper">
@@ -128,7 +135,14 @@
         <div class="row" style="margin-top:5px;">
             <div class="col-xs-8 col-sm-8 col-lg-8 col-md-8">
                 <label>Chi tiết đơn hàng:</label>
-                <textarea class="form-control" rows="3" @onchange="OnChangeDetail" value="@order.detail"></textarea>
+                <textarea class="form-control" rows="3" @onchange="OnChangeDetail" value="@order.detail" disabled="@isDisabledDetail"></textarea>
+                <button class="btn btn-danger" @onclick="OpenModalProduct">Thêm sản phẩm</button>
+                @if (products.Where(x => x.ISSELECTED).Count() != 0)
+                {
+                    <span class="text-muted ml-5">
+                        Giá bán ước tính: <b style="color:red;">@products.Where(x => x.ISSELECTED).Sum(x => x.VALUE3 * x.QUANTITY).ToString("#,###")</b>
+                    </span>
+                }
             </div>
             <div class="col-xs-2 col-sm-2 col-lg-2 col-md-2">
                 <label>Số tiền thực thu:</label>
@@ -150,6 +164,64 @@
         </div>
     </div>
 </div>
+<div id="Notification" class="modal @ModalClassProduct" tabindex="-1" role="dialog" style="display:@ModalDisplayProduct">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chọn DS sản phẩm</h5>
+            </div>
+            <div class="modal-body">
+                <input @bind-value="SearchTerm" @bind-value:event="oninput" placeholder="Tìm kiếm tên sản phẩm" />
+                <span class="text-muted ml-5">
+                    @products.Where(x => x.ISSELECTED).Count(x => x.ISSELECTED) checked
+                </span>
+                <div class="table-responsive">
+                    @if (FilteredProducts.Count == 0)
+                    {
+                        <div class="text-center">
+                            <p><em>Empty...</em></p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="overflow: scroll; height: 500px;">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Chọn</th>
+                                        <th class="text-center">Tên sản phẩm</th>
+                                        <th class="text-center">Giá CTV</th>
+                                        <th class="text-center">Giá bán</th>
+                                        <th class="text-center">Số lượng</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in FilteredProducts)
+                                    {
+                                        <tr>
+                                            <td class="text-center"><input class="form-control" type="checkbox" @bind="@products.Where(x=>x.PRODUCTID == item.PRODUCTID).FirstOrDefault().ISSELECTED" /></td>
+                                            <td>@item.PRODUCTNAME</td>
+                                            <td>@item.VALUE2.ToString("#,###")</td>
+                                            <td>@item.VALUE3.ToString("#,###")</td>
+                                            <td><input class="form-control" type="number" @bind-value="@products.Where(x=>x.PRODUCTID == item.PRODUCTID).FirstOrDefault().QUANTITY" @bind-value:event="oninput" size="30" /></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span class="text-muted ml-5">
+                    Giá bán ước tính: <b style="color:red;">@products.Where(x => x.ISSELECTED).Sum(x => x.VALUE3 * x.QUANTITY).ToString("#,###")</b>
+                </span>
+                <button type="button" class="btn btn-success" data-dismiss="modal" @onclick="BtnAddProduct">Thêm</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="CloseModalProduct">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
 <BlazoredToasts Position="ToastPosition.TopRight"
                 Timeout="4"
                 IconType="IconType.FontAwesome"
@@ -157,8 +229,62 @@
                 SuccessIcon="fa fa-thumbs-up"
                 ErrorIcon="fa fa-bug" />
 @code {
+    #region Modal Product
+    public Guid GuidProduct = Guid.NewGuid();
+    public string ModalDisplayProduct = "none;";
+    public string ModalClassProduct = "";
+    public bool ShowBackdropProduct = false;
+    public string ModalTitlProduct = null;
+    public string ModalBodyProduct = null;
+
+    public void OpenModalProduct()
+    {
+        ModalDisplayProduct = "block;";
+        ModalClassProduct = "Show";
+        ShowBackdropProduct = true;
+        StateHasChanged();
+    }
+
+    public void CloseModalProduct()
+    {
+        ModalDisplayProduct = "none";
+        ModalClassProduct = "";
+        ShowBackdropProduct = false;
+        StateHasChanged();
+    }
+    public bool isDisabledDetail = true;
+
+    public void BtnAddProduct()
+    {
+        order.value = (int)products.Where(x => x.ISSELECTED).Sum(x => x.VALUE3 * x.QUANTITY);
+        isDisabledDetail = false;
+        string detail = "";
+        order.PRODUCTS = products.Where(x => x.ISSELECTED).ToList();
+        foreach (var item in order.PRODUCTS)
+        {
+            if (item.QUANTITY != 1)
+            {
+                detail = detail + item.QUANTITY + " x " + item.PRODUCTNAME + " - " + (item.QUANTITY * item.VALUE3).ToString("#,###").Replace(".000", "k") + "\n";
+            }
+            else
+            {
+                detail = detail + item.PRODUCTNAME + " - " + (item.QUANTITY * item.VALUE3).ToString("#,###").Replace(".000", "k") + "\n";
+            }
+        }
+        order.detail = detail;
+        CloseModalProduct();
+    }
+    List<ProductModel> products = new List<ProductModel>
+{
+        new ProductModel { PRODUCTNAME = "" }
+    };
+    string SearchTerm { get; set; } = "";
+    List<ProductModel> FilteredProducts => products.Where(i => i.PRODUCTNAME.ToLower().Contains(SearchTerm.ToLower())).ToList();
+    #endregion
+
     private OrderDAO orderDAO = new OrderDAO();
     private AddressDAO addressDAO = new AddressDAO();
+    private ProductDAO productDAO = new ProductDAO();
     private OrderModel order = new OrderModel();
     public List<Province> provinces { get; set; }
     public List<Distrist> distrists { get; set; }
@@ -231,7 +357,15 @@
         province = new Province();
         distrist = new Distrist();
         ward = new Ward();
-
+        products = await productDAO.GetAllProduct();
+        if (order.PRODUCTS != null)
+        {
+            foreach (var item in order.PRODUCTS)
+            {
+                products.First(x => x.PRODUCTID == item.PRODUCTID).ISSELECTED = item.ISSELECTED;
+                products.First(x => x.PRODUCTID == item.PRODUCTID).QUANTITY = item.QUANTITY;
+            }
+        }
         toastService.ShowInfo("Lấy dữ liệu đơn hàng thành công!");
     }
 
@@ -358,7 +492,7 @@
         ward = wards.Where(x => x.code == valueWard).FirstOrDefault();
         distrist = distrists.Where(x => x.code == valueDistrist).FirstOrDefault();
         province = provinces.Where(x => x.code == valueProvince).FirstOrDefault();
-            
+
         order.customer_province = province.name;
         order.customer_distrist = distrist.name_with_type;
         order.customer_ward = ward.name_with_type;

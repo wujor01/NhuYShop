@@ -47,7 +47,8 @@ namespace NhuYShop.DAO
                   pickaddress_id = item.Object.pickaddress_id,
                   pickaddress_name = item.Object.pickaddress_name,
                   weight = item.Object.weight,
-                  orther_type = (item.Object.orther_type == null ? "" : item.Object.orther_type)
+                  orther_type = (item.Object.orther_type == null ? "" : item.Object.orther_type),
+                  PRODUCTS = item.Object.PRODUCTS
               }).OrderByDescending(x => x.CREATEDATE).ToList();
         }
         public async Task<List<OrderModel>> GetAllOrder(DateTime datepick)
@@ -81,7 +82,8 @@ namespace NhuYShop.DAO
                   pickaddress_id = item.Object.pickaddress_id,
                   pickaddress_name = item.Object.pickaddress_name,
                   weight = item.Object.weight,
-                  orther_type = (item.Object.orther_type == null ? "" : item.Object.orther_type)
+                  orther_type = (item.Object.orther_type == null ? "" : item.Object.orther_type),
+                  PRODUCTS = item.Object.PRODUCTS
               }).Where(x=>x.CREATEDATE.Month == datepick.Month && x.CREATEDATE.Year == datepick.Year).OrderByDescending(x=>x.CREATEDATE).ToList();
         }
         public async Task<int> GetCountOrderCTV(string ID)
@@ -137,7 +139,8 @@ namespace NhuYShop.DAO
                   feeship = item.Object.feeship,
                   pickaddress_id = item.Object.pickaddress_id,
                   pickaddress_name = item.Object.pickaddress_name,
-                  weight = item.Object.weight
+                  weight = item.Object.weight,
+                  PRODUCTS = item.Object.PRODUCTS
               }).OrderByDescending(x => x.CREATEDATE).Where(x=>x.is_completed == is_completed).ToList();
         }
         public async Task<List<OrderModel>> GetAllOrderDetail(DateTime month)
