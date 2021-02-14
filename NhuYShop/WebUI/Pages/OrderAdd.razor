@@ -123,7 +123,8 @@
         <div class="row" style="margin-top:5px;">
             <div class="col-xs-8 col-sm-8 col-lg-8 col-md-8">
                 <label>Chi tiết đơn hàng:</label>
-                <textarea class="form-control" rows="3" @onchange="OnChangeDetail" value="@order.detail"></textarea>
+                <textarea class="form-control" rows="3" @onchange="OnChangeDetail" value="@order.detail" disabled></textarea>
+                <button class="btn btn-danger" @onclick="OpenModalProduct">Thêm sản phẩm</button>
             </div>
             <div class="col-xs-2 col-sm-2 col-lg-2 col-md-2">
                 <label>Số tiền thực thu:</label>
@@ -145,6 +146,62 @@
         </div>
     </div>
 </div>
+<div id="Notification" class="modal @ModalClassProduct" tabindex="-1" role="dialog" style="display:@ModalDisplayProduct">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chọn DS sản phẩm</h5>
+            </div>
+            <div class="modal-body">
+                <input @bind-value="SearchTerm" @bind-value:event="oninput" placeholder="Đã chọn @products.Where(x=>x.ISSELECTED).Count() sản phẩm" />
+
+                <span class="text-muted ml-5">
+                    Có @FilteredProducts.Count trong số @products.Count
+                </span>
+                <div class="table-responsive">
+                    @if (FilteredProducts.Count == 0)
+                    {
+                        <div class="text-center">
+                            <p><em>Empty...</em></p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="overflow: scroll; height: 500px;">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Chọn</th>
+                                        <th class="text-center">Tên sản phẩm</th>
+                                        <th class="text-center">Số lượng</th>
+                                        <th class="text-center">Giá CTV</th>
+                                        <th class="text-center">Giá bán</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in FilteredProducts)
+                                    {
+                                    <tr>
+                                        <td class="text-center"><input class="form-control" type="checkbox" @bind="@products.Where(x=>x.PRODUCTID == item.PRODUCTID).FirstOrDefault().ISSELECTED"/></td>
+                                        <td>@item.PRODUCTNAME</td>
+                                        <td><input class="form-control" type="number" @bind-value="@products.Where(x=>x.PRODUCTID == item.PRODUCTID).FirstOrDefault().QUANTITY" size="10"/></td>
+                                        <td>@item.VALUE2.ToString("#,###")</td>
+                                        <td>@item.VALUE3.ToString("#,###")</td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal" @onclick="BtnAddProduct">Thêm</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="CloseModalProduct">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
 <BlazoredToasts Position="ToastPosition.TopRight"
                 Timeout="2"
                 IconType="IconType.FontAwesome"
@@ -152,8 +209,46 @@
                 SuccessIcon="fa fa-thumbs-up"
                 ErrorIcon="fa fa-bug" />
 @code {
+    #region Modal Product
+    public Guid GuidProduct = Guid.NewGuid();
+    public string ModalDisplayProduct = "none;";
+    public string ModalClassProduct = "";
+    public bool ShowBackdropProduct = false;
+    public string ModalTitlProduct = null;
+    public string ModalBodyProduct = null;
+
+    public void OpenModalProduct()
+    {
+        ModalDisplayProduct = "block;";
+        ModalClassProduct = "Show";
+        ShowBackdropProduct = true;
+        StateHasChanged();
+    }
+
+    public void CloseModalProduct()
+    {
+        ModalDisplayProduct = "none";
+        ModalClassProduct = "";
+        ShowBackdropProduct = false;
+        StateHasChanged();
+    }
+    public void BtnAddProduct()
+    {
+        order.PRODUCTS = products.Where(x => x.ISSELECTED).ToList();
+        var detail = products.Where(x => x.ISSELECTED).Select(x => x.PRODUCTNAME).ToArray();
+        order.detail = string.Join("\n",detail);
+    }
+    List<ProductModel> products = new List<ProductModel>
+    {
+        new ProductModel { PRODUCTNAME = "" }
+    };
+    string SearchTerm { get; set; } = "";
+    List<ProductModel> FilteredProducts => products.Where(i => i.PRODUCTNAME.ToLower().Contains(SearchTerm.ToLower())).ToList();
+    #endregion
+
     private OrderDAO orderDAO = new OrderDAO();
     private AddressDAO addressDAO = new AddressDAO();
+    private ProductDAO productDAO = new ProductDAO();
     private UserDAO userDAO = new UserDAO();
     private OrderModel order = new OrderModel();
     private UserModel user = new UserModel();
@@ -219,7 +314,8 @@
         user = await userDAO.GetUser(valueCTV);
 
         orders = await orderDAO.GetAllOrder();
-
+        products = await productDAO.GetAllProduct();
+        products.Select(c => { c.QUANTITY = 1; return c; }).ToList();
         pickaddressList = await addressDAO.GetPickAddress();
         if (pr != null)
         {
@@ -242,7 +338,8 @@
         }
     }
 
-    public async Task<string> ReadFileAsync(string filename)
+    public async Task<string>
+        ReadFileAsync(string filename)
     {
         var backingFile = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), filename);
 
@@ -334,12 +431,14 @@
     public async void OnChangeProvince(ChangeEventArgs e)
     {
         valueProvince = e.Value.ToString();
-        distrists = new List<Distrist>();
+        distrists = new List<Distrist>
+            ();
         if (valueProvince != null)
         {
             if (wards != null)
             {
-                wards = new List<Ward>();
+                wards = new List<Ward>
+                    ();
             }
             valueDistrist = null;
             valueWard = null;
@@ -411,9 +510,12 @@
         {
             toastService.ShowSuccess("Thêm đơn hàng thành công!");
             order = new OrderModel();
-            wards = new List<Ward>();
-            distrists = new List<Distrist>();
-            provinces = new List<Province>();
+            wards = new List<Ward>
+                ();
+            distrists = new List<Distrist>
+                ();
+            provinces = new List<Province>
+                ();
             realvalue = 0;
             await Task.Delay(2000);
             navigationManager.NavigateTo("/");
