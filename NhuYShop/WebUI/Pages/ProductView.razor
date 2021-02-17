@@ -49,18 +49,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in FilteredProducts)
+                        foreach (var item in FilteredProducts)
                         {
-                            <tr>
-                                <td class="text-left">@item.PRODUCTNAME</td>
-                                <td class="text-right">@item.VALUE1.ToString("#,###")</td>
-                                <td class="text-right">@item.VALUE2.ToString("#,###")</td>
-                                <td class="text-right">@item.VALUE3.ToString("#,###")</td>
-                                <td>
-                                    <button class="btn btn-danger" @onclick="@(() => OpenModalModify(item.PRODUCTID))">Sửa</button>
-                                    <button class="btn btn-danger" @onclick="@(() => OpenModalDel(item.PRODUCTID))">Xóa</button>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td class="text-left">@item.PRODUCTNAME</td>
+                            <td class="text-right">@item.VALUE1.ToString("#,###")</td>
+                            <td class="text-right">@item.VALUE2.ToString("#,###")</td>
+                            <td class="text-right">@item.VALUE3.ToString("#,###")</td>
+                            <td>
+                                <button class="btn btn-warning" @onclick="@(() => OpenModalModify(item.PRODUCTID))">Sửa</button>
+                                <button class="btn btn-danger" @onclick="@(() => OpenModalDel(item.PRODUCTID))">Xóa</button>
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>
@@ -79,7 +79,10 @@
                 </button>
             </div>
             <div class="modal-body">
-                Có chắc muốn xóa sản phẩm: <b></b> không?
+                @if (product != null)
+                {
+                    <span>Có chắc muốn xóa sản phẩm: <b>@product.PRODUCTNAME</b> không?</span>
+                }
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" data-dismiss="modal" @onclick="BtnDelProduct">Có</button>
@@ -144,6 +147,7 @@
     public int productID { get; set; }
     public void OpenModalDel(int ID)
     {
+        product = products.First(x => x.PRODUCTID == ID);
         productID = ID;
         ModalDisplayDel = "block;";
         ModalClassDel = "Show";
