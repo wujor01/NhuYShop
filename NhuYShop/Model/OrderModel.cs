@@ -31,5 +31,7 @@ namespace NhuYShop.Model
         public string pickaddress_name { get; set; }
         public string delivery_option_id { get; set; }
         public int weight { get; set; }
+        public string orther_type { get; set; }
+        public List<ProductModel> PRODUCTS { get; set; }
     }
 }
