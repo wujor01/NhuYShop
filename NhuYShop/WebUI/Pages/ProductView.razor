@@ -28,9 +28,7 @@
     <div class="content-wrapper">
         <div class="row">
             <div class="col-8 col-md-9">
-                <NavLink href="addproduct">
-                    <button class="btn btn-primary">Thêm Sản phẩm</button>
-                </NavLink>
+                <button class="btn btn-primary" @onclick="@(() => OpenModalModify())">Thêm sản phẩm</button>
             </div>
             <div class="col-4 col-md-3">
                 <input class="form-control" @bind-value="SearchTerm" @bind-value:event="oninput" placeholder="Tìm kiếm tên sản phẩm" />
@@ -95,7 +93,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Sửa sản phẩm</h5>
+                <h5 class="modal-title">Chi tiết sản phẩm</h5>
                 <button type="button" class="close" data-dismiss="modal" @onclick="CloseModalModify" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -122,8 +120,8 @@
                 }
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal" @onclick="BtnModifyProduct">Có</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="CloseModalDel">Không</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" @onclick="BtnModifyProduct">Lưu</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="CloseModalDel">Hủy</button>
             </div>
         </div>
     </div>
@@ -167,7 +165,7 @@
     {
         if (await productDAO.DeleteProduct(productID) == "success")
         {
-            toastService.ShowSuccess("Xóa đơn hàng: " + productID + ". thành công!");
+            toastService.ShowSuccess("Xóa sản phẩm: " + product.PRODUCTNAME + ". thành công!");
             products.Remove(products.Where(x => x.PRODUCTID == productID).FirstOrDefault());
             CloseModalDel();
             StateHasChanged();
@@ -182,9 +180,17 @@
     public string ModalTitlModify = null;
     public string ModalBodyModify = null;
     public ProductModel product { get; set; }
-    public void OpenModalModify(int ID)
+    public void OpenModalModify(int ID = 0)
     {
-        product = products.First(x=>x.PRODUCTID == ID);
+        if (ID != 0)
+        {
+            product = products.First(x => x.PRODUCTID == ID);
+        }
+        else
+        {
+            product = new ProductModel();
+            product.PRODUCTID = products.Last().PRODUCTID + 1;
+        }
         ModalDisplayModify = "block;";
         ModalClassModify = "Show";
         ShowBackdropModify = true;
@@ -203,8 +209,8 @@
     {
         if (await productDAO.UpdateProduct(product) == "success")
         {
-            toastService.ShowSuccess("Xóa đơn hàng: " + productID + ". thành công!");
-            products.Remove(products.Where(x => x.PRODUCTID == productID).FirstOrDefault());
+            toastService.ShowSuccess("Cập nhật sản phẩm: " + product.PRODUCTNAME + ". thành công!");
+            //products.Remove(products.Where(x => x.PRODUCTID == productID).FirstOrDefault());
             CloseModalModify();
             StateHasChanged();
         }
