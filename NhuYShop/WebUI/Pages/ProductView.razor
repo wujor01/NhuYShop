@@ -32,6 +32,9 @@
                     <button class="btn btn-primary">Thêm Sản phẩm</button>
                 </NavLink>
             </div>
+            <div class="col-4 col-md-3">
+                <input class="form-control" @bind-value="SearchTerm" @bind-value:event="oninput" placeholder="Tìm kiếm tên sản phẩm" />
+            </div>
         </div>
         <div class="row">
             <div class="table-responsive">
@@ -42,16 +45,21 @@
                             <th class="text-center">Giá Sỉ</th>
                             <th class="text-center">Giá CTV</th>
                             <th class="text-center">Giá Lẻ</th>
+                            <th class="text-center">Sửa</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in products)
+                        @foreach (var item in FilteredProducts)
                         {
                             <tr>
                                 <td class="text-left">@item.PRODUCTNAME</td>
                                 <td class="text-right">@item.VALUE1.ToString("#,###")</td>
                                 <td class="text-right">@item.VALUE2.ToString("#,###")</td>
                                 <td class="text-right">@item.VALUE3.ToString("#,###")</td>
+                                <td>
+                                    <button class="btn btn-danger" @onclick="@(() => OpenModalModify(item.PRODUCTID))">Sửa</button>
+                                    <button class="btn btn-danger" @onclick="@(() => OpenModalDel(item.PRODUCTID))">Xóa</button>
+                                </td>
                             </tr>
                         }
                     </tbody>
@@ -61,6 +69,64 @@
         </div>
     </div>
 </div>
+<div id="Notification" class="modal @ModalClassDel" tabindex="-1" role="dialog" style="display:@ModalDisplayDel">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xóa sản phẩm</h5>
+                <button type="button" class="close" data-dismiss="modal" @onclick="CloseModalDel" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Có chắc muốn xóa sản phẩm: <b></b> không?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal" @onclick="BtnDelProduct">Có</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="CloseModalDel">Không</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="Notification" class="modal @ModalClassModify" tabindex="-1" role="dialog" style="display:@ModalDisplayModify">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Sửa sản phẩm</h5>
+                <button type="button" class="close" data-dismiss="modal" @onclick="CloseModalModify" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @if (product != null)
+                {
+                    <div class="col-xs-9 col-sm-9 col-lg-9 col-md-9">
+                        <label>Tên sản phẩm</label>
+                        <input type="text" class="form-control" @bind-value="@product.PRODUCTNAME">
+                    </div>
+                    <div class="col-xs-9 col-sm-9 col-lg-9 col-md-9">
+                        <label>Giá Sỉ</label>
+                        <input type="number" class="form-control" @bind-value="@product.VALUE1">
+                    </div>
+                    <div class="col-xs-9 col-sm-9 col-lg-9 col-md-9">
+                        <label>Giá CTV</label>
+                        <input type="number" class="form-control" @bind-value="@product.VALUE2">
+                    </div>
+                    <div class="col-xs-9 col-sm-9 col-lg-9 col-md-9">
+                        <label>Giá lẻ</label>
+                        <input type="number" class="form-control" @bind-value="@product.VALUE3">
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal" @onclick="BtnModifyProduct">Có</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="CloseModalDel">Không</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <BlazoredToasts Position="ToastPosition.TopRight"
                 Timeout="2"
                 IconType="IconType.FontAwesome"
@@ -68,6 +134,80 @@
                 SuccessIcon="fa fa-thumbs-up"
                 ErrorIcon="fa fa-bug" />
 @code {
+    #region Modal Delete
+    public Guid GuidDel = Guid.NewGuid();
+    public string ModalDisplayDel = "none;";
+    public string ModalClassDel = "";
+    public bool ShowBackdropDel = false;
+    public string ModalTitlDel = null;
+    public string ModalBodyDel = null;
+    public int productID { get; set; }
+    public void OpenModalDel(int ID)
+    {
+        productID = ID;
+        ModalDisplayDel = "block;";
+        ModalClassDel = "Show";
+        ShowBackdropDel = true;
+        StateHasChanged();
+    }
+
+    public void CloseModalDel()
+    {
+        ModalDisplayDel = "none";
+        ModalClassDel = "";
+        ShowBackdropDel = false;
+        StateHasChanged();
+    }
+
+    public async void BtnDelProduct()
+    {
+        if (await productDAO.DeleteProduct(productID) == "success")
+        {
+            toastService.ShowSuccess("Xóa đơn hàng: " + productID + ". thành công!");
+            products.Remove(products.Where(x => x.PRODUCTID == productID).FirstOrDefault());
+            CloseModalDel();
+            StateHasChanged();
+        }
+    }
+    #endregion
+    #region Modal Modify
+    public Guid GuidModify = Guid.NewGuid();
+    public string ModalDisplayModify = "none;";
+    public string ModalClassModify = "";
+    public bool ShowBackdropModify = false;
+    public string ModalTitlModify = null;
+    public string ModalBodyModify = null;
+    public ProductModel product { get; set; }
+    public void OpenModalModify(int ID)
+    {
+        product = products.First(x=>x.PRODUCTID == ID);
+        ModalDisplayModify = "block;";
+        ModalClassModify = "Show";
+        ShowBackdropModify = true;
+        StateHasChanged();
+    }
+
+    public void CloseModalModify()
+    {
+        ModalDisplayModify = "none";
+        ModalClassModify = "";
+        ShowBackdropModify = false;
+        StateHasChanged();
+    }
+
+    public async void BtnModifyProduct()
+    {
+        if (await productDAO.UpdateProduct(product) == "success")
+        {
+            toastService.ShowSuccess("Xóa đơn hàng: " + productID + ". thành công!");
+            products.Remove(products.Where(x => x.PRODUCTID == productID).FirstOrDefault());
+            CloseModalModify();
+            StateHasChanged();
+        }
+    }
+    #endregion
+
+
     private ProductDAO productDAO = new ProductDAO();
     private List<ProductModel> products = new List<ProductModel>();
     int count = 0;
@@ -76,4 +216,7 @@
     {
         products = await productDAO.GetAllProduct();
     }
+
+    string SearchTerm { get; set; } = "";
+    List<ProductModel> FilteredProducts => products.Where(i => i.PRODUCTNAME.ToLower().Contains(SearchTerm.ToLower())).ToList();
 }
