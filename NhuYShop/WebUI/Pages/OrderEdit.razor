@@ -279,7 +279,7 @@
         new ProductModel { PRODUCTNAME = "" }
     };
     string SearchTerm { get; set; } = "";
-    List<ProductModel> FilteredProducts => products.Where(i => i.PRODUCTNAME.ToLower().Contains(SearchTerm.ToLower())).ToList();
+    List<ProductModel> FilteredProducts => products.Where(i => i.PRODUCTNAME.ToLower().Contains(SearchTerm.ToLower())).OrderByDescending(x=>x.ISSELECTED).ToList();
     #endregion
 
     private OrderDAO orderDAO = new OrderDAO();
