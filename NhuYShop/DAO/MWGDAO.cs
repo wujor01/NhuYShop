@@ -61,9 +61,9 @@ namespace NhuYShop.DAO
                                 tCCJob.USERLIST.Add(user);
                             }
                             tCCJob.JOBID = value1.Substring(0,value1.IndexOf("_"));
-                            int value = 0;
-                            int.TryParse(value4, out value);
-                            tCCJob.VALUE = value;
+                            double value = 0;
+                            double.TryParse(value4, out value);
+                            tCCJob.VALUE = (int)Math.Round(value, MidpointRounding.AwayFromZero);
                             tCCJob.CONTENT = value7;
 
                             if (tCCYecCauList.Where(x=>x.MAYEUCAU == value8).Count() == 0)
@@ -74,9 +74,9 @@ namespace NhuYShop.DAO
                                 tccYeuCau.JOBLIST = new List<TCCJobModel>();
                                 tccYeuCau.JOBLIST.Add(tCCJob);
                                 tccYeuCau.ERROR = value2;
-                                int sumvalue = 0;
-                                int.TryParse(value3, out sumvalue);
-                                tccYeuCau.SUMVALUE = sumvalue;
+                                double sumvalue = 0;
+                                double.TryParse(value3, out sumvalue);
+                                tccYeuCau.SUMVALUE = (int)Math.Round(sumvalue, MidpointRounding.AwayFromZero);
                                 tccYeuCau.NOTE = value7;
                                 tCCYecCauList.Add(tccYeuCau);
                             }
